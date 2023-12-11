@@ -1,7 +1,7 @@
 #ifndef APPDEF_H
 #define APPDEF_H
 
-#define APP_NAME        "yplayer"
+#define APP_NAME        "XY-Annotation"
 #define APP_VERSION     "1.0.0"
 
 #define COMPANY_NAME    ""

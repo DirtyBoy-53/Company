@@ -1,33 +1,12 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="image_add">rc/add.png</file>
-        <file alias="image_pause">rc/pause.png</file>
-        <file alias="image_start">rc/start.png</file>
-        <file alias="image_stop">rc/stop.png</file>
-        <file alias="image_style1">rc/style1.png</file>
-        <file alias="image_style2">rc/style2.png</file>
-        <file alias="image_style4">rc/style4.png</file>
-        <file alias="image_style9">rc/style9.png</file>
-        <file alias="image_style16">rc/style16.png</file>
-        <file alias="image_style25">rc/style25.png</file>
-        <file alias="image_style36">rc/style36.png</file>
-        <file alias="image_style49">rc/style49.png</file>
-        <file alias="image_style64">rc/style64.png</file>
-        <file alias="image_media_bk">rc/media_bk.png</file>
-        <file alias="image_next">rc/next.png</file>
-        <file alias="image_prev">rc/prev.png</file>
-        <file alias="image_capture">rc/capture.png</file>
-        <file alias="image_clear">rc/clear.png</file>
-        <file alias="image_disk">rc/disk.png</file>
-        <file alias="image_file">rc/file.png</file>
-        <file alias="image_fullscreen">rc/fullscreen.png</file>
-        <file alias="image_icon">rc/icon.png</file>
-        <file alias="image_media">rc/media.png</file>
-        <file alias="image_mute">rc/mute.png</file>
-        <file alias="image_network">rc/network.png</file>
-        <file alias="image_sub">rc/sub.png</file>
-        <file alias="image_timeshow">rc/timeshow.png</file>
-        <file alias="image_voice">rc/voice.png</file>
-        <file alias="image_close">rc/close.png</file>
+        <file alias="ICON">rc/icon.png</file>
+        <file alias="open_file">rc/open_file.png</file>
+        <file alias="creat_polygon">rc/polygon.png</file>
+        <file alias="check">rc/check.png</file>
+        <file alias="uncheck">rc/uncheck.png</file>
+        <file alias="help">rc/help.png</file>
+        <file alias="confirm">rc/confirm.png</file>
+        <file alias="cancel">rc/cancel.png</file>
     </qresource>
 </RCC>

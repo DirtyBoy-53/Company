@@ -210,6 +210,6 @@
     <file>rc/window_undock_focus@2x.png</file>
     <file>rc/window_undock_pressed.png</file>
     <file>rc/window_undock_pressed@2x.png</file>
-    <file>lightstyle.qss</file>
+    <file alias="lightstyle">lightstyle.qss</file>
   </qresource>
 </RCC>

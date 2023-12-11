@@ -3,6 +3,8 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
+
+CONFIG += sdk_no_version_check
 DEFINES -= UNICODE _UNICODE
 
 TEMPLATE = app
@@ -16,7 +18,10 @@ UI_DIR          = build/ui
 OBJECTS_DIR     = build/obj
 
 DEFINES += QT_DEPRECATED_WARNINGS
-RESOURCES += res/skin/dark/darkstyle.qrc res/skin/light/lightstyle.qrc
+RESOURCES += \
+    res/skin/dark/darkstyle.qrc \
+    res/skin/light/lightstyle.qrc \
+    res/image/image.qrc
 #TRANSLATIONS = rc/lang/app_zh_CN.ts rc/lang/app_zh_CN.qm
 
 INCLUDEPATH += src
@@ -25,27 +30,103 @@ INCLUDEPATH += src
 SRC_GLOBAL = src/global
 INCLUDEPATH += $$SRC_GLOBAL
 SOURCES +=\
-    $$SRC_GLOBAL/main.cpp
+    $$SRC_GLOBAL/main.cpp \
+    $$SRC_GLOBAL/common.cpp \
+    src/ui/labeldialog.cpp
+
+
+
 HEADERS += \
     $$SRC_GLOBAL/confile.h \
     $$SRC_GLOBAL/appdef.h \
+    $$SRC_GLOBAL/common.h \
+    src/ui/labeldialog.h
+
+
+
+#utils
+SRC_UTILS = src/utils
+INCLUDEPATH += $$SRC_UTILS
+#SOURCES +=\
+#    $$SRC_UTILS/
+#HEADERS += \
+#    $$SRC_UTILS/
 
 #qt
 SRC_QT = src/qt
 INCLUDEPATH += $$SRC_QT
-SOURCES += \
-    $$SRC_QT/glwidget.cpp
+#SOURCES += \
+
 HEADERS += \
     $$SRC_QT/custom_event_type.h \
-    $$SRC_QT/glwidget.h \
     $$SRC_QT/qtfunctions.h \
-    $$SRC_QT/qtheaders.h
+    $$SRC_QT/qtheaders.h \
+    $$SRC_QT/qtstyles.h
+
+#ui
+SRC_UI = src/ui
+INCLUDEPATH += $$SRC_UI
+SOURCES += \
+    $$SRC_UI/mainwindow.cpp \
+    $$SRC_UI/customlistwidget.cpp
+HEADERS += \
+    $$SRC_UI/mainwindow.h \
+    $$SRC_UI/customlistwidget.h
+
+
+#annotations
+SRC_ANO = src/annotations
+INCLUDEPATH += $$SRC_ANO
+SOURCES += \
+    $$SRC_ANO/annotationitem.cpp \
+    $$SRC_ANO/segannotationitem.cpp
+HEADERS += \
+    $$SRC_ANO/annotationitem.h \
+    $$SRC_ANO/segannotationitem.h
+
+#canvas
+SRC_CANVAS = src/canvas
+INCLUDEPATH += $$SRC_CANVAS
+SOURCES +=\
+    $$SRC_CANVAS/canvas2d.cpp \
+    $$SRC_CANVAS/canvasbase.cpp
+HEADERS +=\
+    $$SRC_CANVAS/canvas2d.h \
+    $$SRC_CANVAS/canvasbase.h
+
+#controllers
+SRC_CONTROL = src/controllers
+INCLUDEPATH += $$SRC_CONTROL
+SOURCES +=\
+    $$SRC_CONTROL/annotationcontainer.cpp \
+    $$SRC_CONTROL/filemanager.cpp \
+    $$SRC_CONTROL/labelmanager.cpp
+HEADERS +=\
+    $$SRC_CONTROL/annotationcontainer.h \
+    $$SRC_CONTROL/filemanager.h \
+    $$SRC_CONTROL/labelmanager.h \
+
+
+#3rd
+INCLUDEPATH += 3rd
+
+#spdlog
+_3RD_SPDLOG = 3rd/spdlog
+INCLUDEPATH += $$_3RD_SPDLOG
+SOURCES += \
+    $$_3RD_SPDLOG/ylog.cpp
+HEADERS += \
+    $$_3RD_SPDLOG/ylog.h
+
 
 #hv
 DEFINES += HV_SOURCE
 SRC_HV = src/hv
 SRC_HV_BASE = src/hv/base
 SRC_HV_UTILS = src/hv/utils
+INCLUDEPATH += $$SRC_HV
+INCLUDEPATH += $$SRC_HV_BASE
+INCLUDEPATH += $$SRC_HV_UTILS
 HEADERS += \
     $$SRC_HV/hv.h \
     $$SRC_HV/hconfig.h \
@@ -66,13 +147,13 @@ HEADERS += \
     $$SRC_HV_UTILS/iniparser.h
 
 SOURCES += \
-    src/hv/base/hversion.c \
-    src/hv/base/hbase.c \
-    src/hv/base/herr.c \
-    src/hv/base/htime.c \
-    src/hv/base/hlog.c \
-    src/hv/base/hstring.cpp \
-    src/hv/utils/iniparser.cpp
+    $$SRC_HV_BASE/hversion.c \
+    $$SRC_HV_BASE/hbase.c \
+    $$SRC_HV_BASE/herr.c \
+    $$SRC_HV_BASE/htime.c \
+    $$SRC_HV_BASE/hlog.c \
+    $$SRC_HV_BASE/hstring.cpp \
+    $$SRC_HV_UTILS/iniparser.cpp
 
 win32{
 #添加库
@@ -99,13 +180,5 @@ win32{
             DESTDIR = $$_PRO_FILE_PWD_/bin/mingw32
 #            LIBS += -L$$_PRO_FILE_PWD_/3rd/lib/mingw32
         }
-
-        # for ffmpeg staticlib
-        LIBS += -liconv \
-        -lz     \
-        -lbz2   \
-        -llzma  \
-        -lcrypto \
-        -lbcrypt
     }
 }

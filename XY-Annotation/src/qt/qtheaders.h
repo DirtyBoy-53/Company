@@ -2,13 +2,14 @@
 #define QT_HEADERS_H
 
 // using glew.h not gl.h
-#include "hgl.h"
+//#include "hgl.h"
 
 #include "hv.h"
 
 #include <QtCore>
 #include <QtGui>
 #include <QtWidgets>
+#include "3rd/spdlog/ylog.h"
 
 #if _MSC_VER >= 1600
 #pragma execution_character_set("utf-8")
