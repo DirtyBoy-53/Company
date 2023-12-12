@@ -19,7 +19,7 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
 private:
-    QListWidget* labelListWidget;
+    QListWidget* labelListWidget{ nullptr };
 
 };
 

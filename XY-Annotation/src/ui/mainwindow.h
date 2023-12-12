@@ -53,6 +53,7 @@ public slots:
     void mv_fullscreen();
 
     void on_actionOpen_File_triggered();
+    void provideLabelContextMenu(const QPoint& pos);
     void on_actionClose_triggered();
 private:
     QAction *mFileAction{nullptr};

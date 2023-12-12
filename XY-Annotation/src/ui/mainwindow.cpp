@@ -62,8 +62,6 @@ void MainWindow::initUI()
     addDockWidget(Qt::RightDockWidgetArea,m_labelDockWidget);
     addDockWidget(Qt::RightDockWidgetArea,m_fileDockWidget);
 
-
-
     initMenu();
 
     statusBar()->showMessage(tr("No Message!"));
@@ -375,8 +373,9 @@ void MainWindow::on_actionOpen_File_triggered()
     on_actionClose_triggered();
     if (m_fileManager.getMode()!=Close) return; // cancel is selected when unsaved
 
-    QString fileName = QFileDialog::getOpenFileName(this, "open a file", "/",
-                                                    "Image Files (*.jpg *.png);;JPEG Files (*.jpg);;PNG Files (*.png)");
+    //QString fileName = QFileDialog::getOpenFileName(this, "open a file", "/",
+    //                                                "Image Files (*.jpg *.png);;JPEG Files (*.jpg);;PNG Files (*.png)");
+    QString fileName("E:/Desktop/vid_01.jpg");
     if (!fileName.isNull() && !fileName.isEmpty()){
         enableFileActions();
 
@@ -394,5 +393,31 @@ void MainWindow::on_actionOpen_File_triggered()
 
         _loadJsonFile(m_fileManager.getCurrentOutputFile());
         m_fileManager.resetChangeNotSaved();
+    }
+}
+
+
+void MainWindow::provideLabelContextMenu(const QPoint& pos)
+{
+    QPoint globalPos = ui->labelListWidget->mapToGlobal(pos);
+    QModelIndex modelIdx = ui->labelListWidget->indexAt(pos);
+    if (!modelIdx.isValid()) return;
+    int row = modelIdx.row();
+    auto item = ui->labelListWidget->item(row);
+
+    QMenu submenu;
+    submenu.addAction("Change Color");
+    submenu.addAction("Delete");
+    QAction* rightClickItem = submenu.exec(globalPos);
+    if (rightClickItem) {
+        if (rightClickItem->text().contains("Delete")) {
+            removeLabelRequest(item->text());
+        }
+        else if (rightClickItem->text().contains("Change Color")) {
+            QColor color = QColorDialog::getColor(Qt::white, this, "Choose Color");
+            if (color.isValid()) {
+                labelManager.setColor(item->text(), color);
+            }
+        }
     }
 }

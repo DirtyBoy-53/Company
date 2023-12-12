@@ -12,6 +12,7 @@ Canvas2D::Canvas2D(const LabelManager *pLabelManager, const AnnotationContainer 
 {
     mousePos=QPoint(0,0);
     setMouseTracking(true);
+    setFocusPolicy(Qt::WheelFocus);
 }
 
 void Canvas2D::paintEvent(QPaintEvent *event)
