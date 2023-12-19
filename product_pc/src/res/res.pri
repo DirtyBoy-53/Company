@@ -1,0 +1,9 @@
+INCLUDEPATH += $$PWD
+DEPENDPATH += $$PWD
+
+RESOURCES += \
+    $$PWD/res.qrc
+
+DISTFILES +=
+
+
