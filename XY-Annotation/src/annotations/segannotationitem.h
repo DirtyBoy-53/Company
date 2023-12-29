@@ -1,4 +1,4 @@
-#ifndef SEGANNOTATIONITEM_H
+﻿#ifndef SEGANNOTATIONITEM_H
 #define SEGANNOTATIONITEM_H
 
 #include <QString>
@@ -9,10 +9,13 @@
 #include <QByteArray>
 #include <QVector>
 #include "annotationitem.h"
-struct SegStroke{
+struct SegStroke{//每个图形需要有自己的名字
     QString type;
     int penWidth;
-    int ptDistance{10};
+    int m_resDistance{8};
+    int m_pointSize{5};
+    int m_lineWidth{2};
+    bool m_isClosed{false};
     QVector<QPointF> points;
     QByteArray picHex;
     SegStroke(): type(),penWidth(-1),points(),picHex(){}
@@ -21,9 +24,10 @@ struct SegStroke{
     QJsonObject toJsonObject();
     void drawSelf(QPainter &p,QColor color,bool fill=true);
 
-    bool isPtsHavPoint(const QPoint& point,int& pos);
-    bool isEdgeHavPt(const QPoint& point);
-    void udpatePoint(const QPoint& point,int& pos);
+    bool isPtsHavPoint(const QPointF& point,int& pos);
+    bool isEdgeHavPt(const QPointF& point,int& pos);
+    void updatePoint(const QPointF& point,int& pos);
+    void insertPoint(const QPointF& point,int& pos);
 
 };
 

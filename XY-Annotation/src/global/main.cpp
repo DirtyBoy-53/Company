@@ -1,4 +1,4 @@
-#include "qtheaders.h"
+﻿#include "qtheaders.h"
 #include "qtstyles.h"
 #include "appdef.h"
 #include "confile.h"
@@ -40,7 +40,7 @@ static void qLogHandler(QtMsgType type, const QMessageLogContext & ctx, const QS
         file.close();
     }
 #else
-    QString strLog = QString::asprintf("%d-%s:[%s]\n [%s]",
+    QString strLog = QString::asprintf("%d-%s:[%s] [%s]",
                                        ctx.line,ctx.function,szType,
                                        msg.toLocal8Bit().data()
                                        );

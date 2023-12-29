@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <QMainWindow>
 #include <QDockWidget>
 
@@ -42,6 +42,7 @@ public:
     QString _labelRequest();
     QString getCurrentLabel() const;
     void newLabelRequest(QString newLabel);
+    void removeLabelRequest(QString label);
 protected:
     void initUI();
     void initConnect();
@@ -55,6 +56,7 @@ public slots:
     void on_actionOpen_File_triggered();
     void provideLabelContextMenu(const QPoint& pos);
     void on_actionClose_triggered();
+    void canvasUpdate();
 private:
     QAction *mFileAction{nullptr};
     QAction *mEditAction{nullptr};
@@ -66,6 +68,7 @@ private:
     QScrollArea *m_scrollArea{nullptr};
     CanvasBase  *m_curCanvas;
     Canvas2D    *m_2DCanvas;
+//    Canvas3D    *m_3DCanvas;
 
     LabelManager m_labelManager;
     AnnotationContainer m_annoContainer;

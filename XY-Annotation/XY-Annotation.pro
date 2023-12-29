@@ -32,6 +32,7 @@ INCLUDEPATH += $$SRC_GLOBAL
 SOURCES +=\
     $$SRC_GLOBAL/main.cpp \
     $$SRC_GLOBAL/common.cpp \
+    src/controllers/commands.cpp \
     src/ui/labeldialog.cpp
 
 
@@ -40,6 +41,7 @@ HEADERS += \
     $$SRC_GLOBAL/confile.h \
     $$SRC_GLOBAL/appdef.h \
     $$SRC_GLOBAL/common.h \
+    src/controllers/commands.h \
     src/ui/labeldialog.h
 
 

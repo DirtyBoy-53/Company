@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 
 #include <QScrollArea>
 
@@ -62,6 +62,9 @@ void MainWindow::initUI()
     addDockWidget(Qt::RightDockWidgetArea,m_labelDockWidget);
     addDockWidget(Qt::RightDockWidgetArea,m_fileDockWidget);
 
+
+    m_labelListWidget->setSortingEnabled(true);
+
     initMenu();
 
     statusBar()->showMessage(tr("No Message!"));
@@ -69,7 +72,81 @@ void MainWindow::initUI()
 
 void MainWindow::initConnect()
 {
+    // label的右键菜单: change color & delete
+    m_labelListWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(m_labelListWidget, &QListWidget::customContextMenuRequested,
+            this, &MainWindow::provideLabelContextMenu);
+
+    // label的visible改变
+    connect(m_labelListWidget, &QListWidget::itemChanged,
+            [this](QListWidgetItem *item){
+                if (item->checkState()==Qt::Checked){
+                    m_labelManager.setVisible(item->text(),true);
+                }else{
+                    m_labelManager.setVisible(item->text(),false);
+                }
+            });
+
+    // label changed -> canvas update
+    connect(&m_labelManager, &LabelManager::labelChanged, this, &MainWindow::canvasUpdate);
+
+    // label changed -> ui list changed
+    connect(&m_labelManager, &LabelManager::labelAdded,
+            m_labelListWidget, &CustomListWidget::addCustomItem);
+    connect(&m_labelManager, &LabelManager::labelRemoved,
+            m_labelListWidget, &CustomListWidget::removeCustomItem);
+    connect(&m_labelManager, &LabelManager::colorChanged,
+            m_labelListWidget, &CustomListWidget::changeIconColor);
+    connect(&m_labelManager, &LabelManager::visibelChanged,
+            m_labelListWidget, &CustomListWidget::changeCheckState);
+    connect(&m_labelManager, &LabelManager::allCleared,
+            m_labelListWidget, &QListWidget::clear);
+
+    // 执行undo的时候可能会造成已经被删除的label又重新出现的情况
+    connect(&m_annoContainer, &AnnotationContainer::labelGiveBack, this, &MainWindow::newLabelRequest);
+
+    // 来自canvas的关于新标注的请求
+//    connect(m_2DCanvas, &Canvas2D::newRectangleAnnotated, this, &MainWindow::getNewRect);
     connect(m_2DCanvas, &Canvas2D::newStrokesAnnotated, this, &MainWindow::getNewStrokes);
+
+    // anno changed -> canvas update
+    connect(&m_annoContainer, &AnnotationContainer::annoChanged, this, &MainWindow::canvasUpdate);
+    connect(&m_annoContainer, &AnnotationContainer::selectedChanged, this, &MainWindow::canvasUpdate);
+
+    // anno changed -> ui list change
+    connect(&m_labelManager, &LabelManager::colorChanged, [this](QString label, QColor color){
+        for (int i=0;i<m_annoListWidget->count();i++){
+            auto item = m_annoListWidget->item(i);
+            if (item->text().split(' ')[0]==label)
+                m_annoListWidget->changeIconColorByIdx(i, color);
+        }
+    });
+    connect(&m_annoContainer, &AnnotationContainer::AnnotationAdded,[this](const AnnoItemPtr &item){
+        m_annoListWidget->addCustomItemUncheckable(item->toStr(), m_labelManager.getColor(item->getLabel()));
+    });
+    connect(&m_annoContainer, &AnnotationContainer::AnnotationInserted,[this](const AnnoItemPtr &item, int idx){
+        m_annoListWidget->insertCustomItemUncheckable(item->toStr(), m_labelManager.getColor(item->getLabel()),idx);
+    });
+    connect(&m_annoContainer, &AnnotationContainer::AnnotationModified,[this](const AnnoItemPtr &item, int idx){
+        m_annoListWidget->changeTextByIdx(idx, item->toStr());
+    });
+    connect(&m_annoContainer, &AnnotationContainer::AnnotationRemoved,[this](int idx){
+        m_annoListWidget->removeCustomItemByIdx(idx);
+    });
+    connect(&m_annoContainer, &AnnotationContainer::allCleared,
+            m_annoListWidget, &QListWidget::clear);
+    connect(&m_annoContainer, &AnnotationContainer::AnnotationSwap, [this](int idx){
+        int selectedIdx = m_annoContainer.getSelectedIdx();
+
+        auto item = m_annoListWidget->takeItem(idx);
+        m_annoListWidget->insertItem(idx+1, item);
+
+        if (selectedIdx == idx)
+            m_annoListWidget->item(idx)->setSelected(true);
+        else if (selectedIdx == idx+1)
+            m_annoListWidget->item(idx+1)->setSelected(true);
+    });
+
 }
 
 void MainWindow::initMenu()
@@ -179,6 +256,20 @@ void MainWindow::mv_fullscreen()
 {
     
 }
+
+void MainWindow::canvasUpdate()
+{
+    if (m_curCanvas==m_2DCanvas){
+        m_2DCanvas->update();
+    }else {
+        //        if (canvas3d->getTaskMode() == DETECTION3D){
+        //            canvas3d->updateChildren();
+        //        }else{
+        //            canvas3d->repaintSegAnnotation();
+        //        }
+    }
+}
+
 QString MainWindow::getCurrentLabel() const
 {
     auto selectedLabels = m_labelListWidget->selectedItems();// ui->labelListWidget->selectedItems();
@@ -396,14 +487,21 @@ void MainWindow::on_actionOpen_File_triggered()
     }
 }
 
-
+void MainWindow::removeLabelRequest(QString label)
+{
+    if (m_annoContainer.hasData(label)){
+        QMessageBox::warning(this, "Warning", "This label has existing data! Please remove them first.");
+    }else{
+        m_labelManager.removeLabel(label);
+    }
+}
 void MainWindow::provideLabelContextMenu(const QPoint& pos)
 {
-    QPoint globalPos = ui->labelListWidget->mapToGlobal(pos);
-    QModelIndex modelIdx = ui->labelListWidget->indexAt(pos);
+    QPoint globalPos = m_labelListWidget->mapToGlobal(pos);
+    QModelIndex modelIdx = m_labelListWidget->indexAt(pos);
     if (!modelIdx.isValid()) return;
     int row = modelIdx.row();
-    auto item = ui->labelListWidget->item(row);
+    auto item = m_labelListWidget->item(row);
 
     QMenu submenu;
     submenu.addAction("Change Color");
@@ -416,7 +514,7 @@ void MainWindow::provideLabelContextMenu(const QPoint& pos)
         else if (rightClickItem->text().contains("Change Color")) {
             QColor color = QColorDialog::getColor(Qt::white, this, "Choose Color");
             if (color.isValid()) {
-                labelManager.setColor(item->text(), color);
+                m_labelManager.setColor(item->text(), color);
             }
         }
     }

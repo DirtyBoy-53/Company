@@ -1,4 +1,4 @@
-#include "canvas2d.h"
+﻿#include "canvas2d.h"
 #include <QPainter>
 #include <QMouseEvent>
 #include <algorithm>
@@ -22,9 +22,11 @@ void Canvas2D::paintEvent(QPaintEvent *event)
         return;
     }
     QPainter p(this);
-    // p.setRenderHint(QPainter::Antialiasing);
-    // p.setRenderHint(QPainter::HighQualityAntialiasing);
+    /**********************启用抗锯齿功能**************************/
+//     p.setRenderHint(QPainter::Antialiasing);
+//     p.setRenderHint(QPainter::HighQualityAntialiasing);
     p.setRenderHint(QPainter::SmoothPixmapTransform);
+//    p.setRenderHint(QPainter::Antialiasing);
 
     p.scale(scale, scale);
     p.translate(offsetToCenter());
@@ -89,29 +91,33 @@ void Canvas2D::paintEvent(QPaintEvent *event)
 //            p.drawText(drawedRect.topLeft()-QPoint(0,LABEL_PIXEL_SIZE/2), selectedLabel);
 //        }
     }else if (task == SEGMENTATION){
+
         if (mode == DRAW){
             QPixmap colorMap(pixmap.size());
             colorMap.fill(QColor(0,0,0,0));
             QPainter p0(&colorMap);
-            for (int i=0;i<pAnnoContainer->length();i++){
-                auto item = SegAnnotationItem::castPointer((*pAnnoContainer)[i]);
-                QString label = item->getLabel();
+//            for (int i=0;i<pAnnoContainer->length();i++){
+//                auto item = SegAnnotationItem::castPointer((*pAnnoContainer)[i]);
+//                QString label = item->getLabel();
 
-                if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].visible==false)
-                    continue;
+//                if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].visible==false)
+//                    continue;
 
-                QColor color = (*pLabelManager)[label].color;
-                for (auto stroke: item->getStrokes())
-                    stroke.drawSelf(p0,color);
-            }
+//                QColor color = (*pLabelManager)[label].color;
+//                for (auto stroke: item->getStrokes())
+//                    stroke.drawSelf(p0,color);
+//            }
+
             if (curStrokes.length()>0){
-                QColor color = Qt::white;
-                for (int i=0;i<curStrokes.length()-1;i++)
+                QColor color = Qt::black;
+                for (int i=0;i<curStrokes.length()-1;i++){
                     curStrokes[i].drawSelf(p0,color);
+                }
+
                 if (strokeDrawing)
-                    curStrokes.back().drawSelf(p0, color, false);
-                else
                     curStrokes.back().drawSelf(p0, color, true);
+                else
+                    curStrokes.back().drawSelf(p0, color, false);
             }
             p0.end();
 
@@ -134,23 +140,63 @@ void Canvas2D::paintEvent(QPaintEvent *event)
             QPixmap colorMap(pixmap.size());
             colorMap.fill(QColor(0,0,0,0));
             QPainter p0(&colorMap);
-            for (int i=0;i<pAnnoContainer->length();i++){
-                auto item = SegAnnotationItem::castPointer((*pAnnoContainer)[i]);
-                QString label = item->getLabel();
+//            for (int i=0;i<pAnnoContainer->length();i++){
+//                auto item = SegAnnotationItem::castPointer((*pAnnoContainer)[i]);
+//                QString label = item->getLabel();
 
-                if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].visible==false)
-                    continue;
+//                if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].visible==false)
+//                    continue;
 
-                QColor color = (*pLabelManager)[label].color;
-                color = i == pAnnoContainer->getSelectedIdx() ? color: color.lighter();
-                for (auto stroke: item->getStrokes())
-                    stroke.drawSelf(p0,color);
+//                QColor color = (*pLabelManager)[label].color;
+//                for (auto stroke: item->getStrokes())
+//                    stroke.drawSelf(p0,color);
+//            }
+            if (curStrokes.length()>0){
+                QColor color = Qt::white;
+                for (int i=0;i<curStrokes.length()-1;i++)
+                    curStrokes[i].drawSelf(p0,color);
+                if (strokeDrawing)
+                    curStrokes.back().drawSelf(p0, color, true);
+                else
+                    curStrokes.back().drawSelf(p0, color, false);
             }
             p0.end();
 
             p.setOpacity(0.5);
             p.drawPixmap(0,0,colorMap);
+
+            if (!strokeDrawing && (drawMode==SQUAREPEN || drawMode==CIRCLEPEN) && !outOfPixmap(mousePos)){
+                p.save();
+                if (drawMode==SQUAREPEN){
+                    p.setPen(QPen(Qt::white, curPenWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
+                }else if (drawMode==CIRCLEPEN){
+                    p.setPen(QPen(Qt::white, curPenWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+                }
+                p.drawPoint(mousePos);
+                p.restore();
+            }
+
             p.end();
+//            QPixmap colorMap(pixmap.size());
+//            colorMap.fill(QColor(0,0,0,0));
+//            QPainter p0(&colorMap);
+//            for (int i=0;i<pAnnoContainer->length();i++){
+//                auto item = SegAnnotationItem::castPointer((*pAnnoContainer)[i]);
+//                QString label = item->getLabel();
+
+//                if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].visible==false)
+//                    continue;
+
+//                QColor color = (*pLabelManager)[label].color;
+//                color = i == pAnnoContainer->getSelectedIdx() ? color: color.lighter();
+//                for (auto stroke: item->getStrokes())
+//                    stroke.drawSelf(p0,color);
+//            }
+//            p0.end();
+
+//            p.setOpacity(0.5);
+//            p.drawPixmap(0,0,colorMap);
+//            p.end();
         }
     }
 }
@@ -260,13 +306,18 @@ void Canvas2D::mousePressEvent(QMouseEvent *event)
             }
         }
         else if(mode = SELECT){
+            if(m_mouseDrag == true) return;
             m_activePoint = -1;
-            for(auto strokes : curStrokes){
+            m_insertPoint = -1;
+            for(auto &strokes : curStrokes){
                 if(strokes.isPtsHavPoint(pixPos,m_activePoint)){
                     m_mouseDrag = true;
                     m_curStroke = &strokes;
-//                    strokes.udpatePoint(pixPos,m_activePoint);
-//                    update();
+                    break;
+                }
+                if(strokes.isEdgeHavPt(pixPos,m_insertPoint)){
+                    m_mouseDrag = true;
+                    m_curStroke = &strokes;
                     break;
                 }
             }
@@ -294,23 +345,28 @@ void Canvas2D::mouseMoveEvent(QMouseEvent *event)
                 }
             }
         }else if (mode == CanvasMode::SELECT){
-            if (rectEditing){
-                switch (editedRectEdge) {
-                case TOP:
-                    editedRect.setTop(pixPos.y());
-                    break;
-                case BOTTOM:
-                    editedRect.setBottom(pixPos.y());
-                    break;
-                case LEFT:
-                    editedRect.setLeft(pixPos.x());
-                    break;
-                case RIGHT:
-                    editedRect.setRight(pixPos.x());
-                    break;
-                }
+            if(m_curStroke&& m_activePoint > -1){
+                m_curStroke->updatePoint(pixPos,m_activePoint);
                 update();
             }
+
+//            if (rectEditing){
+//                switch (editedRectEdge) {
+//                case TOP:
+//                    editedRect.setTop(pixPos.y());
+//                    break;
+//                case BOTTOM:
+//                    editedRect.setBottom(pixPos.y());
+//                    break;
+//                case LEFT:
+//                    editedRect.setLeft(pixPos.x());
+//                    break;
+//                case RIGHT:
+//                    editedRect.setRight(pixPos.x());
+//                    break;
+//                }
+//                update();
+//            }
         }
     }else if (task == SEGMENTATION){
         if (mode == DRAW){
@@ -332,9 +388,13 @@ void Canvas2D::mouseMoveEvent(QMouseEvent *event)
             }
         }
         else if(mode = SELECT){
+            if(m_insertPoint >= 0 && m_curStroke){
+                m_curStroke->insertPoint(pixPos,m_insertPoint);
+                m_activePoint =m_insertPoint;
+                m_insertPoint = -1;
+            }
             if(m_mouseDrag && m_curStroke){
-                m_mouseDrag = true;
-                m_curStroke->udpatePoint(pixPos,m_activePoint);
+                m_curStroke->updatePoint(pixPos,m_activePoint);
                 update();
             }
         }
@@ -365,6 +425,10 @@ void Canvas2D::mouseReleaseEvent(QMouseEvent *event){
                 if(m_mouseDrag){
                     m_mouseDrag = false;
                     m_curStroke = nullptr;
+                    if(m_curStroke){
+                        m_curStroke = nullptr;
+                        m_activePoint = -1;
+                    }
                 }
             }
         }
@@ -396,7 +460,8 @@ void Canvas2D::keyPressEvent(QKeyEvent *event)
                 }
                 if (curStrokes.length()>0){
                     emit newStrokesAnnotated(curStrokes);
-                    curStrokes.clear();
+                    curStrokes.back().m_isClosed = true;
+//                    curStrokes.clear();
                     update();
                 }
                 return;

@@ -1,4 +1,4 @@
-#ifndef CANVAS2D_H
+﻿#ifndef CANVAS2D_H
 #define CANVAS2D_H
 
 #include "canvasbase.h"
@@ -17,6 +17,7 @@ public:
 
     const QPixmap &getPixmap() const { return pixmap; }
 
+    void deleteShape(const QString &shapeName);
 protected:
     void paintEvent(QPaintEvent*) override;
     void mouseMoveEvent(QMouseEvent* event) override;
@@ -73,6 +74,7 @@ private:
     bool strokeDrawing;
     int m_activePoint{-1};
     bool m_mouseDrag{false};
+    int m_insertPoint{-1};
     SegStroke *m_curStroke{nullptr};
     QList<SegStroke> curStrokes;
 };
