@@ -19,6 +19,7 @@ HEADERS += \
     $$PWD/configinfo.h \
     $$PWD/configinfoelec.h \
     $$PWD/crc16_modbus.h \
+    $$PWD/dustimagefunction.h \
     $$PWD/eleclockserialmanager.h \
     $$PWD/electronicscale.h \
     $$PWD/fpchandler.h \
@@ -53,6 +54,7 @@ SOURCES += \
     $$PWD/configinfo.cpp \
     $$PWD/configinfoelec.cpp \
     $$PWD/crc16_modbus.cpp \
+    $$PWD/dustimagefunction.cpp \
     $$PWD/eleclockserialmanager.cpp \
     $$PWD/electronicscale.cpp \
     $$PWD/fpchandler.cpp \

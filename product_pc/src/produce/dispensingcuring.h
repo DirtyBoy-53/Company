@@ -1,14 +1,17 @@
-#ifndef DISPENSINGCURING_H
+﻿#ifndef DISPENSINGCURING_H
 #define DISPENSINGCURING_H
 
 #include <QObject>
 
 #include <QString>
 #include <QTcpSocket>
+#include <QTime>
 #include <baseproduce.h>
 
 #include <XyScanDialog.h>
 #include <mescom.h>
+#include "comguidecfg.h"
+#include "CSerialDirect.h"
 
 enum signal_type_e{
     door_is_close=0x11,
@@ -16,10 +19,17 @@ enum signal_type_e{
     curing_is_over=0x13,
     door_is_open=0x14,
 };
+struct lens_result_s{
+    QString sn{""};//SN
+    QString scanRet{""};//镜头扫码结果
+    QString disRet{""};//点胶结果
+};
 
+//快门点胶网络通信
 class ShutterSocket{
 public:
     ShutterSocket()=default;
+    ~ShutterSocket();
     bool init(const QString ip="192.168.2.250",const int port=501);
     bool startDispensing();
     bool startCuring();
@@ -31,32 +41,53 @@ private:
     bool isOpen{false};
 };
 
+//镜头点胶通信
+class LensDisSerial : public CSerialDirect
+{
+public:
+    LensDisSerial()=default;
+    bool isStart();
+    bool sendReply();
+    bool getResult(QList<lens_result_s>&);
+};
 
+//镜头固化通信
+class LensCurSerial : public CSerialDirect
+{
+public:
+    LensCurSerial()=default;
+    bool isStart();
+    bool sendReply();
+    bool getResult(QString& time);
+};
 
 class DispensingCuring : public BaseProduce
 {
     Q_OBJECT
 public:
     DispensingCuring();
-    //1.设备初始化
-    //2.获取SN
-    //3.入站
-    void init();
+    ~DispensingCuring();
 
-    //1.等待关门信号
-    //2.收到关门信号，显示点胶中，并发送点胶信号
-    //3.收到点胶完成信号，吸纳黑丝固化中，并发送固化信号
-    //4.收到固化完成信号，显示“等待产品自动回到下料位置”
-    //5.收到开门信号，显示“请取出产品确认点胶是否OK”
-    //6.根据按钮选择器提示对应信息
-    //  PASS：提示“请更换产品，进行下一轮测试”
-    //    NG：提示“请把不良品放入不良盒，进行下一轮测试”
-    //7.等待按钮选择器按下（绿色按钮）
-    void doWork();
+    void init_CL1003();
+    void doWork_CL1003();
+    void finish_CL1003();
+    void updateTable_CL1003(QString name, qint64 workTime, bool result);
+    void DisplayResult_CL1003();
+    void DisplayPicture_CL1003();
 
-    //1.出站
-    //2.准备下一轮作业
-    void finish();
+    void init_CL1005();
+    void doWork_CL1005();
+    void finish_CL1005();
+    void updateTable_CL1005(QString sn,QString zpm,//SN,载盘码
+                            QString start_time,QString end_time,//固化开始时间，固化结束时间
+                            QString consume_time,QString norm_time,//实际固化时间，标准固化时间
+                            QString result);//点胶和固化结果
+    void DisplayResult_CL1005();
+
+
+
+    void enterMes(QString sn);
+    void outMes(bool result=true);
 
     void addLog(QString log, bool rst = true)
     {
@@ -68,13 +99,32 @@ public:
             showFail(log);
         }
     }
+
+
+
+
 private:
     MesCom mMesObj;
-    ShutterSocket mShutterSocket;
 
     bool mBoolMesIgnore{false};
 
     QString m_DisCurIP{""};
+    QString m_imgPath{""};
+    QList<GuideCfgInfo> m_tipsList;
+
+    QTime m_time_CL003;
+
+
+    QList<lens_result_s> m_DisResult_CL1005;
+    LensDisSerial m_lensDisSerial;
+    LensCurSerial m_lensCurSerial;
+    QString m_DisCom{""};
+    QString m_CurCom{""};
+    QString m_StartTime{""};
+    QString m_EndTime{""};
+    QString m_ConsumeTime{""};
+    QString m_NormTime{"15"};
+
 
 public slots:
     void slotConnectBtnClicked();

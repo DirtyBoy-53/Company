@@ -93,8 +93,8 @@ void LeakageDE1006::step0()
         }
 
         if (!getSnAndExchangeDUT()) {
-            m_errorCode = -2;
-            m_errMsg = "获取SN，执行产品交换失败";
+//            m_errorCode = -2;
+//            m_errMsg = "获取SN，执行产品交换失败";
             addLog(m_errMsg, false);
             return;
         }
@@ -478,7 +478,7 @@ void LeakageDE1006::step3()
     emit tableSaveCsv(csvName);
     emit logSaveTxt(logName);
 
-    msgBox("请更换产品，并按Enter进入下一轮测试", 4);
+//    msgBox("请更换产品，并按Enter进入下一轮测试", 4);
 
     stopProcess();
 }
@@ -529,7 +529,7 @@ bool LeakageDE1006::CycleInit()
 
 bool LeakageDE1006::getSnAndExchangeDUT()
 {
-
+    bool ret{false};
     // 此处会对上一次的测试结果做判断，如果fail就需要拉出红箱
     if (false == m_lastTestResult) {
         showProcess("请拉出红箱，将测试FAIL产品放入红箱内");
@@ -541,19 +541,24 @@ bool LeakageDE1006::getSnAndExchangeDUT()
         hideMsgBox();
     }
 
-
     addLog("复位PLC设备，并解锁转盘");
+
     // 防止前面步骤异常，这里将上盖，底盘，转盘全部复位
     m_leakagePlc.plcCappingRise();
     m_leakagePlc.plcChassisFall();
     FALSE_RETURN(m_leakagePlc.plcTurntableUnlock());
 
-    addLog("侦测转盘是否做了旋转操作");
+
+//    addLog("侦测转盘是否做了旋转操作");
+
+    showMsgBox("侦测转盘是否做了旋转操作", 4);
     // 侦测转盘是否已经旋转了，只有旋转了才能再次上锁，否则会造成产品混乱
     while (!m_leakagePlc.plcTurnTableOnPos(false)) {
         QCoreApplication::processEvents();
         QThread::msleep(50);
     }
+    result_clean();
+    hideMsgBox();
 
     addLog("转盘上锁操作，旋转转盘直到锁住");
     // 侦测转盘不在位了，里面上锁，进行下一次逻辑测试
@@ -566,12 +571,18 @@ bool LeakageDE1006::getSnAndExchangeDUT()
     }
 
     addLog("产品在位检测与合规检测");
-    FALSE_RETURN(m_leakagePlc.plcDutOnPos());
+    ret = m_leakagePlc.plcDutOnPos();
+    if(!ret){
+        m_errorCode = -2;
+        m_errMsg = "产品在位检测失败";
+        return false;
+    }
 
     addLog("请扫码下一台测试产品SN");
 //    m_sn = msgBox("请扫码下一台测试产品SN");
     if(!getAutoBarcode(m_sn)){
-        addLog("扫码失败，未获取到SN");
+        m_errorCode = -2;
+        m_errMsg = "获取SN失败";
         return false;
     }
     addLog("请旋转转盘，取出箱内已测试完成产品");
@@ -641,7 +652,7 @@ bool LeakageDE1006::leakageTest()
                 chartAddData(0, 0, 0, 0);
             }
 
-            result.imLargeLeakage = (largeLeakage - result.imPressure) * 1000;
+            result.imLargeLeakage = fabs((largeLeakage - result.imPressure) * 1000);//修改：yyg 2023-12-19 增加绝对值，避免后续逻辑混乱
             mPressureValue = result.imLargeLeakage;
 
             QString log;
@@ -1084,13 +1095,13 @@ void LeakageDE1006::slotConnectBtnClicked()
     emit chartAddLine(QString("微漏测试上限值(%1Pa)").arg(mFailLimitLeakage), 255, 0, 0, 1);
 
     emit chartSetXRange(0, 5, 0);
-    emit chartSetYRange(-50, mFailLimitPressure + 5, 0);
+    emit chartSetYRange(-10, mFailLimitPressure + 5, 0);
     for (int foo = 0; foo < 50; foo++) {
         emit chartAddData(foo, mFailLimitPressure, 0, 1);
     }
 
     emit chartSetXRange(0, 15, 1);
-    emit chartSetYRange(-50, mFailLimitLeakage + 5, 1);
+    emit chartSetYRange(-10, mFailLimitLeakage + 5, 1);
     for (int foo = 0; foo < 50; foo++) {
         emit chartAddData(foo, mFailLimitLeakage, 1, 1);
     }
@@ -1159,15 +1170,15 @@ void LeakageDE1006::slotConnectBtnClicked()
 
     BaseProduce::slotConnectBtnClicked();
 }
-
-void LeakageDE1006::slotStartWorkBtnClicked()
-{
+void LeakageDE1006::result_clean(){
     emit chartClearData(0, 0);
     emit chartClearData(1, 0);
     emit tableClearData();
     emit logClearData();
     emit resultShowDefault();
-
+}
+void LeakageDE1006::slotStartWorkBtnClicked()
+{
     if (!m_isNewDevice) {
         emit resultShowProcess("请扫描 SN到显示的框内");
         mScanDlg->showModal("请扫码 SN ");
@@ -1235,10 +1246,13 @@ bool LeakageDE1006::getAutoBarcode(QString &sn)
     timer.start();
     while (timer.elapsed() < 10000) {
         QCoreApplication::processEvents();
+        QThread::msleep(200);
         m_handleScanner->write(cmd, sizeof(cmd));
-        if (m_handleScanner->get(nullptr, 0, nullptr, 2, pBarcode, nLen, 3000)) {
+        QThread::msleep(200);
+        if (m_handleScanner->get(nullptr, 0, nullptr, 15, pBarcode, nLen, 3000)) {
             sn = QString::fromLatin1(pBarcode, nLen);
-            qDebug() << "size: " << nLen << " code: " << pBarcode;
+            sn = sn.split('\n').at(0);
+            qDebug() << "size: " << nLen << " code: " << sn;
             return true;
         }
 

@@ -205,7 +205,7 @@ private:
             char retRst[32] = {0x00};
             char* pRst = (char*)retRst;
             int requreLen = 2 + 1 + 4 + 2; // 2字节头部 + 1字节长度 + 4字节数据 + 2字节CRC
-            if (!get((char*)cmd, 2, nullptr, requreLen, pRst, len)) {
+            if (!get((char*)cmd, 2, nullptr, requreLen, pRst, len,500)) {//修改：yyg 2023-12-19 如果不设置超时，则该方法会出现多次5s后才能结束
                 qDebug() << ">> 状态获取返回数据失败";
                 continue;
             }
@@ -253,7 +253,7 @@ private:
             char retRst[32] = {0x00};
             char* pRst = (char*)retRst;
             int requreLen = 2 + 1 + 4 + 2; // 2字节头部 + 1字节长度 + 4字节数据 + 2字节CRC
-            if (!get((char*)cmd, 2, nullptr, requreLen, pRst, len)) {
+            if (!get((char*)cmd, 2, nullptr, requreLen, pRst, len,500)) {   //修改：yyg 2023-12-19 如果不设置超时，则该方法会出现多次5s后才能结束
                 qDebug() << ">> 状态获取返回数据失败";
                 continue;
             }

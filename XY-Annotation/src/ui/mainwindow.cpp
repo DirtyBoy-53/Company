@@ -147,6 +147,15 @@ void MainWindow::initConnect()
             m_annoListWidget->item(idx+1)->setSelected(true);
     });
 
+    // fileListSetup -> update ui list
+    connect(&m_fileManager, &FileManager::fileListSetup, [this](){
+        m_fileListWidget->clear();
+        if (m_fileManager.getMode() == Close) return;
+        for (const QString &image: m_fileManager.allImageFiles()){
+            m_fileListWidget->addItem(FileManager::getNameWithExtension(image));
+        }
+        m_fileListWidget->item(m_fileManager.getCurIdx())->setSelected(true);
+    });
 }
 
 void MainWindow::initMenu()
@@ -159,9 +168,8 @@ void MainWindow::initMenu()
     fileToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     addToolBar(toolBar_location,fileToolbar);//set toolbar location
 
-    mToolbars.push_back(fileToolbar);
-
-    QAction* actOpenFile = new QAction(QIcon(":open_file"),tr("Open File  "));
+    //File->OpenFile
+    QAction* actOpenFile = new QAction(QIcon(":open_file"),tr("打开文件  "));
     actOpenFile->setShortcut(QKeySequence("Ctrl+O"));
 
     connect(actOpenFile, &QAction::triggered, this, [=](){
@@ -170,6 +178,15 @@ void MainWindow::initMenu()
     fileMenu->addAction(actOpenFile);
     fileToolbar->addAction(actOpenFile);
 
+    //File->SaveFile
+    QAction* actSaveFile = new QAction(QIcon(":save_file"),tr("保存文件  "));
+    actSaveFile->setShortcut(QKeySequence("Ctrl+S"));
+    connect(actSaveFile,&QAction::triggered,this,[=](){
+        on_actionSave_File_triggered();
+    });
+    fileMenu->addAction(actSaveFile);
+    fileToolbar->addAction(actSaveFile);
+
 
     //Edit
     QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
@@ -177,9 +194,8 @@ void MainWindow::initMenu()
     editToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     addToolBar(toolBar_location,editToolbar);//set toolbar location
 
-    mToolbars.push_back(editToolbar);
 
-    QAction* actCreatPolygon = new QAction(QIcon(":creat_polygon"),tr("Creat polygon  "));
+    QAction* actCreatPolygon = new QAction(QIcon(":creat_polygon"),tr("创建多边形  "));
     actCreatPolygon->setShortcut(QKeySequence("Ctrl+N"));
 
     connect(actCreatPolygon, &QAction::triggered, this, [=](){
@@ -188,7 +204,7 @@ void MainWindow::initMenu()
     editMenu->addAction(actCreatPolygon);
     editToolbar->addAction(actCreatPolygon);
 
-    QAction* actOpt = new QAction(QIcon(":check"),tr("Draw  "));
+    QAction* actOpt = new QAction(QIcon(":check"),tr("绘制  "));
 
     actOpt->setCheckable(true);
     connect(actOpt, &QAction::triggered, this, [=](){
@@ -199,7 +215,7 @@ void MainWindow::initMenu()
         actOpt->setIcon(flag == true ? QIcon(":check") : QIcon(":uncheck"));
         if(!flag){
             m_curCanvas->changeCanvasMode(SELECT);
-            actOpt->setText("Select  ");
+            actOpt->setText("编辑  ");
         }else{
             m_curCanvas->changeCanvasMode(DRAW);
             actOpt->setText(str);
@@ -213,8 +229,6 @@ void MainWindow::initMenu()
     QToolBar *viewToolbar = addToolBar(tr("&Edit"));
     viewToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     addToolBar(toolBar_location,viewToolbar);//set toolbar location
-
-    mToolbars.push_back(viewToolbar);
 
     QAction* actMark = new QAction(QIcon(":check"),tr("Mark  "));
 
@@ -425,6 +439,33 @@ void MainWindow::on_actionClose_triggered()
     unableFileActions();
 }
 
+
+void MainWindow::on_actionSave_File_triggered()
+{
+    QJsonObject json;
+//    json.insert("labels", m_labelManager.toJsonArray());//添加
+    json.insert("version",APP_VERSION);
+
+    json.insert("shapes", m_annoContainer.toJsonArray());
+
+
+
+    QString filename = m_fileManager.getCurrentImageFile();
+
+    QPixmap pixmap = m_2DCanvas->getPixmap();
+    QByteArray pixArray=QByteArray();
+    QBuffer buffer(&pixArray);
+    buffer.open(QIODevice::WriteOnly);
+    pixmap.save(&buffer,FileManager::getSuffix(filename).toLocal8Bit());
+
+    json.insert("imagePath",FileManager::getNameWithExtension(filename));
+    json.insert("imageData",pixArray.toBase64().toStdString().c_str());
+    json.insert("imageHeight",pixmap.height());
+    json.insert("imageWidth",pixmap.width());
+    FileManager::saveJson(json, m_fileManager.getCurrentOutputFile());
+
+}
+
 qreal MainWindow::scaleFitWindow() const
 {
     int w1 = m_scrollArea->width() - 2; // -2 So that no scrollbars are generated.
@@ -464,9 +505,9 @@ void MainWindow::on_actionOpen_File_triggered()
     on_actionClose_triggered();
     if (m_fileManager.getMode()!=Close) return; // cancel is selected when unsaved
 
-    //QString fileName = QFileDialog::getOpenFileName(this, "open a file", "/",
-    //                                                "Image Files (*.jpg *.png);;JPEG Files (*.jpg);;PNG Files (*.png)");
-    QString fileName("E:/Desktop/vid_01.jpg");
+    QString fileName = QFileDialog::getOpenFileName(this, "open a file", "/",
+                                                    "Image Files (*.jpg *.png);;JPEG Files (*.jpg);;PNG Files (*.png)");
+//    QString fileName("E:/Desktop/vid_01.jpg");
     if (!fileName.isNull() && !fileName.isEmpty()){
         enableFileActions();
 
@@ -482,7 +523,7 @@ void MainWindow::on_actionOpen_File_triggered()
             m_fileManager.setSingleImage(fileName, SUFFIX_SEG_LABEL_ANNO);
         }
 
-        _loadJsonFile(m_fileManager.getCurrentOutputFile());
+//        _loadJsonFile(m_fileManager.getCurrentOutputFile());
         m_fileManager.resetChangeNotSaved();
     }
 }

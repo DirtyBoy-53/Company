@@ -1,4 +1,4 @@
-#ifndef  _INTERFACE_DATALINK_TRANSPORT_H_
+ï»¿#ifndef  _INTERFACE_DATALINK_TRANSPORT_H_
 #define _INTERFACE_DATALINK_TRANSPORT_H_
 #include "common_struct.h"
 
@@ -8,7 +8,7 @@ const char IID_Serial[] = "Interface.DataLink.Serial";
 const char IID_Serial_Win32[] = "Interface.DataLink.Serial.Win32";
 const char IID_Socket[] = "Interface.DataLink.Socket";
 const char IID_WebSocket[] = "Interface.DataLink.WebSocket";
-#define DATALINKDLLNAME "DataLinkTransport.dll"
+#define DATALINKDLLNAME "DataLinkTransportV3.dll"
 
 interface IDataLinkTransport
 {
@@ -35,7 +35,7 @@ interface IDataLinkTransport
     virtual void linkGetLastError(char* & pError) = 0;
 };
 
-// ¼ÓÔØ×é¼þ¾ÙÀý
+// åŠ è½½ç»„ä»¶ä¸¾ä¾‹
 /*
 #include <QLibrary>
 IDataLinkTransport* m_linkTransport = nullptr;

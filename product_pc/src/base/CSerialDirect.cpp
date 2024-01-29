@@ -79,7 +79,7 @@ QString CSerialDirect::currentDirectoryPath()
     return QCoreApplication::applicationDirPath();
 }
 
-bool CSerialDirect::open(QString name, int bandrate, bool isHex)
+bool CSerialDirect::open(QString name, int bandrate, bool isHex, int nDataBits, int nStopBits, int nFlowCtrl, int nParity)
 {
     if (!m_handle) {
         m_errString = "nullptr handle! initialize the HDLC handle first";
@@ -89,7 +89,7 @@ bool CSerialDirect::open(QString name, int bandrate, bool isHex)
         m_errString = "参数错误";
         return false;
     }
-    if (!m_handle->linkSerialInit(name.toStdString().c_str(), bandrate)) {
+    if (!m_handle->linkSerialInit(name.toStdString().c_str(), bandrate,nDataBits,nStopBits,nFlowCtrl,nParity)) {
         char szTmp[1024] ={0};
         char* pszTmp = szTmp;
         // m_handle->linkGetLastError(pszTmp);

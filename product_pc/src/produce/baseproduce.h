@@ -204,6 +204,8 @@ public:
     QString logPath();
     QString dutIP();
 
+    QString stationName();
+
     void setCurrentBarcode(QString sn);// 设置当前过站条码
 public:
     QString m_StationName;

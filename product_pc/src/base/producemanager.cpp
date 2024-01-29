@@ -17,7 +17,8 @@
 #include "autofpccheck.h"
 #include <armcb1002.h>
 #include "dispensingcuring.h"
-
+#include "dustimagedetection.h"
+#include "autoprocesseleclockCB.h"
 static ProduceInfo g_produces[100] = {
     {"电路板调试烧录","DE1000", 4},
     {"电路板调试烧录","DE1100", 4},
@@ -39,6 +40,8 @@ static ProduceInfo g_produces[100] = {
     {"主板MCU烧录调试","CB1000", 4},
     {"主板ARM程序烧录","CB1001", 4},
     {"控制盒组装","CB1002", 7},
+    {"控制盒主板安装","CB1102", 8},
+    {"控制盒下盖安装","CB1202", 8},
     {"老化测试","CB1003", 7},
     {"EOL检测","CB1004", 3},
     {"成品包装","CB1005", 9},
@@ -54,6 +57,11 @@ static ProduceInfo g_produces[100] = {
     {"产品包装","CL1007", 9},
     {"GP12","GP1000", 7},
     {"产品包装","IsPackage", 9},
+    {"前后壳点胶","DE2001", 7},
+    {"前壳窗片点胶","DE2002", 7},
+    {"快门组件锁付","AA1007",8},
+    {"ASIC锁付","AA1008",8},
+    {"快门焊接","AA1009",8},
     {"",""},
 };
 
@@ -102,6 +110,9 @@ BaseProduce *ProduceManager::getCurProduce()
         pPro = new BurningArmCE1001;
     }else if(sCode == "CB1002") {
         pPro = new ArmCb1002();
+    }else if(sCode == "CB1102" || sCode == "CB1202") {
+        // 2024年1月11日 向华 新增控制盒主板安装和下盖安装
+        pPro = new AutoProcessElecLockCB();
     }else if(sCode == "CB1004") {
         pPro = new AutoProcessCheckArm;
     } else if(sCode == "DE1013") {
@@ -118,10 +129,10 @@ BaseProduce *ProduceManager::getCurProduce()
         pPro = new AutoProcessElecLock;
     } else if(sCode == "DE1002") {
         pPro = new AutoFpcCheck;
-    } else if(sCode == "DE1002" || sCode=="GP1000" ||
+    } else if(sCode=="GP1000" ||
                sCode=="CB1003" || sCode=="DE1012" ) {
         pPro = new AutoProcessComGuide(0);
-    } else if(sCode == "CL1003" || sCode == "CL1005"){
+    } else if(sCode == "CL1003" || sCode == "CL1005" || sCode == "DE2001" || sCode == "DE2002"){
         pPro = new DispensingCuring();
     } else if(sCode == "DE1003") {
         pPro = new AutoProcessElecLock;
@@ -137,7 +148,8 @@ BaseProduce *ProduceManager::getCurProduce()
         pPro = new AutoProcessElecLock;
     } else if(sCode == "CL1000") {
         pPro = new HttpPassStation;
-    } else if(sCode == "CL1001") {
+    } else if(sCode == "CL1001"  || sCode == "AA1007" ||
+               sCode == "AA1008" || sCode == "AA1009" ) {
         pPro = new AutoProcessElecLock;
     } else if(sCode == "CL1101") {
         pPro = new AutoProcessElecLock;

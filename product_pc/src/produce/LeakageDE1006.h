@@ -129,12 +129,14 @@ private:
 
     // true
     bool testCompleteJugde(unsigned char step, unsigned char status);
+    void result_clean();
     // ComState interface
 public:
 //    void getSn() override;
 
     // BaseProduce interface
     bool getAutoBarcode(QString &sn);
+
 public slots:
     void slotConnectBtnClicked();
     void slotStartWorkBtnClicked();

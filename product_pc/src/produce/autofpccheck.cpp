@@ -56,6 +56,12 @@ void AutoFpcCheck::slotConnectBtnClicked()
 
     m_StationName = ConfigInfo::getInstance()->cacheInfo().sCodeId;
     qDebug() << m_StationName;
+
+//    if (projectName() != "XD01A") {
+//        addLog("项目编号错误，当前工位只有XD01A项目支持", -1);
+//        return;
+//    }
+
     ConfigInfo::getInstance()->getValueBoolean(m_StationName, "FPC检测开关", m_fpcUsing);
 
     addLog("当前需要使用FPC? is " + m_fpcUsing ? "Using" : "Not using");
@@ -90,6 +96,7 @@ void AutoFpcCheck::initStateMachine()
     add(30, "get sn", std::bind(&AutoFpcCheck::getSn, this));
     add(40, "enter mes", std::bind(&AutoFpcCheck::enterMes, this));
     add(50, "getLenSn", std::bind(&AutoFpcCheck::getLenSn, this));
+    add(51, "getSignalSn", std::bind(&AutoFpcCheck::getSignalSn, this));
     add(60, "tips work", std::bind(&AutoFpcCheck::tipsWork, this));
 
 //    add(70, "check product", std::bind(&AutoFpcCheck::checkProduct, this));
@@ -213,6 +220,29 @@ void AutoFpcCheck::getLenSn()
     addLog("获取镜头编码 " + lenSn);
 
     item.sValue = lenSn;
+    item.sResult = MESPASS;
+    MesCom::instance()->addItemResultEx(item);
+}
+
+void AutoFpcCheck::getSignalSn()
+{
+    if(!isWorking()) {
+        return;
+    }
+    addLog("扫信号板SN编码");
+    QString signalSn = msgBox("扫信号板SN编码");
+    MesCheckItem item;
+    item.sItem = "SignalPCBA_SN";
+    if(signalSn.size()< 15) {
+        logFail("镜头组件编码失败");
+        item.sResult = MESFAILED;
+        m_errorCode = -2;
+    }else {
+        signalSn = signalSn.left(15);
+    }
+    addLog("获取信号板编码 " + signalSn);
+
+    item.sValue = signalSn;
     item.sResult = MESPASS;
     MesCom::instance()->addItemResultEx(item);
 }

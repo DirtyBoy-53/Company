@@ -134,14 +134,18 @@ bool McuSerialManager::cmpCRCCmd(unsigned char *cmd, const unsigned int len)
 bool McuSerialManager::checkRespAck()
 {
     QByteArray resp = m_serial->readSerialHold(1000, 6);
+//    QByteArray resp = m_serial->readSerial();
+
     if(resp.size() < 6) {
-        return false;
+        qDebug() << "返回长度不足6,实际返回:" << resp.size();
+        return false;        
     }
 
     if((uchar)resp.at(0) == 0x55 && (uchar)resp.at(1) == 0xaa && (uchar)resp.at(2) == 0x01 &&
             (uchar)resp.at(3) == 0x00 && (uchar)resp.at(4) == 0x01 && (uchar)resp.at(5) == 0xF0) {
         return true;
     } else {
+        qDebug() << "返回数据不正确,实际返回:" << resp;
         return false;
     }
 }
@@ -175,7 +179,7 @@ bool McuSerialManager::getSysWorkInfo(SysWorkInfo &info)
 
 bool McuSerialManager::getMcuWorkInfo(McuWorkInfo& info)
 {
-    setSysMode(MODE_USB_ADC);
+//    setSysMode(MODE_USB_ADC);
     unsigned char cmd[11] = {0x55, 0xAA, 0x06, 0x01, 0x80, 0x00, 0x00, 0x00, 0x00, 0xF0, 0xF0};
     getCRCCmd(cmd, 11);
 //    unsigned char* ack = (unsigned char*)m_serial->sendWaitForResp(cmd, 11, 6).data();
@@ -503,7 +507,7 @@ bool McuSerialManager::controlArmPowerStepUp(const int voltage)
 
 bool McuSerialManager::controlSensorPower(const int voltage, bool checkRst, bool step)
 {
-    setSysMode(MODE_USB_ADC);
+//    setSysMode(MODE_USB_ADC);
     unsigned char cmd[11] = {0x55, 0xAA, 0x06, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0xF0, 0xF0};
     if (!step) {
         cmd[4] = 0x02;

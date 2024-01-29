@@ -16,7 +16,7 @@ public:
     QString errorString();
     QString currentDirectoryPath();
 
-    bool open(QString name, int bandrate = 9600, bool isHex = false);
+    bool open(QString name, int bandrate = 9600, bool isHex = false, int nDataBits = 8, int nStopBits = 1, int nFlowCtrl = 0, int nParity = 0);
     void close();
 
     bool write(unsigned char cmd[], int len);

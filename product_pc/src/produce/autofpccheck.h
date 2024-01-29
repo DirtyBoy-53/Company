@@ -24,6 +24,7 @@ private:
     void init();
     void getSn();
     void getLenSn();
+    void getSignalSn();
     void tipsWork();
     void checkProduct();
     void checkShutter();

@@ -114,17 +114,23 @@ QByteArray CSerialPort::readSerialHold(const int timeout, int needLen)
 
     QByteArray cache;
     if(!m_serialPort->isOpen()) {
+        qDebug()<<"串口未打开";
         return cache;
     }
     int iCount = 0;
     while (timer.elapsed() < timeout) {
-        QCoreApplication::processEvents();
+//        QCoreApplication::processEvents();
+        m_serialPort->waitForReadyRead(timeout);
         cache.append(m_serialPort->readAll());
         if (needLen != -1) {
             if (cache.size() >= needLen) {
+                qDebug()<<"收到数据:"<<cache;
                 break;
             }
         }
+    }
+    if(cache.size() <= 0){
+        qDebug()<<"数据异常:"<<cache;
     }
     return cache;
 }

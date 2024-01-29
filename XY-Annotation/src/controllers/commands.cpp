@@ -7,7 +7,7 @@ AddShapeCommand::AddShapeCommand(Canvas2D *doc, const SegStroke &shape, QUndoCom
 
 void AddShapeCommand::undo()
 {
-    m_doc
+//    m_doc
 }
 
 void AddShapeCommand::redo()

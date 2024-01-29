@@ -9,40 +9,8 @@
 #include "selectlockserial.h"
 #include "screwselectserial.h"
 #include "civ3socket.h"
-
-struct AutoWorkInfo {
-    int workIndex = 0;
-    int workState = 0;
-    int result;
-    int errorCode;
-    float circle;
-    float maxMnm;
-    int workTime;
-    int reworkTimes = 1;
-    int direction;
-};
-
-struct AutoPosState {
-    int x;
-    int y;
-    bool isCrc;
-    bool enable = false;
-    int offset;
-    QString imgPath;
-    QString name;
-};
-
-struct AutoWorkResult {
-    QString name;
-    int index;
-    QString workPos;
-    float workMnm;
-    float workCircle;
-    int workTime;
-    int reworkTimes;
-    int errorCode;
-    int result;
-};
+#include "CSerialDirect.h"
+#include "eleclock_param.h"
 
 class AutoProcessElecLock : public BaseProduce
 {
@@ -52,6 +20,8 @@ public:
     bool initConnect();
     void initScrewCfg(const int index);
     void getSn();
+
+    void getSourceSn();
 
     void checkNext();
     void checkWorkMode();
@@ -66,6 +36,8 @@ public:
     void moveToOriginal();
     void moveToCCD();
     void iv3Test();
+    void print();
+    void compare();
 
 public slots:
     void slotConnectBtnClicked();
@@ -96,6 +68,15 @@ private:
     void getShutterCode();
     void initStateMachine();
     void updateMesPackage(AutoWorkResult info, bool result);
+
+    // 新增电子锁控制
+    // @ 函数名称：
+    // @ 功能说明：控制电子锁开关，执行一次开和一次关
+    // @ 返回说明：bool, true is ok, false is ng
+    bool resetElecLock();
+    bool getPrintFile(QString& filename);
+
+private:
 
     int m_productIndex = 0;
 
@@ -132,6 +113,8 @@ private:
     bool m_iv3Support = false;
     QString m_iv3ProjectCode = "";
     QString m_iv3Address = "192.168.10.16";
+
+    CSerialDirect m_serialElecLock;
 };
 
 

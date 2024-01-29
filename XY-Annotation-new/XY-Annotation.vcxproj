@@ -1,0 +1,703 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{48DF388C-F0FD-394F-8960-FC618B7F9BFE}</ProjectGuid>
+    <RootNamespace>XY-Annotation</RootNamespace>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.22621.0</WindowsTargetPlatformMinVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <PlatformToolset>v140</PlatformToolset>
+    <OutputDirectory>bin\msvc2015_x64\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>build\obj\</IntermediateDirectory>
+    <PrimaryOutput>XY-Annotation</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <PlatformToolset>v140</PlatformToolset>
+    <OutputDirectory>bin\msvc2015_x64\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>build\obj\</IntermediateDirectory>
+    <PrimaryOutput>XY-Annotation</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(QtMsBuild)\qt_defaults.props" Condition="Exists('$(QtMsBuild)\qt_defaults.props')" />
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <QtInstall>msvc2015_64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <QtInstall>msvc2015_64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') OR !Exists('$(QtMsBuild)\Qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">bin\msvc2015_x64\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">build\obj\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">XY-Annotation</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">bin\msvc2015_x64\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">build\obj\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">XY-Annotation</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.;src;src\global;src/utils;src\qt;src\ui;src\annotations;src\canvas;src\controllers;3rd;3rd\spdlog;src\hv;src\hv\base;src\hv\utils;build\moc;/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>build\obj\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ObjectFileName>build\obj\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DEPRECATED_WARNINGS;HV_SOURCE;NDEBUG;QT_NO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>
+      </ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\openssl\lib;C:\Utils\my_sql\mysql-5.7.25-winx64\lib;C:\Utils\postgresql\pgsql\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)\XY-Annotation.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DEPRECATED_WARNINGS;HV_SOURCE;NDEBUG;QT_NO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <QtMoc>
+      <CompilerFlavor>msvc</CompilerFlavor>
+      <Include>./build/moc/moc_predefs.h</Include>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <QtMocDir>build\moc</QtMocDir>
+      <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
+    </QtMoc>
+    <QtRcc>
+      <Compression>default</Compression>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <QtRccDir>build\rcc</QtRccDir>
+      <QtRccFileName>qrc_%(Filename).cpp</QtRccFileName>
+    </QtRcc>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.;src;src\global;src/utils;src\qt;src\ui;src\annotations;src\canvas;src\controllers;3rd;3rd\spdlog;src\hv;src\hv\base;src\hv\utils;build\moc;/include;$(QTDIR)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>build\obj\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ObjectFileName>build\obj\</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DEPRECATED_WARNINGS;HV_SOURCE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\openssl\lib;C:\Utils\my_sql\mysql-5.7.25-winx64\lib;C:\Utils\postgresql\pgsql\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\XY-Annotation.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Windows</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DEPRECATED_WARNINGS;HV_SOURCE;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <QtRcc>
+      <Compression>default</Compression>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <QtRccDir>build\rcc</QtRccDir>
+      <QtRccFileName>qrc_%(Filename).cpp</QtRccFileName>
+    </QtRcc>
+    <QtMoc>
+      <CompilerFlavor>msvc</CompilerFlavor>
+      <Include>./build/moc/moc_predefs.h</Include>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <DynamicSource>output</DynamicSource>
+      <QtMocDir>build\moc</QtMocDir>
+      <QtMocFileName>moc_%(Filename).cpp</QtMocFileName>
+    </QtMoc>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\controllers\annotationcontainer.cpp" />
+    <ClCompile Include="src\annotations\annotationitem.cpp" />
+    <ClCompile Include="src\canvas\canvas2d.cpp" />
+    <ClCompile Include="src\canvas\canvasbase.cpp" />
+    <ClCompile Include="src\global\common.cpp" />
+    <ClCompile Include="src\ui\customlistwidget.cpp" />
+    <ClCompile Include="src\controllers\filemanager.cpp" />
+    <ClCompile Include="src\hv\base\hbase.c" />
+    <ClCompile Include="src\hv\base\herr.c" />
+    <ClCompile Include="src\hv\base\hlog.c" />
+    <ClCompile Include="src\hv\base\hstring.cpp" />
+    <ClCompile Include="src\hv\base\htime.c" />
+    <ClCompile Include="src\hv\base\hversion.c" />
+    <ClCompile Include="src\hv\utils\iniparser.cpp" />
+    <ClCompile Include="src\ui\labeldialog.cpp" />
+    <ClCompile Include="src\controllers\labelmanager.cpp" />
+    <ClCompile Include="src\global\main.cpp" />
+    <ClCompile Include="src\ui\mainwindow.cpp" />
+    <ClCompile Include="src\annotations\segannotationitem.cpp" />
+    <ClCompile Include="3rd\spdlog\ylog.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="src\controllers\annotationcontainer.h" />
+    <ClInclude Include="src\annotations\annotationitem.h" />
+    <ClInclude Include="src\global\appdef.h" />
+    <QtMoc Include="src\canvas\canvas2d.h" />
+    <QtMoc Include="src\canvas\canvasbase.h" />
+    <ClInclude Include="src\global\common.h" />
+    <ClInclude Include="src\global\confile.h" />
+    <ClInclude Include="src\qt\custom_event_type.h" />
+    <ClInclude Include="src\ui\customlistwidget.h" />
+    <QtMoc Include="src\controllers\filemanager.h" />
+    <ClInclude Include="src\hv\base\hbase.h" />
+    <ClInclude Include="src\hv\base\hbuf.h" />
+    <ClInclude Include="src\hv\hconfig.h" />
+    <ClInclude Include="src\hv\base\hdef.h" />
+    <ClInclude Include="src\hv\base\herr.h" />
+    <ClInclude Include="src\hv\hexport.h" />
+    <ClInclude Include="src\hv\base\hlog.h" />
+    <ClInclude Include="src\hv\base\hmutex.h" />
+    <ClInclude Include="src\hv\base\hplatform.h" />
+    <ClInclude Include="src\hv\base\hscope.h" />
+    <ClInclude Include="src\hv\base\hstring.h" />
+    <ClInclude Include="src\hv\base\hthread.h" />
+    <ClInclude Include="src\hv\base\htime.h" />
+    <ClInclude Include="src\hv\hv.h" />
+    <ClInclude Include="src\hv\base\hversion.h" />
+    <ClInclude Include="src\hv\utils\iniparser.h" />
+    <QtMoc Include="src\ui\labeldialog.h" />
+    <QtMoc Include="src\controllers\labelmanager.h" />
+    <QtMoc Include="src\ui\mainwindow.h" />
+    <ClInclude Include="src\qt\qtfunctions.h" />
+    <ClInclude Include="src\qt\qtheaders.h" />
+    <ClInclude Include="src\qt\qtstyles.h" />
+    <ClInclude Include="src\annotations\segannotationitem.h" />
+    <ClInclude Include="src\hv\utils\singleton.h" />
+    <ClInclude Include="3rd\spdlog\ylog.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="build\moc\moc_predefs.h.cbt">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -O2 -MD -std:c++17 -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;build\moc\moc_predefs.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generate moc_predefs.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">build\moc\moc_predefs.h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\mkspecs\features\data\dummy.cpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cl -Bx"$(QTDIR)\bin\qmake.exe" -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -Zi -MDd -std:c++17 -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -E $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;build\moc\moc_predefs.h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generate moc_predefs.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">build\moc\moc_predefs.h;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\skin\dark\rc\arrow_down.png" />
+    <None Include="res\skin\light\rc\arrow_down.png" />
+    <None Include="res\skin\dark\rc\arrow_down@2x.png" />
+    <None Include="res\skin\light\rc\arrow_down@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_down_disabled.png" />
+    <None Include="res\skin\light\rc\arrow_down_disabled.png" />
+    <None Include="res\skin\dark\rc\arrow_down_disabled@2x.png" />
+    <None Include="res\skin\light\rc\arrow_down_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_down_focus.png" />
+    <None Include="res\skin\light\rc\arrow_down_focus.png" />
+    <None Include="res\skin\dark\rc\arrow_down_focus@2x.png" />
+    <None Include="res\skin\light\rc\arrow_down_focus@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_down_pressed.png" />
+    <None Include="res\skin\light\rc\arrow_down_pressed.png" />
+    <None Include="res\skin\dark\rc\arrow_down_pressed@2x.png" />
+    <None Include="res\skin\light\rc\arrow_down_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_left.png" />
+    <None Include="res\skin\light\rc\arrow_left.png" />
+    <None Include="res\skin\dark\rc\arrow_left@2x.png" />
+    <None Include="res\skin\light\rc\arrow_left@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_left_disabled.png" />
+    <None Include="res\skin\light\rc\arrow_left_disabled.png" />
+    <None Include="res\skin\dark\rc\arrow_left_disabled@2x.png" />
+    <None Include="res\skin\light\rc\arrow_left_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_left_focus.png" />
+    <None Include="res\skin\light\rc\arrow_left_focus.png" />
+    <None Include="res\skin\dark\rc\arrow_left_focus@2x.png" />
+    <None Include="res\skin\light\rc\arrow_left_focus@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_left_pressed.png" />
+    <None Include="res\skin\light\rc\arrow_left_pressed.png" />
+    <None Include="res\skin\dark\rc\arrow_left_pressed@2x.png" />
+    <None Include="res\skin\light\rc\arrow_left_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_right.png" />
+    <None Include="res\skin\light\rc\arrow_right.png" />
+    <None Include="res\skin\dark\rc\arrow_right@2x.png" />
+    <None Include="res\skin\light\rc\arrow_right@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_right_disabled.png" />
+    <None Include="res\skin\light\rc\arrow_right_disabled.png" />
+    <None Include="res\skin\dark\rc\arrow_right_disabled@2x.png" />
+    <None Include="res\skin\light\rc\arrow_right_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_right_focus.png" />
+    <None Include="res\skin\light\rc\arrow_right_focus.png" />
+    <None Include="res\skin\dark\rc\arrow_right_focus@2x.png" />
+    <None Include="res\skin\light\rc\arrow_right_focus@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_right_pressed.png" />
+    <None Include="res\skin\light\rc\arrow_right_pressed.png" />
+    <None Include="res\skin\dark\rc\arrow_right_pressed@2x.png" />
+    <None Include="res\skin\light\rc\arrow_right_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_up.png" />
+    <None Include="res\skin\light\rc\arrow_up.png" />
+    <None Include="res\skin\dark\rc\arrow_up@2x.png" />
+    <None Include="res\skin\light\rc\arrow_up@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_up_disabled.png" />
+    <None Include="res\skin\light\rc\arrow_up_disabled.png" />
+    <None Include="res\skin\dark\rc\arrow_up_disabled@2x.png" />
+    <None Include="res\skin\light\rc\arrow_up_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_up_focus.png" />
+    <None Include="res\skin\light\rc\arrow_up_focus.png" />
+    <None Include="res\skin\dark\rc\arrow_up_focus@2x.png" />
+    <None Include="res\skin\light\rc\arrow_up_focus@2x.png" />
+    <None Include="res\skin\dark\rc\arrow_up_pressed.png" />
+    <None Include="res\skin\light\rc\arrow_up_pressed.png" />
+    <None Include="res\skin\dark\rc\arrow_up_pressed@2x.png" />
+    <None Include="res\skin\light\rc\arrow_up_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\base_icon.png" />
+    <None Include="res\skin\light\rc\base_icon.png" />
+    <None Include="res\skin\dark\rc\base_icon@2x.png" />
+    <None Include="res\skin\light\rc\base_icon@2x.png" />
+    <None Include="res\skin\dark\rc\base_icon_disabled.png" />
+    <None Include="res\skin\light\rc\base_icon_disabled.png" />
+    <None Include="res\skin\dark\rc\base_icon_disabled@2x.png" />
+    <None Include="res\skin\light\rc\base_icon_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\base_icon_focus.png" />
+    <None Include="res\skin\light\rc\base_icon_focus.png" />
+    <None Include="res\skin\dark\rc\base_icon_focus@2x.png" />
+    <None Include="res\skin\light\rc\base_icon_focus@2x.png" />
+    <None Include="res\skin\dark\rc\base_icon_pressed.png" />
+    <None Include="res\skin\light\rc\base_icon_pressed.png" />
+    <None Include="res\skin\dark\rc\base_icon_pressed@2x.png" />
+    <None Include="res\skin\light\rc\base_icon_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\branch_closed.png" />
+    <None Include="res\skin\light\rc\branch_closed.png" />
+    <None Include="res\skin\dark\rc\branch_closed@2x.png" />
+    <None Include="res\skin\light\rc\branch_closed@2x.png" />
+    <None Include="res\skin\dark\rc\branch_closed_disabled.png" />
+    <None Include="res\skin\light\rc\branch_closed_disabled.png" />
+    <None Include="res\skin\dark\rc\branch_closed_disabled@2x.png" />
+    <None Include="res\skin\light\rc\branch_closed_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\branch_closed_focus.png" />
+    <None Include="res\skin\light\rc\branch_closed_focus.png" />
+    <None Include="res\skin\dark\rc\branch_closed_focus@2x.png" />
+    <None Include="res\skin\light\rc\branch_closed_focus@2x.png" />
+    <None Include="res\skin\dark\rc\branch_closed_pressed.png" />
+    <None Include="res\skin\light\rc\branch_closed_pressed.png" />
+    <None Include="res\skin\dark\rc\branch_closed_pressed@2x.png" />
+    <None Include="res\skin\light\rc\branch_closed_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\branch_end.png" />
+    <None Include="res\skin\light\rc\branch_end.png" />
+    <None Include="res\skin\dark\rc\branch_end@2x.png" />
+    <None Include="res\skin\light\rc\branch_end@2x.png" />
+    <None Include="res\skin\dark\rc\branch_end_disabled.png" />
+    <None Include="res\skin\light\rc\branch_end_disabled.png" />
+    <None Include="res\skin\dark\rc\branch_end_disabled@2x.png" />
+    <None Include="res\skin\light\rc\branch_end_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\branch_end_focus.png" />
+    <None Include="res\skin\light\rc\branch_end_focus.png" />
+    <None Include="res\skin\dark\rc\branch_end_focus@2x.png" />
+    <None Include="res\skin\light\rc\branch_end_focus@2x.png" />
+    <None Include="res\skin\dark\rc\branch_end_pressed.png" />
+    <None Include="res\skin\light\rc\branch_end_pressed.png" />
+    <None Include="res\skin\dark\rc\branch_end_pressed@2x.png" />
+    <None Include="res\skin\light\rc\branch_end_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\branch_line.png" />
+    <None Include="res\skin\light\rc\branch_line.png" />
+    <None Include="res\skin\dark\rc\branch_line@2x.png" />
+    <None Include="res\skin\light\rc\branch_line@2x.png" />
+    <None Include="res\skin\dark\rc\branch_line_disabled.png" />
+    <None Include="res\skin\light\rc\branch_line_disabled.png" />
+    <None Include="res\skin\dark\rc\branch_line_disabled@2x.png" />
+    <None Include="res\skin\light\rc\branch_line_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\branch_line_focus.png" />
+    <None Include="res\skin\light\rc\branch_line_focus.png" />
+    <None Include="res\skin\dark\rc\branch_line_focus@2x.png" />
+    <None Include="res\skin\light\rc\branch_line_focus@2x.png" />
+    <None Include="res\skin\dark\rc\branch_line_pressed.png" />
+    <None Include="res\skin\light\rc\branch_line_pressed.png" />
+    <None Include="res\skin\dark\rc\branch_line_pressed@2x.png" />
+    <None Include="res\skin\light\rc\branch_line_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\branch_more.png" />
+    <None Include="res\skin\light\rc\branch_more.png" />
+    <None Include="res\skin\dark\rc\branch_more@2x.png" />
+    <None Include="res\skin\light\rc\branch_more@2x.png" />
+    <None Include="res\skin\dark\rc\branch_more_disabled.png" />
+    <None Include="res\skin\light\rc\branch_more_disabled.png" />
+    <None Include="res\skin\dark\rc\branch_more_disabled@2x.png" />
+    <None Include="res\skin\light\rc\branch_more_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\branch_more_focus.png" />
+    <None Include="res\skin\light\rc\branch_more_focus.png" />
+    <None Include="res\skin\dark\rc\branch_more_focus@2x.png" />
+    <None Include="res\skin\light\rc\branch_more_focus@2x.png" />
+    <None Include="res\skin\dark\rc\branch_more_pressed.png" />
+    <None Include="res\skin\light\rc\branch_more_pressed.png" />
+    <None Include="res\skin\dark\rc\branch_more_pressed@2x.png" />
+    <None Include="res\skin\light\rc\branch_more_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\branch_open.png" />
+    <None Include="res\skin\light\rc\branch_open.png" />
+    <None Include="res\skin\dark\rc\branch_open@2x.png" />
+    <None Include="res\skin\light\rc\branch_open@2x.png" />
+    <None Include="res\skin\dark\rc\branch_open_disabled.png" />
+    <None Include="res\skin\light\rc\branch_open_disabled.png" />
+    <None Include="res\skin\dark\rc\branch_open_disabled@2x.png" />
+    <None Include="res\skin\light\rc\branch_open_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\branch_open_focus.png" />
+    <None Include="res\skin\light\rc\branch_open_focus.png" />
+    <None Include="res\skin\dark\rc\branch_open_focus@2x.png" />
+    <None Include="res\skin\light\rc\branch_open_focus@2x.png" />
+    <None Include="res\skin\dark\rc\branch_open_pressed.png" />
+    <None Include="res\skin\light\rc\branch_open_pressed.png" />
+    <None Include="res\skin\dark\rc\branch_open_pressed@2x.png" />
+    <None Include="res\skin\light\rc\branch_open_pressed@2x.png" />
+    <None Include="res\image\rc\cancel.png" />
+    <None Include="res\image\rc\check.png" />
+    <None Include="res\skin\dark\rc\checkbox_checked.png" />
+    <None Include="res\skin\light\rc\checkbox_checked.png" />
+    <None Include="res\skin\dark\rc\checkbox_checked@2x.png" />
+    <None Include="res\skin\light\rc\checkbox_checked@2x.png" />
+    <None Include="res\skin\dark\rc\checkbox_checked_disabled.png" />
+    <None Include="res\skin\light\rc\checkbox_checked_disabled.png" />
+    <None Include="res\skin\dark\rc\checkbox_checked_disabled@2x.png" />
+    <None Include="res\skin\light\rc\checkbox_checked_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\checkbox_checked_focus.png" />
+    <None Include="res\skin\light\rc\checkbox_checked_focus.png" />
+    <None Include="res\skin\dark\rc\checkbox_checked_focus@2x.png" />
+    <None Include="res\skin\light\rc\checkbox_checked_focus@2x.png" />
+    <None Include="res\skin\dark\rc\checkbox_checked_pressed.png" />
+    <None Include="res\skin\light\rc\checkbox_checked_pressed.png" />
+    <None Include="res\skin\dark\rc\checkbox_checked_pressed@2x.png" />
+    <None Include="res\skin\light\rc\checkbox_checked_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\checkbox_indeterminate.png" />
+    <None Include="res\skin\light\rc\checkbox_indeterminate.png" />
+    <None Include="res\skin\dark\rc\checkbox_indeterminate@2x.png" />
+    <None Include="res\skin\light\rc\checkbox_indeterminate@2x.png" />
+    <None Include="res\skin\dark\rc\checkbox_indeterminate_disabled.png" />
+    <None Include="res\skin\light\rc\checkbox_indeterminate_disabled.png" />
+    <None Include="res\skin\dark\rc\checkbox_indeterminate_disabled@2x.png" />
+    <None Include="res\skin\light\rc\checkbox_indeterminate_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\checkbox_indeterminate_focus.png" />
+    <None Include="res\skin\light\rc\checkbox_indeterminate_focus.png" />
+    <None Include="res\skin\dark\rc\checkbox_indeterminate_focus@2x.png" />
+    <None Include="res\skin\light\rc\checkbox_indeterminate_focus@2x.png" />
+    <None Include="res\skin\dark\rc\checkbox_indeterminate_pressed.png" />
+    <None Include="res\skin\light\rc\checkbox_indeterminate_pressed.png" />
+    <None Include="res\skin\dark\rc\checkbox_indeterminate_pressed@2x.png" />
+    <None Include="res\skin\light\rc\checkbox_indeterminate_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\checkbox_unchecked.png" />
+    <None Include="res\skin\light\rc\checkbox_unchecked.png" />
+    <None Include="res\skin\dark\rc\checkbox_unchecked@2x.png" />
+    <None Include="res\skin\light\rc\checkbox_unchecked@2x.png" />
+    <None Include="res\skin\dark\rc\checkbox_unchecked_disabled.png" />
+    <None Include="res\skin\light\rc\checkbox_unchecked_disabled.png" />
+    <None Include="res\skin\dark\rc\checkbox_unchecked_disabled@2x.png" />
+    <None Include="res\skin\light\rc\checkbox_unchecked_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\checkbox_unchecked_focus.png" />
+    <None Include="res\skin\light\rc\checkbox_unchecked_focus.png" />
+    <None Include="res\skin\dark\rc\checkbox_unchecked_focus@2x.png" />
+    <None Include="res\skin\light\rc\checkbox_unchecked_focus@2x.png" />
+    <None Include="res\skin\dark\rc\checkbox_unchecked_pressed.png" />
+    <None Include="res\skin\light\rc\checkbox_unchecked_pressed.png" />
+    <None Include="res\skin\dark\rc\checkbox_unchecked_pressed@2x.png" />
+    <None Include="res\skin\light\rc\checkbox_unchecked_pressed@2x.png" />
+    <None Include="res\image\rc\confirm.png" />
+    <QtRcc Include="res\skin\dark\darkstyle.qrc">
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">darkstyle</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">darkstyle</InitFuncName>
+    </QtRcc>
+    <None Include="res\skin\dark\darkstyle.qss" />
+    <None Include="res\image\rc\help.png" />
+    <None Include="res\image\rc\icon.png" />
+    <QtRcc Include="res\image\image.qrc">
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">image</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">image</InitFuncName>
+    </QtRcc>
+    <QtRcc Include="res\skin\light\lightstyle.qrc">
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">lightstyle</InitFuncName>
+      <InitFuncName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">lightstyle</InitFuncName>
+    </QtRcc>
+    <None Include="res\skin\light\lightstyle.qss" />
+    <None Include="res\skin\dark\rc\line_horizontal.png" />
+    <None Include="res\skin\light\rc\line_horizontal.png" />
+    <None Include="res\skin\dark\rc\line_horizontal@2x.png" />
+    <None Include="res\skin\light\rc\line_horizontal@2x.png" />
+    <None Include="res\skin\dark\rc\line_horizontal_disabled.png" />
+    <None Include="res\skin\light\rc\line_horizontal_disabled.png" />
+    <None Include="res\skin\dark\rc\line_horizontal_disabled@2x.png" />
+    <None Include="res\skin\light\rc\line_horizontal_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\line_horizontal_focus.png" />
+    <None Include="res\skin\light\rc\line_horizontal_focus.png" />
+    <None Include="res\skin\dark\rc\line_horizontal_focus@2x.png" />
+    <None Include="res\skin\light\rc\line_horizontal_focus@2x.png" />
+    <None Include="res\skin\dark\rc\line_horizontal_pressed.png" />
+    <None Include="res\skin\light\rc\line_horizontal_pressed.png" />
+    <None Include="res\skin\dark\rc\line_horizontal_pressed@2x.png" />
+    <None Include="res\skin\light\rc\line_horizontal_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\line_vertical.png" />
+    <None Include="res\skin\light\rc\line_vertical.png" />
+    <None Include="res\skin\dark\rc\line_vertical@2x.png" />
+    <None Include="res\skin\light\rc\line_vertical@2x.png" />
+    <None Include="res\skin\dark\rc\line_vertical_disabled.png" />
+    <None Include="res\skin\light\rc\line_vertical_disabled.png" />
+    <None Include="res\skin\dark\rc\line_vertical_disabled@2x.png" />
+    <None Include="res\skin\light\rc\line_vertical_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\line_vertical_focus.png" />
+    <None Include="res\skin\light\rc\line_vertical_focus.png" />
+    <None Include="res\skin\dark\rc\line_vertical_focus@2x.png" />
+    <None Include="res\skin\light\rc\line_vertical_focus@2x.png" />
+    <None Include="res\skin\dark\rc\line_vertical_pressed.png" />
+    <None Include="res\skin\light\rc\line_vertical_pressed.png" />
+    <None Include="res\skin\dark\rc\line_vertical_pressed@2x.png" />
+    <None Include="res\skin\light\rc\line_vertical_pressed@2x.png" />
+    <None Include="res\image\rc\open_file.png" />
+    <None Include="res\image\rc\polygon.png" />
+    <None Include="res\skin\dark\rc\radio_checked.png" />
+    <None Include="res\skin\light\rc\radio_checked.png" />
+    <None Include="res\skin\dark\rc\radio_checked@2x.png" />
+    <None Include="res\skin\light\rc\radio_checked@2x.png" />
+    <None Include="res\skin\dark\rc\radio_checked_disabled.png" />
+    <None Include="res\skin\light\rc\radio_checked_disabled.png" />
+    <None Include="res\skin\dark\rc\radio_checked_disabled@2x.png" />
+    <None Include="res\skin\light\rc\radio_checked_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\radio_checked_focus.png" />
+    <None Include="res\skin\light\rc\radio_checked_focus.png" />
+    <None Include="res\skin\dark\rc\radio_checked_focus@2x.png" />
+    <None Include="res\skin\light\rc\radio_checked_focus@2x.png" />
+    <None Include="res\skin\dark\rc\radio_checked_pressed.png" />
+    <None Include="res\skin\light\rc\radio_checked_pressed.png" />
+    <None Include="res\skin\dark\rc\radio_checked_pressed@2x.png" />
+    <None Include="res\skin\light\rc\radio_checked_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\radio_unchecked.png" />
+    <None Include="res\skin\light\rc\radio_unchecked.png" />
+    <None Include="res\skin\dark\rc\radio_unchecked@2x.png" />
+    <None Include="res\skin\light\rc\radio_unchecked@2x.png" />
+    <None Include="res\skin\dark\rc\radio_unchecked_disabled.png" />
+    <None Include="res\skin\light\rc\radio_unchecked_disabled.png" />
+    <None Include="res\skin\dark\rc\radio_unchecked_disabled@2x.png" />
+    <None Include="res\skin\light\rc\radio_unchecked_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\radio_unchecked_focus.png" />
+    <None Include="res\skin\light\rc\radio_unchecked_focus.png" />
+    <None Include="res\skin\dark\rc\radio_unchecked_focus@2x.png" />
+    <None Include="res\skin\light\rc\radio_unchecked_focus@2x.png" />
+    <None Include="res\skin\dark\rc\radio_unchecked_pressed.png" />
+    <None Include="res\skin\light\rc\radio_unchecked_pressed.png" />
+    <None Include="res\skin\dark\rc\radio_unchecked_pressed@2x.png" />
+    <None Include="res\skin\light\rc\radio_unchecked_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_horizontal.png" />
+    <None Include="res\skin\light\rc\toolbar_move_horizontal.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_horizontal@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_move_horizontal@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_horizontal_disabled.png" />
+    <None Include="res\skin\light\rc\toolbar_move_horizontal_disabled.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_horizontal_disabled@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_move_horizontal_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_horizontal_focus.png" />
+    <None Include="res\skin\light\rc\toolbar_move_horizontal_focus.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_horizontal_focus@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_move_horizontal_focus@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_horizontal_pressed.png" />
+    <None Include="res\skin\light\rc\toolbar_move_horizontal_pressed.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_horizontal_pressed@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_move_horizontal_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_vertical.png" />
+    <None Include="res\skin\light\rc\toolbar_move_vertical.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_vertical@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_move_vertical@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_vertical_disabled.png" />
+    <None Include="res\skin\light\rc\toolbar_move_vertical_disabled.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_vertical_disabled@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_move_vertical_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_vertical_focus.png" />
+    <None Include="res\skin\light\rc\toolbar_move_vertical_focus.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_vertical_focus@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_move_vertical_focus@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_vertical_pressed.png" />
+    <None Include="res\skin\light\rc\toolbar_move_vertical_pressed.png" />
+    <None Include="res\skin\dark\rc\toolbar_move_vertical_pressed@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_move_vertical_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_horizontal.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_horizontal.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_horizontal@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_horizontal@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_horizontal_disabled.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_horizontal_disabled.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_horizontal_disabled@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_horizontal_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_horizontal_focus.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_horizontal_focus.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_horizontal_focus@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_horizontal_focus@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_horizontal_pressed.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_horizontal_pressed.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_horizontal_pressed@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_horizontal_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_vertical.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_vertical.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_vertical@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_vertical@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_vertical_disabled.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_vertical_disabled.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_vertical_disabled@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_vertical_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_vertical_focus.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_vertical_focus.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_vertical_focus@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_vertical_focus@2x.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_vertical_pressed.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_vertical_pressed.png" />
+    <None Include="res\skin\dark\rc\toolbar_separator_vertical_pressed@2x.png" />
+    <None Include="res\skin\light\rc\toolbar_separator_vertical_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\transparent.png" />
+    <None Include="res\skin\light\rc\transparent.png" />
+    <None Include="res\skin\dark\rc\transparent@2x.png" />
+    <None Include="res\skin\light\rc\transparent@2x.png" />
+    <None Include="res\skin\dark\rc\transparent_disabled.png" />
+    <None Include="res\skin\light\rc\transparent_disabled.png" />
+    <None Include="res\skin\dark\rc\transparent_disabled@2x.png" />
+    <None Include="res\skin\light\rc\transparent_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\transparent_focus.png" />
+    <None Include="res\skin\light\rc\transparent_focus.png" />
+    <None Include="res\skin\dark\rc\transparent_focus@2x.png" />
+    <None Include="res\skin\light\rc\transparent_focus@2x.png" />
+    <None Include="res\skin\dark\rc\transparent_pressed.png" />
+    <None Include="res\skin\light\rc\transparent_pressed.png" />
+    <None Include="res\skin\dark\rc\transparent_pressed@2x.png" />
+    <None Include="res\skin\light\rc\transparent_pressed@2x.png" />
+    <None Include="res\image\rc\uncheck.png" />
+    <None Include="res\skin\dark\rc\window_close.png" />
+    <None Include="res\skin\light\rc\window_close.png" />
+    <None Include="res\skin\dark\rc\window_close@2x.png" />
+    <None Include="res\skin\light\rc\window_close@2x.png" />
+    <None Include="res\skin\dark\rc\window_close_disabled.png" />
+    <None Include="res\skin\light\rc\window_close_disabled.png" />
+    <None Include="res\skin\dark\rc\window_close_disabled@2x.png" />
+    <None Include="res\skin\light\rc\window_close_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\window_close_focus.png" />
+    <None Include="res\skin\light\rc\window_close_focus.png" />
+    <None Include="res\skin\dark\rc\window_close_focus@2x.png" />
+    <None Include="res\skin\light\rc\window_close_focus@2x.png" />
+    <None Include="res\skin\dark\rc\window_close_pressed.png" />
+    <None Include="res\skin\light\rc\window_close_pressed.png" />
+    <None Include="res\skin\dark\rc\window_close_pressed@2x.png" />
+    <None Include="res\skin\light\rc\window_close_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\window_grip.png" />
+    <None Include="res\skin\light\rc\window_grip.png" />
+    <None Include="res\skin\dark\rc\window_grip@2x.png" />
+    <None Include="res\skin\light\rc\window_grip@2x.png" />
+    <None Include="res\skin\dark\rc\window_grip_disabled.png" />
+    <None Include="res\skin\light\rc\window_grip_disabled.png" />
+    <None Include="res\skin\dark\rc\window_grip_disabled@2x.png" />
+    <None Include="res\skin\light\rc\window_grip_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\window_grip_focus.png" />
+    <None Include="res\skin\light\rc\window_grip_focus.png" />
+    <None Include="res\skin\dark\rc\window_grip_focus@2x.png" />
+    <None Include="res\skin\light\rc\window_grip_focus@2x.png" />
+    <None Include="res\skin\dark\rc\window_grip_pressed.png" />
+    <None Include="res\skin\light\rc\window_grip_pressed.png" />
+    <None Include="res\skin\dark\rc\window_grip_pressed@2x.png" />
+    <None Include="res\skin\light\rc\window_grip_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\window_minimize.png" />
+    <None Include="res\skin\light\rc\window_minimize.png" />
+    <None Include="res\skin\dark\rc\window_minimize@2x.png" />
+    <None Include="res\skin\light\rc\window_minimize@2x.png" />
+    <None Include="res\skin\dark\rc\window_minimize_disabled.png" />
+    <None Include="res\skin\light\rc\window_minimize_disabled.png" />
+    <None Include="res\skin\dark\rc\window_minimize_disabled@2x.png" />
+    <None Include="res\skin\light\rc\window_minimize_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\window_minimize_focus.png" />
+    <None Include="res\skin\light\rc\window_minimize_focus.png" />
+    <None Include="res\skin\dark\rc\window_minimize_focus@2x.png" />
+    <None Include="res\skin\light\rc\window_minimize_focus@2x.png" />
+    <None Include="res\skin\dark\rc\window_minimize_pressed.png" />
+    <None Include="res\skin\light\rc\window_minimize_pressed.png" />
+    <None Include="res\skin\dark\rc\window_minimize_pressed@2x.png" />
+    <None Include="res\skin\light\rc\window_minimize_pressed@2x.png" />
+    <None Include="res\skin\dark\rc\window_undock.png" />
+    <None Include="res\skin\light\rc\window_undock.png" />
+    <None Include="res\skin\dark\rc\window_undock@2x.png" />
+    <None Include="res\skin\light\rc\window_undock@2x.png" />
+    <None Include="res\skin\dark\rc\window_undock_disabled.png" />
+    <None Include="res\skin\light\rc\window_undock_disabled.png" />
+    <None Include="res\skin\dark\rc\window_undock_disabled@2x.png" />
+    <None Include="res\skin\light\rc\window_undock_disabled@2x.png" />
+    <None Include="res\skin\dark\rc\window_undock_focus.png" />
+    <None Include="res\skin\light\rc\window_undock_focus.png" />
+    <None Include="res\skin\dark\rc\window_undock_focus@2x.png" />
+    <None Include="res\skin\light\rc\window_undock_focus@2x.png" />
+    <None Include="res\skin\dark\rc\window_undock_pressed.png" />
+    <None Include="res\skin\light\rc\window_undock_pressed.png" />
+    <None Include="res\skin\dark\rc\window_undock_pressed@2x.png" />
+    <None Include="res\skin\light\rc\window_undock_pressed@2x.png" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

@@ -9,6 +9,7 @@ HEADERS += \
     $$PWD/autoprocesscheckArm.h \
     $$PWD/autoprocesscheckSensor.h \
     $$PWD/autoprocesseleclock.h \
+    $$PWD/autoprocesseleclockCB.h \
     $$PWD/autoprocessguide.h \
     $$PWD/baseproduce.h \
     $$PWD/burningarmce1001.h \
@@ -16,6 +17,8 @@ HEADERS += \
     $$PWD/burningmcucb1000.h \
     $$PWD/comproduce.h \
     $$PWD/dispensingcuring.h \
+    $$PWD/dustimagedetection.h \
+    $$PWD/eleclock_param.h \
     $$PWD/httppassstation.h \
     $$PWD/mtfcl1004.h \
     $$PWD/productpacking.h \
@@ -29,6 +32,7 @@ SOURCES += \
     $$PWD/autoprocesscheckArm.cpp \
     $$PWD/autoprocesscheckSensor.cpp \
     $$PWD/autoprocesseleclock.cpp \
+    $$PWD/autoprocesseleclockCB.cpp \
     $$PWD/autoprocessguide.cpp \
     $$PWD/baseproduce.cpp \
     $$PWD/burningarmce1001.cpp \
@@ -36,6 +40,7 @@ SOURCES += \
     $$PWD/burningmcucb1000.cpp \
     $$PWD/comproduce.cpp \
     $$PWD/dispensingcuring.cpp \
+    $$PWD/dustimagedetection.cpp \
     $$PWD/httppassstation.cpp \
     $$PWD/mtfcl1004.cpp \
     $$PWD/productpacking.cpp \

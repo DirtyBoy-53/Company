@@ -8,6 +8,8 @@
 #include "mcuserialmanager.h"
 #include "ASicSerialManager.h"
 #include <csvlogger.h>
+#include "Xy_AsicBurning.h"
+#include "ActiveXyComponents.h"
 
 typedef struct {
     bool check;
@@ -48,6 +50,9 @@ private:
     bool burnWithPython();
     bool burnWithLocal();
 
+    bool powerControl(bool bPowerOn);
+    void showLogProcess(char* log);
+
 private:
 
     QString mSnPCBPower;
@@ -84,6 +89,8 @@ private:
     QString m_crcAll;
     McuWorkInfo m_mcuInfo;
 
+    IXy_AsicBurning* m_burnApi;
+    CActiveXyComponents m_axComponent;
 
     // 注意，要随着新的MCU软件下发更改，新的MCU支持阶梯式上电
     bool m_bOldMcu = true;

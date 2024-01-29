@@ -109,7 +109,7 @@ int window_init(MainWindow& window)
         break;
     }
     if(g_config->Get<bool>("mv_fullscreen","ui")){
-        window.mv_fullscreen();
+//        window.mv_fullscreen();
     }
 #endif
 
@@ -132,14 +132,24 @@ int main(int argc,char** argv)
     setPalette(str.empty() ? DEFAULT_PALETTE_COLOR : strtoul(str.c_str(),NULL,16));
 
     setFont(g_config->Get<int>("fontsize","ui",DEFAULT_FONT_SIZE));
+    int exitcode{0};
+    MainWindow *w{nullptr};
+    try{
+        w = new MainWindow;
+        window_init(*w);
 
-    MainWindow w;
-    window_init(w);
+        exitcode = a.exec();
+    } catch (const char *errorStr){
+        qDebug()<<errorStr;
+        QString msg;
+        msg = QString("The program has crashed.\n")
+              +"Message: "+errorStr;
+        QMessageBox::warning(nullptr, "Program crashed", msg);
+    }
 
-    auto exitcode = a.exec();
     qInfo("================<app end>================");
-    g_config->Set<int>("main_window_state", (int)w.window_state,"ui");
-    str = asprintf("rect(%d,%d,%d,%d)",w.x(),w.y(),w.width(),w.height());
+    g_config->Set<int>("main_window_state", (int)w->window_state,"ui");
+    str = asprintf("rect(%d,%d,%d,%d)",w->x(),w->y(),w->width(),w->height());
     g_config->SetValue("main_window_rect",str,"ui");
     g_config->Save();
     SAFE_DELETE(g_config);

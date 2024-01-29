@@ -193,12 +193,12 @@ BurningDe1000::BurningDe1000()
     ADDCONFIG("是否等待夹具", "1", "String",LOGIN_ADMIN,"", false);
     ADDCONFIG("是否烧录", "1","String",LOGIN_ADMIN,"", false);
     ADDCONFIG("是否网络获取SN", "1","String",LOGIN_ADMIN,"", false);
-    ADDCONFIG("PythonPath", "D:/tool/python31","FilePath",LOGIN_ADMIN,"", false);
+    ADDCONFIG("PythonPath", "D:/tool/python31","DirPath",LOGIN_ADMIN,"", false);
     ADDCONFIG("PowerEXP", "","String",LOGIN_ADMIN,"", false);
     ADDCONFIG("ASICEXP", "","String",LOGIN_ADMIN,"", false);
     ADDCONFIG("SingleEXP", "","String",LOGIN_ADMIN,"", false);
-    ADDCONFIG("模板路径", "E:", "FilePath",LOGIN_ADMIN,"", false);
-    ADDCONFIG("本地版本路径", "E:", "FilePath",LOGIN_ADMIN,"", true);
+    //ADDCONFIG("模板路径", "E:", "FilePath",LOGIN_ADMIN,"", false);
+    ADDCONFIG("本地版本路径", "E:", "DirPath",LOGIN_ADMIN,"", true);
     ADDCONFIG("Python烧写", "0", "String",LOGIN_ADMIN,"", true);
     ADDCONFIG("硬件版本号", "HW_V[001]", "String",LOGIN_ADMIN,"", true);
     ADDCONFIG("旧MCU板", "True", "Enum",LOGIN_ADMIN,"True,False", true);
@@ -213,7 +213,9 @@ BurningDe1000::BurningDe1000()
     add(1, "getSn", std::bind(&BurningDe1000::getSn, this));
     add(10, "judgeCustomLifeTime", std::bind(&BurningDe1000::jugdeCustomLifeTime, this, true));
     add(20, "enterMes", std::bind(&BurningDe1000::enterMes, this));
-    add(50, "step4", std::bind(&BurningDe1000::getSnPCBPower, this));
+    if(!projectName().contains("XD05A")) {
+        add(50, "step4", std::bind(&BurningDe1000::getSnPCBPower, this));
+    }
     add(60, "step5", std::bind(&BurningDe1000::getSnPCBAsic, this));
     if(projectName().contains("XD01A")) {
         add(70, "step6", std::bind(&BurningDe1000::getSnPCBSignal, this));
@@ -221,12 +223,12 @@ BurningDe1000::BurningDe1000()
     add(75, "step6", std::bind(&BurningDe1000::fileCheck, this));
     add(80, "step6", std::bind(&BurningDe1000::checkJiaju, this));
     add(90, "step6", std::bind(&BurningDe1000::burning, this));
-    add(91, "step6", std::bind(&BurningDe1000::getWorkInfo, this));
-    add(92, "step6", std::bind(&BurningDe1000::asicFileCheck, this));
-    add(110, "step7", std::bind(&BurningDe1000::comAsicVersion, this));
+    // add(91, "step6", std::bind(&BurningDe1000::getWorkInfo, this));
+    // add(92, "step6", std::bind(&BurningDe1000::asicFileCheck, this));
+    // add(110, "step7", std::bind(&BurningDe1000::comAsicVersion, this));
     add(100, "step3", std::bind(&BurningDe1000::comVol, this));
     add(130, "moveto111", std::bind(&BurningDe1000::printSN, this));
-    add(140, "step2", std::bind(&BurningDe1000::checkSN, this));
+    // add(140, "step2", std::bind(&BurningDe1000::checkSN, this));
     add(150, "step2", std::bind(&BurningDe1000::outMes, this));
     add(200, "step2", std::bind(&BurningDe1000::stepEnd, this));
 
@@ -404,7 +406,6 @@ void BurningDe1000::getWorkInfo()
         return;
     }
 
-
     if(!isGoldenMode()) {
         QString sCrc;
         m_crcAll.clear();
@@ -565,6 +566,10 @@ void BurningDe1000::checkJiaju()
     if(0 == GETCONFIG("是否等待夹具").toInt()) {
         return;
     }
+
+    if (projectName() == "XD05A") {
+        return;
+    }
     MesCheckItem tem;
     tem.sItem = "下压夹具";
     tem.sResult = MESFAILED;
@@ -686,6 +691,26 @@ bool BurningDe1000::burnWithLocal()
     }
     QThread::msleep(100);
 
+    qDebug() << ">>>>>>>>> xyInitialize";
+    if (!m_burnApi->xyInitialize(sSerialNameAsic.toStdString().c_str())) {
+        logFail("开启ASIC串口失败");
+        m_errorCode = -2;
+        return false;
+    }
+
+    qDebug() << ">>>>>>>>> xyStartBurning";
+    m_burnApi->xySetCheckVersionFlag(true);
+    if (!m_burnApi->xyStartBurning(m_sn.toStdString().c_str(), mSoftVersion.toStdString().c_str(), m_versionPath.toStdString().c_str())) {
+        logFail("烧录失败");
+        std::string errorMsg;
+        m_burnApi->xyGetLastError(errorMsg);
+        m_errMsg = errorMsg.c_str();
+        m_errorCode = -2;
+        return false;
+    }
+    m_burnApi->xyDeInitial();
+
+#if 0
     logNormal("打开 ASIC 烧录串口 " + sSerialNameAsic);
     mAsicDbgSerial->closeSerial();
     if (!mAsicDbgSerial->openSerial(sSerialNameAsic)) {
@@ -819,10 +844,29 @@ bool BurningDe1000::burnWithLocal()
     }
 
 
-    mFixtureMcu->controlSensorPower(0);
     mAsicDbgSerial->closeSerial();
+#endif
+    mFixtureMcu->controlSensorPower(0);
     mFixtureMcu->closeSerial();
     return true;
+}
+
+bool BurningDe1000::powerControl(bool bPowerOn)
+{
+    if (bPowerOn) {
+        return mFixtureMcu->controlSensorPower(12, false, m_bOldMcu);
+    }
+
+    return mFixtureMcu->controlSensorPower(0);
+}
+
+void BurningDe1000::showLogProcess(char *log)
+{
+    QString logx = QString::fromLocal8Bit(log);
+    showProcess(logx);
+    if (!logx.contains("%")) {
+        logAddNormalLog(logx);
+    }
 }
 
 void BurningDe1000::burning()
@@ -843,7 +887,6 @@ void BurningDe1000::burning()
         return;
     }
     showProcess("烧录中...");
-
 
     int burnWay = GETCONFIG("Python烧写").toInt();
 
@@ -867,6 +910,14 @@ void BurningDe1000::burning()
         pItem->sResult = MESPASS;
         pItem->tCheckTm = QString::number(tStart.elapsed()/1000);
         showItem(*pItem);
+        QStringList listx;
+        listx  << "软件版本" << mSoftVersion << mSoftVersion << "0" << "PASS";
+        tableAddRowData(listx);
+        tableUpdateTestStatus(0);
+        listx.clear();
+        listx  << "烧录SN" << m_sn << m_sn << "0" << "PASS";
+        tableAddRowData(listx);
+        tableUpdateTestStatus(0);
     }
 
 }
@@ -936,6 +987,10 @@ void BurningDe1000::saveResult()
     m_allCvsLog.addCsvLog(logData);
     QString logPath = GETCONFIG("LogPath");
     logPath += "/" + QDateTime::currentDateTime().toString("yyyy_MM_dd");
+    QDir dir(logPath);
+    if (!dir.exists()) {
+        dir.mkpath(logPath);
+    }
     logPath += "/" + m_sn + ".csv";
     tableSaveCsv(logPath);
 }
@@ -947,6 +1002,35 @@ void BurningDe1000::comVol()
     tStart.start();
     showProcess("比对电压");
     // getWorkInfo();
+
+    QString sSerialNameMcu = GETCONFIG("McuCom");
+    logNormal("Start open mcu serial...");
+    mFixtureMcu->closeSerial();
+    QThread::sleep(1);
+    if (!mFixtureMcu->openSerial(sSerialNameMcu)) {
+        logFail("开启MCU串口失败");
+        m_errorCode = -2;
+        return;
+    }
+
+    QThread::sleep(1);
+    logNormal("Start power up...");
+    if (!mFixtureMcu->controlSensorPower(12, true, m_bOldMcu)) {
+        m_errMsg = "给ASIC上电失败";
+        mFixtureMcu->closeSerial();
+        logFail(m_errMsg);
+        m_errorCode = -2;
+        return;
+    }
+    if (!mFixtureMcu->getMcuWorkInfo(m_mcuInfo)) {
+        m_errMsg = "获取MCU电压失败!";
+        mFixtureMcu->closeSerial();
+        logFail(m_errMsg);
+        m_errorCode = -2;
+        return;
+    }
+    mFixtureMcu->closeSerial();
+
     for(int i = 0; i < MESMAXCHECKNUM; i ++) {
         QString decItem = m_pItem[i].sItem;
         if(decItem.size() <= 0 || m_pItem[i].sMin.size() <= 0) {
@@ -1089,6 +1173,8 @@ void BurningDe1000::slotConnectBtnClicked()
         }
     }
     mFixtureMcu->closeSerial();
+    delete mFixtureMcu;
+    mFixtureMcu = nullptr;
 
     mAsicDbgSerial->closeSerial();
     if(!mAsicDbgSerial->openSerial(GETCONFIG("ASICCom"))) {
@@ -1098,6 +1184,9 @@ void BurningDe1000::slotConnectBtnClicked()
         }
     }
     mAsicDbgSerial->closeSerial();
+    delete mAsicDbgSerial;
+    mAsicDbgSerial = nullptr;
+    m_burnApi = nullptr;
 
     BaseProduce::slotConnectBtnClicked();
 }
@@ -1203,6 +1292,7 @@ void BurningDe1000::step0()
     m_crcBoot = 0;
     m_crcSting = 0;
     logClear();
+    tableClearData();
 
 //    int mode = mAsicDbgSerial->getProductMode(15000);
 //    qDebug() << "current mode is " << mode;
@@ -1218,6 +1308,29 @@ void BurningDe1000::step0()
 //        logFail("查询烧录模式失败");
 //        return;
 //    }
+    if (!m_burnApi) {
+        // 获取接口
+        if (!m_axComponent.get(DLLNAME_XY_ASIC_BURNING, IID_XY_ASICBURNING, (void**)&m_burnApi)) {
+            emit showMsgBox("获取烧录组件接口失败", 3);
+            return;
+        }
+
+        if (!m_burnApi->checkVersion()) {
+            showMsgBox("授权失败", 3);
+            return;
+        }
+
+        m_burnApi->xySetPowerOnOffPtr(std::bind(&BurningDe1000::powerControl, this, std::placeholders::_1));
+        m_burnApi->xySetProcessLogPtr(std::bind(&BurningDe1000::showLogProcess, this, std::placeholders::_1));
+    }
+
+
+    if(!mFixtureMcu) {
+        mFixtureMcu = new McuSerialManager();
+    }
+    if(!mAsicDbgSerial) {
+        mAsicDbgSerial = new ASicSerialManager;
+    }
 }
 
 void BurningDe1000::fileCheck()

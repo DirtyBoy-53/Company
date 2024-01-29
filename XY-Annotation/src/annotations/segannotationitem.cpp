@@ -62,19 +62,32 @@ void SegStroke::fromJsonObject(QJsonObject json)
 QJsonObject SegStroke::toJsonObject()
 {
     QJsonObject json;
-    json.insert("type", type);
+    json.insert("shape_type", type);
     QJsonArray array;
-    for (auto point:points){
+    for (auto point : points){
         QJsonArray pointArray;
-        pointArray.append(point.x());
-        pointArray.append(point.y());
+        pointArray.append(QString::number(point.x(),'f',13));
+        pointArray.append(QString::number(point.y(),'f',13));
         array.append(pointArray);
     }
     json.insert("points", array);
-    if (penWidth!=-1)
-        json.insert("pen_width", penWidth);
+//    if (penWidth!=-1)
+//        json.insert("pen_width", penWidth);
 
     return json;
+}
+
+void SegStroke::addJsonObject(QJsonArray &json,QJsonObject &obj)
+{
+    QJsonArray array;
+    for (auto point : points){
+        QJsonArray pointArray;
+        pointArray.append(QString::number(point.x(),'f',13));
+        pointArray.append(QString::number(point.y(),'f',13));
+        array.append(pointArray);
+    }
+    obj.insert("points", array);
+    obj.insert("shape_type", type);
 }
 
 void SegStroke::drawSelf(QPainter &p, QColor color, bool fill)
@@ -85,7 +98,8 @@ void SegStroke::drawSelf(QPainter &p, QColor color, bool fill)
     path.addPolygon(polygon);
     if(m_isClosed){
         path.closeSubpath();
-        p.setPen(QPen(Qt::green, m_lineWidth, Qt::SolidLine));
+//        p.setBrush(QColor(color.red(), color.green(), color.blue(),100));
+        p.setPen(QPen(color, m_lineWidth, Qt::SolidLine));
     }else{
         p.setBrush(QColor(10, 0, 0,100));
         p.setPen(QPen(Qt::green, m_lineWidth, Qt::SolidLine));
@@ -111,19 +125,28 @@ void SegStroke::drawSelf(QPainter &p, QColor color, bool fill)
 //    }
 
 
-    if (1) {
+    if(m_isClosed){
         // Draw the control points
-        p.setPen(QColor(0, 255, 0, 255));
-        p.setBrush(QColor(0, 255, 0, 255));
+        p.setBrush(QColor(color.red(), color.green(), color.blue(),255));
+        p.setPen(QPen(color));
         for (int i=0; i<points.length(); ++i) {
             QPointF pos = points.at(i);
             p.drawEllipse(QRectF(pos.x() - m_pointSize,
                                         pos.y() - m_pointSize,
                                         m_pointSize*2, m_pointSize*2));
         }
-//        p.setPen(QPen(Qt::green, m_lineWidth, Qt::SolidLine));
-//        p.setBrush(Qt::NoBrush);
-//        p.drawPolyline(points);
+        p.setPen(QPen(color, m_lineWidth, Qt::SolidLine));
+        p.setBrush(Qt::NoBrush);
+        p.drawPolyline(points);
+    }else{
+        p.setPen(QColor(0, 255, 0, 255));
+        p.setBrush(QColor(0, 255, 0, 255));
+        for (int i=0; i<points.length(); ++i) {
+            QPointF pos = points.at(i);
+            p.drawEllipse(QRectF(pos.x() - m_pointSize,
+                                 pos.y() - m_pointSize,
+                                 m_pointSize*2, m_pointSize*2));
+        }
     }
 
 
@@ -224,6 +247,13 @@ bool SegStroke::isEdgeHavPt(const QPointF &point,int& pos)
     return false;
 }
 
+bool SegStroke::isContains(const QPointF &point)
+{
+    QPolygonF polygon(points);
+
+    return polygon.containsPoint(point,Qt::WindingFill);
+}
+
 void SegStroke::updatePoint(const QPointF &point, int &pos)
 {
     if(pos < points.length() && pos >=0){
@@ -237,6 +267,13 @@ void SegStroke::insertPoint(const QPointF &point, int &pos)
         points.insert(pos,point);
     }else if(pos == points.length()){
         points.append(point);
+    }
+}
+
+void SegStroke::move(const QPointF &point)
+{
+    for(auto i = 0;i < points.size();i++){
+        points.replace(i,(points.at(i)+point));
     }
 }
 

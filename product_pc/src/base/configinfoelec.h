@@ -11,8 +11,10 @@ struct SystemInfo {
     QString writeCom = "COM12";
     QString ioCom = "COM5";
     QString selectCom = "COM9";
+    QString elecLockCom = "COM2";
     bool ioSwitch;
     bool selectSwitch;
+    bool elecLockSwitch;
 };
 
 struct LockPosInfo {

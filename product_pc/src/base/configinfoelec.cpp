@@ -52,6 +52,8 @@ void ConfigInfoElecLock::ReadAllConfig()
     m_sysInfo.writeCom = reader.value("writeCom", QVariant("COM1")).toString();
     m_sysInfo.ioCom = reader.value("ioCom", QVariant("COM4")).toString();
     m_sysInfo.selectCom = reader.value("selectCom", QVariant("COM2")).toString();
+    m_sysInfo.elecLockCom = reader.value("elecLockCom", QVariant("COM6")).toString();
+    m_sysInfo.elecLockSwitch = reader.value("elecLockSwitch", QVariant(false)).toBool();
     m_sysInfo.ioSwitch = reader.value("ioSwitch", QVariant(false)).toBool();
     m_sysInfo.selectSwitch = reader.value("selectSwitch", QVariant(false)).toBool();
     reader.endGroup();
@@ -160,6 +162,8 @@ void ConfigInfoElecLock::SetSysInfo(const SystemInfo& systemInfo)
     writer.setValue("selectCom", m_sysInfo.selectCom);
     writer.setValue("ioSwitch", m_sysInfo.ioSwitch);
     writer.setValue("selectSwitch", m_sysInfo.selectSwitch);
+    writer.setValue("elecLockCom", m_sysInfo.elecLockCom);
+    writer.setValue("elecLockSwitch", m_sysInfo.elecLockSwitch);
     writer.endGroup();
 }
 

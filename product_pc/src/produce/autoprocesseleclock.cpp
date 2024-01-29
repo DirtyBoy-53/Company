@@ -9,6 +9,8 @@
 #include "util.h"
 #include "StaticSignals.h"
 #include "configinfo.h"
+#include "CSerialDirect.h"
+#include "CMyPrinter.h"
 
 AutoProcessElecLock::AutoProcessElecLock()
 {
@@ -28,6 +30,18 @@ bool AutoProcessElecLock::initConnect()
     m_index = 0;
     m_reWorkTimes = 0;
     m_autoWorkInfo.workState = 0;
+
+    tableClearData();
+    showProcess("");
+
+    QString mTemplatePath;
+    if (stationName() == "DE1001") {
+        if (!getPrintFile(mTemplatePath)) {
+            showFail("打印模板文件不存在");
+            return false;
+        }
+        addLog("打印模板文件路径：" + mTemplatePath);
+    }
 
     ConfigInfoElecLock::getInstance()->GetSysInfo(m_sysInfo);
     if(!m_serial->openSerial(m_sysInfo.writeCom, m_sysInfo.readCom)) {
@@ -58,7 +72,8 @@ bool AutoProcessElecLock::initConnect()
     StaticSignals::getInstance()->statusUpdateEnable(false);
     m_serial->setEnable(false);
 
-    if(ConfigInfo::getInstance()->cacheInfo().sCodeId == "DE1007") {
+    QString stationCode = ConfigInfo::getInstance()->cacheInfo().sCodeId;
+    if(stationCode == "DE1007") {
         ConfigInfo::getInstance()->getValueBoolean("DE1007", "IV3Support", m_iv3Support);
         ConfigInfo::getInstance()->getValueString("DE1007", "IV3Address", m_iv3Address);
         if (m_iv3Support) {
@@ -155,18 +170,22 @@ void AutoProcessElecLock::initStateMachine()
     add(0, "check next", std::bind(&AutoProcessElecLock::checkNext, this));
     add(10, "check work mode", std::bind(&AutoProcessElecLock::checkWorkMode, this));
     add(20, "get sn code", std::bind(&AutoProcessElecLock::getSn, this));
-    add(30, "enter mes", std::bind(&AutoProcessElecLock::enterMes, this));
+    add(21, "enter mes", std::bind(&AutoProcessElecLock::enterMes, this));
+    if (stationName() == "DE1003") {
+        add(22, "get src code", std::bind(&AutoProcessElecLock::getSourceSn, this));
+    }
     if(ConfigInfo::getInstance()->cacheInfo().sCodeId == "CL1002") {
-        add(31, "getLenSn", std::bind(&AutoProcessElecLock::getSensorSn, this));
+        add(23, "getLenSn", std::bind(&AutoProcessElecLock::getSensorSn, this));
     }
     if(ConfigInfo::getInstance()->cacheInfo().sCodeId == "DE1005") {
-        add(31, "getBackSN", std::bind(&AutoProcessElecLock::getBackSN, this));
+        add(24, "getBackSN", std::bind(&AutoProcessElecLock::getBackSN, this));
     }
-    if(ConfigInfo::getInstance()->cacheInfo().sCodeId == "CL1001") {
-        add(31, "getShutterCode", std::bind(&AutoProcessElecLock::getShutterCode, this));
+    if(stationName() == "CL1001" || stationName() == "AA1007" ||
+        stationName() == "AA1008" || stationName() == "AA1009") {
+        add(25, "getShutterCode", std::bind(&AutoProcessElecLock::getShutterCode, this));
     }
     if(ConfigInfo::getInstance()->cacheInfo().sCodeId == "DE1011") {
-        add(31, "setScrewSelectInit", std::bind(&AutoProcessElecLock::initScrewSelect, this));
+        add(26, "setScrewSelectInit", std::bind(&AutoProcessElecLock::initScrewSelect, this));
     }
 
     if(ConfigInfo::getInstance()->cacheInfo().sCodeId == "DE1007") {
@@ -185,6 +204,12 @@ void AutoProcessElecLock::initStateMachine()
         add(45, "判断是否到了CCD位置", std::bind(&AutoProcessElecLock::moveToCCD, this));
         add(46, "判断是否到了CCD位置", std::bind(&AutoProcessElecLock::iv3Test, this));
     }
+
+    if (stationName() == "DE1001") {
+        add(47, "打印整机SN", std::bind(&AutoProcessElecLock::print, this));
+        add(48, "比对整机SN", std::bind(&AutoProcessElecLock::compare, this));
+    }
+
     add(50, "mes upload", std::bind(&AutoProcessElecLock::mesUpload, this));
     add(60, "out mes", std::bind(&AutoProcessElecLock::outMes, this));
     add(61, "out mes", std::bind(&AutoProcessElecLock::overTest, this));
@@ -301,18 +326,18 @@ void AutoProcessElecLock::getSensorSn()
 void AutoProcessElecLock::getBackSN()
 {
     if(m_errorCode != 0) return;
-    addLog("开始扫码 后壳编码");
+    addLog("开始扫码 上盖编码");
 
     StaticSignals::getInstance()->statusUpdateImg("SN1.png");
 
-    QString code = msgBox("请扫码 后壳编码");
-    addLog("获取后壳编码 " + code);
+    QString code = msgBox("请扫码 上盖编码");
+    addLog("获取上盖编码 " + code);
 
     MesCheckItem item;
     item.sItem = "camera_back_comp";
     if(code.size() != 15) {
-        addLog("后壳编码失败,不是15位数", -1);
-        m_errMsg = "后壳编码失败,不是15位数";
+        addLog("上盖编码失败,不是15位数", -1);
+        m_errMsg = "上盖编码失败,不是15位数";
         m_errorCode = -18;
         item.sResult = MESFAILED;
     } else {
@@ -371,19 +396,57 @@ void AutoProcessElecLock::initScrewSelect()
 
 void AutoProcessElecLock::getSn()
 {
-    addLog("开始扫码 SN");
-    m_sn = msgBox("请扫码 SN");
+    QString title = "请扫码 SN";
+    if (stationName() == "DE1001") {
+        title = "请扫码PCB SN";
+    }
+    QString sn = msgBox(title);
+    addLog("扫码到SN: " + sn + " 工序：" + stationName());
+    m_sn = sn;
 
-//    if(ConfigInfo::getInstance()->sysInfo().mode == 0) {
-//    }
+    // 2024年1月12日 向华
+    // 新加入DE1001工序获取整机SN的方法：1. 在线通过PCB SN获取 2. 离线通过输入整机SN
+    if (stationName() == "DE1001") {
+        if (isOnlineMode()) {
+            if(0 != MesClient::instance()->getSnByMaterialSn(sn, m_sn)){
+                addLog("通过PCB SN获取整机SN失败", -1);
+                m_errMsg = "通过PCB SN获取整机SN失败";
+                m_errorCode = -2;
+                return;
+            }
+        } else {
+            m_sn = msgBox("请输入整机SN");
+        }
+    }
+
     CacheInfo info = ConfigInfo::getInstance()->cacheInfo();
     info.sSn = m_sn;
     ConfigInfo::getInstance()->setCacheInfo(info);
 
-    addLog("SN: " + m_sn);
+    addLog("整机SN: " + m_sn);
     tClear();
     logClear();
     m_errorCode = 0;
+}
+
+void AutoProcessElecLock::getSourceSn()
+{
+    addLog("扫电源板SN编码");
+    QString srcSn = msgBox("扫电源板SN编码");
+    MesCheckItem item;
+    item.sItem = "PowerPCBA_SN";
+    if(srcSn.size()< 15) {
+        logFail("镜头组件编码失败");
+        item.sResult = MESFAILED;
+        m_errorCode = -2;
+    }else {
+        srcSn = srcSn.left(15);
+    }
+    addLog("获取电源板编码 " + srcSn);
+
+    item.sValue = srcSn;
+    item.sResult = MESPASS;
+    MesCom::instance()->addItemResultEx(item);
 }
 
 void AutoProcessElecLock::praseWorkInfo(ElecLockWorkInfo info)
@@ -902,6 +965,136 @@ void AutoProcessElecLock::iv3Test()
     }
 
     signalOperate(OID_Out4, false);
+}
+
+void AutoProcessElecLock::print()
+{
+    if (m_errorCode != 0) {
+        return;
+    }
+
+    QElapsedTimer tStart;
+    tStart.start();
+    showProcess("打印SN");
+    QString mTemplatePath;
+    if (!getPrintFile(mTemplatePath)) {
+        m_errorCode = -4;
+        m_errMsg = "参数获取失败，[条码打印模板路径]不存在";
+        addLog(m_errMsg, -1);
+        return;
+    }
+    logNormal("当前模板文件为："+ mTemplatePath);
+
+    CMyPrinter printer;
+    QString printerName = printer.defalutPrinterName();
+    logNormal("当前打印机名称："+ printerName);
+
+    if (!printer.load(printer.defalutPrinterName(), mTemplatePath, 1, 1)) {
+        logFail("获取默认打印机名称异常或者模板路径未正常配置");
+        m_errorCode = -4;
+        m_errMsg = "获取默认打印机名称异常或者模板路径未正常配置";
+        return ;
+    }
+    QString sCodeId = "ID00X";
+    if (!printer.setItem(sCodeId, m_sn)) {
+        logFail("替换贴纸SN失败");
+        m_errorCode = -4;
+        m_errMsg = "替换贴纸SN失败";
+        logFail(m_errMsg);
+        return ;
+    }
+
+    logNormal("开始打印标签");
+    printer.print();
+    logNormal("完成打印标签");
+
+    emit tableAddRowData(QStringList() << "打印SN" << "/" <<  "/"
+                         <<  "/" <<  "/" << "/" <<  "/" << "PASS");
+    emit tableUpdateTestStatus(0);
+}
+
+void AutoProcessElecLock::compare()
+{
+    QString title = "扫码打印SN到框内";
+    for (int foo = 0; foo < 3; foo++) {
+        QString sn = msgBox(title);
+        if (sn.compare(m_sn) != 0) {
+            addLog("打印SN: " + sn + "与整机SN: " + m_sn + "不匹配, 重试", -1);
+            title = "打印SN与实际SN不匹配，重新扫码";
+        } else {
+            addLog("打印SN: " + sn + "与整机SN: " + m_sn + "匹配完成", 0);
+            return;
+        }
+        if (foo == 2) {
+            m_errorCode = -3;
+            m_errMsg = "打印SN比对失败";
+            return;
+        }
+    }
+
+}
+
+
+bool AutoProcessElecLock::resetElecLock()
+{
+    SystemInfo infor;
+    ConfigInfoElecLock::getInstance()->GetSysInfo(infor);
+    if (!infor.elecLockSwitch) {
+        logAddWarningLog("当前电子锁未启用，直接OK");
+        return true;
+    }
+
+    if (!m_serialElecLock.open(infor.elecLockCom, 9600, true)) {
+        logAddFailLog("电子锁端口打开失败");
+        return false;
+    }
+
+    // 继电器断开，即电子锁断电，电子锁断电会加锁
+    unsigned char uc_lock_cmd[] = {0x33, 0x01, 0x11, 0x00, 0x00, 0x00, 0x01, 0x46};
+    unsigned char uc_lock_ret[] = {0x33, 0x01, 0x11, 0x00, 0x00, 0x00, 0x01, 0x35};
+    // 继电器闭合，即电子锁通电，电子锁断电会解锁
+    unsigned char uc_unlock_cmd[] = {0x33, 0x01, 0x12, 0x00, 0x00, 0x00, 0x01, 0x47};
+    unsigned char uc_unlock_ret[] = {0x33, 0x01, 0x12, 0x00, 0x00, 0x00, 0x01, 0x36};
+
+    bool bRstOk = false;
+    m_serialElecLock.write(uc_unlock_cmd, sizeof(uc_unlock_cmd));
+    if (!m_serialElecLock.find(uc_unlock_ret, sizeof(uc_unlock_ret), 5000)) {
+        logAddFailLog("电子锁解锁失败");
+    } else {
+        logAddNormalLog("电子锁解锁完成");
+        QThread::msleep(1000);
+        m_serialElecLock.write(uc_lock_cmd, sizeof(uc_lock_cmd));
+        if (m_serialElecLock.find(uc_lock_ret, sizeof(uc_lock_ret), 5000)) {
+            logAddNormalLog("电子锁加锁完成");
+            bRstOk = true;
+        } else {
+            logAddFailLog("电子锁加锁失败");
+        }
+    }
+    m_serialElecLock.close();
+
+    return bRstOk;
+}
+
+bool AutoProcessElecLock::getPrintFile(QString& filename)
+{
+    QString mTemplatePath;
+    bool ret = ConfigInfo::getInstance()->getValueString(stationName(), "条码打印模板路径", mTemplatePath);
+    if (!ret) {
+        m_errorCode = -4;
+        m_errMsg = "参数获取失败，[条码打印模板路径]不存在";
+        addLog(m_errMsg, -1);
+        return false;
+    }
+
+    if (!QFile::exists(mTemplatePath)) {
+        m_errorCode = -4;
+        m_errMsg = "模板文件不存在";
+        logFail(m_errMsg);
+        return false;
+    }
+    filename = mTemplatePath;
+    return true;
 }
 
 void AutoProcessElecLock::setScrewDeviceEnable(const bool enable)

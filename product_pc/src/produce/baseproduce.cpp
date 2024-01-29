@@ -492,6 +492,11 @@ QString BaseProduce::dutIP()
     return value;
 }
 
+QString BaseProduce::stationName()
+{
+    return ConfigInfo::getInstance()->cacheInfo().sCodeId;
+}
+
 void BaseProduce::setCurrentBarcode(QString sn)
 {
     m_sn = sn;

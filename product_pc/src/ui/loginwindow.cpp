@@ -77,7 +77,7 @@ void LoginWindow::on_btnLogin_clicked()
         role = 1;
     } else {
         role = MesClient::instance()->login(userName, passwd);
-    //    role = 1;
+//        role = 1;
         if(role < 0){
             if(role == -2) {
                 QMessageBox::information(this, "提示", "服务器异常2");

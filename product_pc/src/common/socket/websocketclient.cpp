@@ -14,7 +14,7 @@
 #include "Poco/Thread.h"
 #include "Poco/Buffer.h"
 #include <thread>
-
+#include <QDebug>
 
 using Poco::Net::HTTPClientSession;
 using Poco::Net::HTTPRequest;

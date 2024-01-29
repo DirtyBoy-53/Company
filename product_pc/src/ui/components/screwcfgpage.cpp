@@ -128,8 +128,10 @@ void ScrewCfgPage::initSysTableWidget()
     ui->editSupportCom->setText(sysInfo.readCom);
     ui->editSelectCom->setText(sysInfo.selectCom);
     ui->editIoCom->setText(sysInfo.ioCom);
+    ui->editIoElecLockCom->setText(sysInfo.elecLockCom);
     ui->checkBoxSelect->setChecked(sysInfo.selectSwitch);
     ui->checkBoxIo->setChecked(sysInfo.ioSwitch);
+    ui->checkElecIO->setChecked(sysInfo.elecLockSwitch);
 }
 
 void ScrewCfgPage::initWorkListWidget()
@@ -284,6 +286,8 @@ void ScrewCfgPage::on_btnConfirm_clicked()
     sysInfo.selectSwitch = ui->checkBoxSelect->isChecked();
     sysInfo.ioCom = ui->editIoCom->text();
     sysInfo.ioSwitch = ui->checkBoxIo->isChecked();
+    sysInfo.elecLockCom = ui->editIoElecLockCom->text();
+    sysInfo.elecLockSwitch = ui->checkElecIO->isChecked();
     ConfigInfoElecLock::getInstance()->SetSysInfo(sysInfo);
 
     this->hide();
