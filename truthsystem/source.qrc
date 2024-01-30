@@ -1,0 +1,52 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/camera.png</file>
+        <file>image/lidar.png</file>
+        <file>image/system.png</file>
+        <file>image/youyou.png</file>
+        <file>image/zuozuo.png</file>
+        <file>image/lidardisplay.png</file>
+        <file>image/videodisplay.png</file>
+        <file>image/videodisplay1.png</file>
+        <file>image/calibration.png</file>
+        <file>image/front.png</file>
+        <file>image/right.png</file>
+        <file>image/top.png</file>
+        <file>image/down.png</file>
+        <file>image/branch-closed.png</file>
+        <file>image/branch-end.png</file>
+        <file>image/branch-more.png</file>
+        <file>image/branch-open.png</file>
+        <file>image/button-add.png</file>
+        <file>image/Switch-close.png</file>
+        <file>image/Switch-open.png</file>
+        <file>image/Real time screen.png</file>
+        <file>image/screenshot.png</file>
+        <file>image/stop_record.png</file>
+        <file>image/record.png</file>
+        <file>image/stop_play.png</file>
+        <file>image/play.png</file>
+        <file>image/connect_status.png</file>
+        <file>image/3735134.png</file>
+        <file>image/play_gotoend.png</file>
+        <file>image/play_gotostart.png</file>
+        <file>image/play_loop.png</file>
+        <file>image/play_pause.png</file>
+        <file>image/play_play.png</file>
+        <file>image/play_seekbackward.png</file>
+        <file>image/play_seekforward.png</file>
+        <file>image/showaxis.png</file>
+        <file>image/web.png</file>
+        <file>image/orthographic.png</file>
+        <file>image/perspective.png</file>
+        <file>image/4186876.png</file>
+        <file>image/grid.png</file>
+        <file>image/polar.png</file>
+        <file>image/radar.png</file>
+        <file>image/replay.png</file>
+        <file>image/check.png</file>
+        <file>image/truthsystem.png</file>
+        <file>image/fusion.png</file>
+        <file>image/merge.png</file>
+    </qresource>
+</RCC>

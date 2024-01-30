@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EventWidget</class>
+ <widget class="QWidget" name="EventWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>323</width>
+    <height>544</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/*groupBox*/
+QGroupBox{
+/*background:#444444;*/
+border:0px solid gray;
+border-radius:10px;
+margin-top:11px;
+}
+
+QGroupBox::title {
+      subcontrol-origin: margin;
+      subcontrol-position: top left;
+      padding-top: 5;
+      padding-left: 5;
+}
+/*lineedit*/
+QLineEdit {
+        border: 1px solid #A0A0A0; /* 边框宽度为1px，颜色为#A0A0A0 */
+        border-radius: 3px; /* 边框圆角 */
+        padding-left: 5px; /* 文本距离左边界有5px */
+        background-color: #F2F2F2; /* 背景颜色 */
+        color: #A0A0A0; /* 文本颜色 */
+        selection-background-color: #A0A0A0; /* 选中文本的背景颜色 */
+        selection-color: #F2F2F2; /* 选中文本的颜色 */
+        font-family: &quot;Microsoft YaHei&quot;; /* 文本字体族 */
+        font-size: 10pt; /* 文本字体大小 */
+}
+/*pushbutton*/
+QPushButton {
+    background-color: #ffffff;
+    border: 1px solid #dcdfe6;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+QPushButton:hover {
+    background-color: #ecf5ff;
+    color: #409eff;
+}
+
+QPushButton:pressed, QPushButton:checked {
+    border: 1px solid #3a8ee6;
+    color: #409eff;
+}
+
+QComboBox{
+        border:1px solid gray;
+        border-radius:3px;
+        padding: 5px;
+        min-width:4em;
+}
+QComboBox::drop-down{
+subcontrol-origin:padding;
+subcontrol-position:top right;
+width:20px;
+border-left-width:1px;
+border-left-color:darkgray;
+border-left-style:solid;
+border-top-right-radius:3px;
+border-bottom-right-radius:3px;
+}
+QComboBox QAbstractItemView{
+border: 2px solid #4E6D8C;
+}
+QComboBox::down-arrow{
+image: url(:/image/down.png);
+}
+
+/*表格美化*/
+QHeaderView
+{
+    background:transparent;
+}
+
+QHeaderView::section
+{
+    font-size:14px;
+    font-family:&quot;Microsoft YaHei&quot;;
+    color:#FFFFFF;
+    background:#60669B;
+    border:none;
+    text-align:left;
+    min-height:49px;
+    max-height:49px;
+    margin-left:0px;
+    padding-left:0px;
+}
+
+#tableWidget_SenceInfo
+{
+    background:#FFFFFF;
+    border:none;
+
+    font-size:10px;
+    font-family:&quot;Microsoft YaHei&quot;;
+    color:#666666;
+}
+QTableWidget::item
+{
+    border-bottom:1px solid #EEF1F7 ;
+}
+
+QTableWidget::item::selected
+{
+    color:red;
+    background:#EFF4FF;
+}
+
+
+QScrollBar::handle:vertical
+{
+    background: rgba(255,255,255,20%);
+    border: 0px solid grey;
+    border-radius:3px;
+    width: 8px;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+{
+    background:rgba(255,255,255,10%);
+}
+
+
+QScollBar::add-line:vertical, QScrollBar::sub-line:vertical
+{
+    background:transparent;
+}
+
+/*QCheckBox*/
+QCheckBox{
+	border: none;/*最外层边框*/
+}
+QCheckBox::indicator{/*选择框尺寸*/
+    background-color: rgba(255, 255, 255);
+    border: 0px solid black;
+	width: 30px;
+	height: 30px;
+}
+QCheckBox:enabled:checked{
+	color: rgb(255, 255, 255);
+}
+QCheckBox:enabled:!checked{
+	color: rgb(0, 0, 0);
+}
+QCheckBox:enabled:hover{
+ 	color: rgb(0, 200, 0);
+}
+QCheckBox:!enabled{
+	color: rgb(80, 80, 80);
+}
+ 
+QCheckBox::indicator:unchecked {
+        image: url(:/image/Switch-close.png);
+}
+QCheckBox::indicator:unchecked:hover {
+       image: url(:/image/Switch-close.png);
+}
+QCheckBox::indicator:unchecked:pressed {
+        image: url(:/image/Switch-close.png);
+}
+QCheckBox::indicator:checked {
+        image: url(:/image/Switch-open.png);
+}
+QCheckBox::indicator:checked:hover {
+        image: url(:/image/Switch-open.png);
+}
+QCheckBox::indicator:checked:pressed {
+        image: url(:/image/Switch-open.png);
+}
+
+/*treeWidget*/
+QTreeView::branch:has-siblings:!adjoins-item {
+	border-image: url(:/image/vline.png) 0;
+}
+ 
+QTreeView::branch:has-siblings:adjoins-item {
+	border-image: url(:/image/branch-more.png) 0;
+}
+ 
+QTreeView::branch:!has-children:!has-siblings:adjoins-item {
+	border-image: url(:/image/branch-end.png) 0;
+}
+ 
+QTreeView::branch:has-children:!has-siblings:closed,
+QTreeView::branch:closed:has-children:has-siblings {
+    border-image: none;
+    image: url(:/image/branch-closed.png);
+}
+ 
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings  {
+    border-image: none;
+    image: url(:/image/branch-open.png);
+}</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="0">
+    <widget class="QFrame" name="frame_2">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Tag文件目录</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="editTagPath">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="btnReboot">
+        <property name="text">
+         <string>重启</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="btnAlarmError">
+        <property name="text">
+         <string>误报</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="btnCheckError">
+        <property name="text">
+         <string>误检</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="btnCheckMissed">
+        <property name="text">
+         <string>漏检</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="btnAlarmMissed">
+        <property name="text">
+         <string>漏报</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QFrame" name="frame_3">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>自定义tag</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="editCustom"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="btnCustom">
+        <property name="text">
+         <string>自定义</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QListWidget" name="listWidget"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>btnReboot</sender>
+   <signal>clicked()</signal>
+   <receiver>EventWidget</receiver>
+   <slot>slot_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>35</x>
+     <y>80</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>371</x>
+     <y>55</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnAlarmError</sender>
+   <signal>clicked()</signal>
+   <receiver>EventWidget</receiver>
+   <slot>slot_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>79</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>346</x>
+     <y>69</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnCheckError</sender>
+   <signal>clicked()</signal>
+   <receiver>EventWidget</receiver>
+   <slot>slot_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>136</x>
+     <y>81</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>318</x>
+     <y>87</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnCheckMissed</sender>
+   <signal>clicked()</signal>
+   <receiver>EventWidget</receiver>
+   <slot>slot_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>50</x>
+     <y>109</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>110</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnAlarmMissed</sender>
+   <signal>clicked()</signal>
+   <receiver>EventWidget</receiver>
+   <slot>slot_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>118</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>334</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnCustom</sender>
+   <signal>clicked()</signal>
+   <receiver>EventWidget</receiver>
+   <slot>slot_btn_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>240</x>
+     <y>166</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>361</x>
+     <y>176</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_btn_clicked()</slot>
+ </slots>
+</ui>

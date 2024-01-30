@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LidarViewerWidgetClass</class>
+ <widget class="QWidget" name="LidarViewerWidgetClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>858</width>
+    <height>668</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>LidarViewerWidget</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton{
+	border:none
+}</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="btn_connect">
+       <property name="maximumSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;choose device&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../source.qrc">
+         <normaloff>:/image/web.png</normaloff>:/image/web.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_opendir">
+       <property name="maximumSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;choose folder&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../source.qrc">
+         <normaloff>:/image/3735134.png</normaloff>:/image/3735134.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_front">
+       <property name="maximumSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;set front view&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../source.qrc">
+         <normaloff>:/image/front.png</normaloff>:/image/front.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="autoRepeat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_right">
+       <property name="maximumSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;set right view&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../source.qrc">
+         <normaloff>:/image/right.png</normaloff>:/image/right.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="autoRepeat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_top">
+       <property name="maximumSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;set top view&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../source.qrc">
+         <normaloff>:/image/top.png</normaloff>:/image/top.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="autoRepeat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_projection">
+       <property name="maximumSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Orthographic/Perspective projection&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../source.qrc">
+         <normaloff>:/image/orthographic.png</normaloff>:/image/orthographic.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="autoRepeat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_grid">
+       <property name="maximumSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Is show grid&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../source.qrc">
+         <normaloff>:/image/grid.png</normaloff>:/image/grid.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="autoRepeat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_polar">
+       <property name="maximumSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Is show polar&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../source.qrc">
+         <normaloff>:/image/polar.png</normaloff>:/image/polar.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="autoRepeat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_isShow_coordinate">
+       <property name="maximumSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Is show coordinate&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../source.qrc">
+         <normaloff>:/image/showaxis.png</normaloff>:/image/showaxis.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>35</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="autoRepeat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="Viewer" name="pointViewerWidget">
+       <property name="minimumSize">
+        <size>
+         <width>300</width>
+         <height>200</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <item>
+        <widget class="QPushButton" name="btn_last_file">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>35</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;last file&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/image/play_seekbackward.png</normaloff>:/image/play_seekbackward.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_last_frame">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>35</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;last frame&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/image/play_gotostart.png</normaloff>:/image/play_gotostart.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_play_stop">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>35</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;play/stop&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/image/play_play.png</normaloff>:/image/play_play.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_next_frame">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>35</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;next frame&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/image/play_gotoend.png</normaloff>:/image/play_gotoend.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_next_file">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>35</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;next file&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/image/play_seekforward.png</normaloff>:/image/play_seekforward.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_record">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>35</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;next file&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/image/4186876.png</normaloff>:/image/4186876.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>Viewer</class>
+   <extends>QOpenGLWidget</extends>
+   <header>viewer.h</header>
+   <slots>
+    <slot>set_camera_view(ENUM_VIEW)</slot>
+    <slot>set_projection_mode(Camera::Type)</slot>
+    <slot>set_is_show_grid(bool)</slot>
+    <slot>set_is_show_polar(bool)</slot>
+    <slot>set_is_show_coordinate(bool)</slot>
+    <slot>updateViewMaster(PointView)</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../source.qrc"/>
+  <include location="../source.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>btn_connect</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_tools()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>28</x>
+     <y>26</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>695</x>
+     <y>9</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_opendir</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_tools()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>27</x>
+     <y>79</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>695</x>
+     <y>48</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_front</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_tools()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>21</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>696</x>
+     <y>94</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_right</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_tools()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>32</x>
+     <y>166</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>697</x>
+     <y>143</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_top</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_tools()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>17</x>
+     <y>211</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>699</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_projection</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_tools()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>34</x>
+     <y>257</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>703</x>
+     <y>237</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_play_stop</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_playCtrl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>163</x>
+     <y>234</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>433</x>
+     <y>425</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_last_frame</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_playCtrl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>116</x>
+     <y>235</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>433</x>
+     <y>458</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_last_file</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_playCtrl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>69</x>
+     <y>230</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>433</x>
+     <y>497</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_next_frame</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_playCtrl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>205</x>
+     <y>233</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>432</x>
+     <y>392</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_next_file</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_playCtrl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>242</x>
+     <y>230</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>431</x>
+     <y>358</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_record</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_playCtrl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>301</x>
+     <y>229</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>431</x>
+     <y>325</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>LidarViewerWidgetClass</sender>
+   <signal>sig_set_camera_view(ENUM_VIEW)</signal>
+   <receiver>pointViewerWidget</receiver>
+   <slot>set_camera_view(ENUM_VIEW)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>193</x>
+     <y>570</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>196</x>
+     <y>115</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>LidarViewerWidgetClass</sender>
+   <signal>sig_set_projection_mode(Camera::Type)</signal>
+   <receiver>pointViewerWidget</receiver>
+   <slot>set_projection_mode(Camera::Type)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>274</x>
+     <y>596</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>272</x>
+     <y>123</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_grid</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_tools()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>28</x>
+     <y>297</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>705</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_polar</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_tools()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>26</x>
+     <y>340</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>709</x>
+     <y>329</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_isShow_coordinate</sender>
+   <signal>clicked()</signal>
+   <receiver>LidarViewerWidgetClass</receiver>
+   <slot>slot_btn_clicked_tools()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>31</x>
+     <y>386</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>710</x>
+     <y>375</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>LidarViewerWidgetClass</sender>
+   <signal>sig_set_isShow_coordinate(bool)</signal>
+   <receiver>pointViewerWidget</receiver>
+   <slot>set_is_show_coordinate(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>172</x>
+     <y>620</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>201</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>LidarViewerWidgetClass</sender>
+   <signal>sig_set_isShow_polar(bool)</signal>
+   <receiver>pointViewerWidget</receiver>
+   <slot>set_is_show_polar(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>287</x>
+     <y>629</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>274</x>
+     <y>208</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>LidarViewerWidgetClass</sender>
+   <signal>sig_set_isShow_grid(bool)</signal>
+   <receiver>pointViewerWidget</receiver>
+   <slot>set_is_show_grid(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>335</x>
+     <y>612</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>208</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>LidarViewerWidgetClass</sender>
+   <signal>sig_update_lidar_data(PointView)</signal>
+   <receiver>pointViewerWidget</receiver>
+   <slot>updateViewMaster(PointView)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>103</x>
+     <y>621</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>102</x>
+     <y>175</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <signal>sig_set_camera_view(ENUM_VIEW)</signal>
+  <signal>sig_set_projection_mode(Camera::Type)</signal>
+  <signal>sig_set_isShow_grid(bool)</signal>
+  <signal>sig_set_isShow_polar(bool)</signal>
+  <signal>sig_set_isShow_coordinate(bool)</signal>
+  <signal>sig_update_lidar_data(PointView)</signal>
+  <slot>slot_btn_clicked_tools()</slot>
+  <slot>slot_btn_clicked_playCtrl()</slot>
+ </slots>
+</ui>

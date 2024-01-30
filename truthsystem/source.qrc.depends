@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>/home/guide/yyg/truthsystem/image/camera.png</file>
+        <file>/home/guide/yyg/truthsystem/image/lidar.png</file>
+        <file>/home/guide/yyg/truthsystem/image/system.png</file>
+        <file>/home/guide/yyg/truthsystem/image/youyou.png</file>
+        <file>/home/guide/yyg/truthsystem/image/zuozuo.png</file>
+        <file>/home/guide/yyg/truthsystem/image/lidardisplay.png</file>
+        <file>/home/guide/yyg/truthsystem/image/videodisplay.png</file>
+        <file>/home/guide/yyg/truthsystem/image/videodisplay1.png</file>
+        <file>/home/guide/yyg/truthsystem/image/calibration.png</file>
+        <file>/home/guide/yyg/truthsystem/image/front.png</file>
+        <file>/home/guide/yyg/truthsystem/image/right.png</file>
+        <file>/home/guide/yyg/truthsystem/image/top.png</file>
+    </qresource>
+</RCC>
