@@ -19,6 +19,8 @@ public:
 public slots:
     void addShape();
     void removeShape();
+    void addPoint(const QPointF &point);
+    void removePoint();
 protected:
     void initUI();
     void initConnect();

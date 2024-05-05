@@ -6,7 +6,10 @@ CONFIG += c++17
 
 CONFIG += sdk_no_version_check
 DEFINES -= UNICODE _UNICODE
-
+msvc {
+    QMAKE_CFLAGS += /utf-8
+    QMAKE_CXXFLAGS += /utf-8
+}
 TEMPLATE = app
 #RC_ICONS = app.ico
 #RC_FILE = app.rc
@@ -34,6 +37,7 @@ SOURCES +=\
     $$SRC_GLOBAL/common.cpp \
     src/annotations/shape.cpp \
     src/annotations/ypolygon.cpp \
+    src/annotations/yrectangle.cpp \
     src/canvas/document2d.cpp \
     src/canvas/documentbase.cpp \
     src/controllers/commands.cpp \
@@ -50,6 +54,7 @@ HEADERS += \
     src/annotations/shape.h \
     src/annotations/shapefactory.h \
     src/annotations/ypolygon.h \
+    src/annotations/yrectangle.h \
     src/canvas/document2d.h \
     src/canvas/documentbase.h \
     src/controllers/commands.h \

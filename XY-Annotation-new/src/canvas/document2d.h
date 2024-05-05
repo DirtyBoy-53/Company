@@ -12,6 +12,10 @@ public:
 
     QString addShape(const ShapePtr shape);
     void deleteShape(const QString &shapeName);
+
+    QString addPoint(ShapePtr shape, const QPointF &point);
+    void deletePoint(ShapePtr shape, const QString &pointName);
+
     ShapePtr shape(const QString &shapeName) const;
 
 

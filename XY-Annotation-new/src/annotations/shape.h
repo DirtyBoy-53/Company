@@ -6,7 +6,7 @@
 #include <QJsonObject>
 #include <QPointF>
 #include <QVector>
-
+#include <QObject>
 QT_FORWARD_DECLARE_CLASS(LabelManager)
 
 
@@ -30,9 +30,11 @@ enum draw_mode_e{
 };
 
 
-class Shape
+class Shape : public QObject
 {
+    Q_OBJECT
 public:
+    Q_ENUM(draw_mode_e)
 
     explicit Shape(const draw_mode_e type);
     virtual ~Shape(){}
@@ -68,6 +70,8 @@ public:
     void setName(const QString &newName);
     void appendPoint(const QPointF &point);
     void updateEndPt(const QPointF &point);
+
+    void deletePoint(const int &index);
 
     QVector<QPointF> points() const;
 

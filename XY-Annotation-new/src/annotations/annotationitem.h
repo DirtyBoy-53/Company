@@ -34,9 +34,11 @@ public:
         json.insert("id",id);
         return json;
     }
+
     virtual void addJsonObejct(QJsonArray &json,QJsonObject &obj) const{
 
     }
+
     virtual void fromJsonObject(const QJsonObject &json){
         if(json.contains("label")){
             QJsonValue value = json.value("label");

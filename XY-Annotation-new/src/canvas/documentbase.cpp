@@ -15,3 +15,10 @@ QString DocumentBase::currentShapeName() const
         return QString();
     return m_shapeList.at(m_currentIndex).get()->name();
 }
+
+ShapePtr DocumentBase::currentShape() const
+{
+    if(m_currentIndex == -1)
+        return nullptr;
+    return m_shapeList.at(m_currentIndex);
+}

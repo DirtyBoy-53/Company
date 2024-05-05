@@ -4,7 +4,8 @@
 #include "shapefactory.h"
 #include "commands.h"
 CanvasWidget::CanvasWidget(QWidget *parent)
-    : m_undoGroup (new QUndoGroup(this))
+    : QScrollArea(parent)
+    , m_undoGroup (new QUndoGroup(this))
 {
     m_doc = new Document2D(&m_labelManager);
     initUI();
@@ -34,6 +35,7 @@ void CanvasWidget::adjustFitWindow()
 
 void CanvasWidget::addShape()
 {
+    qInfo("addShape");
     ShapePtr newShape = ShapeFactory::create(m_doc->getDrawMode());
     m_doc->undoStack()->push(new AddShapeCommand(m_doc,newShape));
 }
@@ -41,9 +43,21 @@ void CanvasWidget::addShape()
 void CanvasWidget::removeShape()
 {
     QString shapeName = m_doc->currentShapeName();
-    if (shapeName.isEmpty())
-        return;
+    if (shapeName.isEmpty()) return;
     m_doc->undoStack()->push(new RemoveShapeCommand(m_doc,shapeName));
+}
+
+void CanvasWidget::addPoint(const QPointF &point)
+{
+    auto shape = m_doc->currentShape();
+    if(nullptr == shape) return;
+    m_doc->undoStack()->push(new AddPointCommand(m_doc, shape, point));
+
+}
+
+void CanvasWidget::removePoint()
+{
+
 }
 
 void CanvasWidget::initUI()
@@ -60,12 +74,13 @@ void CanvasWidget::initUI()
 void CanvasWidget::initConnect()
 {
     connect(m_doc,&Document2D::sigAddShape,this,&CanvasWidget::addShape);
+    connect(m_doc,&Document2D::sigAddPoint,this,&CanvasWidget::addPoint);
 }
 
 void CanvasWidget::loadPixmap()
 {
     QString fileName = QFileDialog::getOpenFileName(this, "open a file", "/",
-                                                    "Image Files (*.jpg *.png);;JPEG Files (*.jpg);;PNG Files (*.png)");
+                                                    "Image Files (*.jpg *.png *.bmp);;JPEG Files (*.jpg);;PNG Files (*.png);;BMP Files (*.bmp)");
     if (!fileName.isNull() && !fileName.isEmpty()){
 
         m_doc->loadPixmap(fileName);

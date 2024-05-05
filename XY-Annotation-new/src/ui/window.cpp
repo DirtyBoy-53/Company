@@ -126,6 +126,7 @@ void Window::initMenu()
 
     connect(actCreatPolygon, &QAction::triggered, this, [=](){
         qInfo() << "Creat polygon";
+        m_canvas->addShape();
     });
     editMenu->addAction(actCreatPolygon);
     editToolbar->addAction(actCreatPolygon);

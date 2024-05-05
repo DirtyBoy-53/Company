@@ -18,6 +18,7 @@ QString Document2D::addShape(const ShapePtr shape)
     m_shapeList.append(shape);
     m_shapeList[m_shapeList.count()-1].get()->setName(name);
     setCurrentShape(m_shapeList.count()-1);
+    update();
     return name;
 }
 
@@ -34,6 +35,23 @@ void Document2D::deleteShape(const QString &shapeName)
             --index;
         setCurrentShape(index);
     }
+    update();
+}
+
+QString Document2D::addPoint(ShapePtr shape, const QPointF &point)
+{
+    if(shape == nullptr) return "";
+    shape.get()->appendPoint(point);
+    int curPos = shape.get()->points().size()-1;
+    update();
+    return QString::number(curPos);
+}
+
+void Document2D::deletePoint(ShapePtr shape, const QString &pointName)
+{
+    auto curPos = pointName.toInt();
+    shape.get()->deletePoint(curPos);
+    update();
 }
 
 ShapePtr Document2D::shape(const QString &shapeName) const
@@ -63,7 +81,8 @@ void Document2D::mousePressEvent(QMouseEvent *event)
                     return;
                 }
                 if(m_draw == YShape::Polygon){
-                    m_shapeList.at(m_currentIndex).get()->appendPoint(pixPos);
+                    // m_shapeList.at(m_currentIndex).get()->appendPoint(pixPos);
+                    emit sigAddPoint(pixPos);
                 }
             }
         }

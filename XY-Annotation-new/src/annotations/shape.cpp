@@ -202,8 +202,20 @@ void Shape::appendPoint(const QPointF &point)
 
 void Shape::updateEndPt(const QPointF &point)
 {
+    if(m_points.isEmpty()){
+        m_points.push_back(point);
+    }
+
     m_points.back() = point;
-    qDebug("update end pt,pos:%d  point:(%f,%f)",m_points.size()-1,m_points.at(m_points.size()-1).x(),m_points.at(m_points.size()-1).y());
+    // qDebug("update end pt,pos:%d  point:(%f,%f)",
+        // m_points.size()-1,m_points.at(m_points.size()-1).x(),m_points.at(m_points.size()-1).y());
+}
+
+void Shape::deletePoint(const int &index)
+{
+    if(index >= m_points.size()) return;
+
+    m_points.erase(m_points.begin()+index);
 }
 
 QVector<QPointF> Shape::points() const

@@ -53,7 +53,7 @@ dist
 test
 *_test
 build
-hconfig.h
+#hconfig.h
 html/uploads
 
 # msvc

@@ -33,4 +33,33 @@ private:
     QString m_shapeName;
 };
 
+class AddPointCommand : public QUndoCommand
+{
+public:
+    AddPointCommand(Document2D *doc, const ShapePtr shape, const QPointF &point,
+                    QUndoCommand *parent = nullptr);
+    void undo() override;
+    void redo() override;
+
+private:
+    Document2D *m_doc;
+    ShapePtr m_shape;
+    QPointF m_point;
+    QString m_pointName;
+};
+
+class RemovePointCommand : public QUndoCommand
+{
+public:
+    RemovePointCommand(Document2D *doc, const ShapePtr shape, const QPointF &point,
+                       QUndoCommand *parent = nullptr);
+    void undo() override;
+    void redo() override;
+
+private:
+    Document2D *m_doc;
+    ShapePtr m_shape;
+    QPointF m_point;
+    QString m_pointName;
+};
 #endif // COMMANDS_H

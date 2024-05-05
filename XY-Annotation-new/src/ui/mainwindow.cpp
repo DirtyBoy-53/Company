@@ -226,7 +226,7 @@ void MainWindow::initMenu()
 
     //View
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
-    QToolBar *viewToolbar = addToolBar(tr("&Edit"));
+    QToolBar *viewToolbar = addToolBar(tr("&View"));
     viewToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     addToolBar(toolBar_location,viewToolbar);//set toolbar location
 

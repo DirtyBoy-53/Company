@@ -30,6 +30,7 @@ public:
     void loadPixmap(QPixmap pix){ m_pixmap = pix;adjustSize();update();}
     const QPixmap &getPixmap() const { return m_pixmap; }
     QString currentShapeName() const;
+    ShapePtr currentShape() const;
 
 
     // 这两个重载函数对于adjustSize()以及layout等是必须的
@@ -44,6 +45,7 @@ public:
 signals:
     void currentShapeChanged(const QString &shapeName);
     void sigAddShape();
+    void sigAddPoint(const QPointF &point);
 public slots:
     virtual void setScale(qreal newScale) = 0;
     virtual void changeTask(task_mode_e task) = 0;
