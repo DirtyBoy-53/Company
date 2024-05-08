@@ -1,4 +1,4 @@
-#ifndef QT_HEADERS_H
+﻿#ifndef QT_HEADERS_H
 #define QT_HEADERS_H
 
 // using glew.h not gl.h
@@ -12,7 +12,7 @@
 #include "3rd/spdlog/ylog.h"
 
 #if _MSC_VER >= 1600
-#pragma execution_character_set("utf-8")
+//#pragma execution_character_set("utf-8")
 #endif
 
 #define DATE qPrintable(QDate::currentDate().toString("yyyy-MM-dd"))

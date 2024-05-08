@@ -1,19 +1,18 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'annotationcontainer.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.12.5)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include <memory>
 #include "../../../src/controllers/annotationcontainer.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'annotationcontainer.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.15.2. It"
+#error "This file was generated using the moc from 5.12.5. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -242,7 +241,7 @@ void AnnotationContainer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
 }
 
 QT_INIT_METAOBJECT const QMetaObject AnnotationContainer::staticMetaObject = { {
-    QMetaObject::SuperData::link<QObject::staticMetaObject>(),
+    &QObject::staticMetaObject,
     qt_meta_stringdata_AnnotationContainer.data,
     qt_meta_data_AnnotationContainer,
     qt_static_metacall,
@@ -296,56 +295,56 @@ void AnnotationContainer::annoChanged()
 // SIGNAL 2
 void AnnotationContainer::labelGiveBack(QString _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3
 void AnnotationContainer::UndoEnableChanged(bool _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 
 // SIGNAL 4
 void AnnotationContainer::RedoEnableChanged(bool _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 4, _a);
 }
 
 // SIGNAL 5
 void AnnotationContainer::AnnotationAdded(AnnoItemPtr _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 5, _a);
 }
 
 // SIGNAL 6
 void AnnotationContainer::AnnotationInserted(AnnoItemPtr _t1, int _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 6, _a);
 }
 
 // SIGNAL 7
 void AnnotationContainer::AnnotationModified(AnnoItemPtr _t1, int _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 7, _a);
 }
 
 // SIGNAL 8
 void AnnotationContainer::AnnotationRemoved(int _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 8, _a);
 }
 
 // SIGNAL 9
 void AnnotationContainer::AnnotationSwap(int _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 9, _a);
 }
 

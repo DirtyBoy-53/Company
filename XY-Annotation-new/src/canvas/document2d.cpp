@@ -2,6 +2,10 @@
 
 #include <algorithm>
 #include <QMouseEvent>
+#include <QApplication>
+#include <QDebug>
+#include "labelmanager.h"
+#include "labeldialog.h"
 
 Document2D::Document2D(LabelManager *labelManager,QWidget *parent)
     : DocumentBase(labelManager,parent)
@@ -70,19 +74,50 @@ void Document2D::mousePressEvent(QMouseEvent *event)
         return;
     }
     QPointF pixPos = pixelPos(event->pos());
-    QPointF boundedPixPos = boundedPixelPos(event->pos());
+//    QPointF boundedPixPos = boundedPixelPos(event->pos());
     if(m_task == DocumentBase::detection){
 
     }else if(m_task == DocumentBase::segmentation){
         if (event->button()==Qt::LeftButton){
             if(m_operat == DocumentBase::draw){
-                if(m_currentIndex == -1 && m_shapeList.count() == 0){//队列为空 || 都已经封闭
+                auto shape = currentShape();
+                if(m_currentIndex >=0 && !shape) return;
+                if(m_currentIndex   == -1 ||
+                    m_shapeList.count() == 0  ||
+                    shape->isClosed() ){//队列为空 || 都已经封闭
                     emit sigAddShape();
                     return;
                 }
                 if(m_draw == YShape::Polygon){
-                    // m_shapeList.at(m_currentIndex).get()->appendPoint(pixPos);
                     emit sigAddPoint(pixPos);
+                }
+            }else if(m_operat == DocumentBase::edit){
+                if(m_mouseDrag == true) return;
+                m_activePoint = -1; m_insertPoint = -1;
+                if (event->button()==Qt::LeftButton){
+                    for (ShapePtr shape : getShapeList()){
+
+                        if(!shape->isClosed() || !shape->label()->m_visible) continue;
+
+                        if(shape->isAreaHavPt(pixPos)){
+                            setCursor(Qt::ClosedHandCursor);
+                            shape->setIsDrag(true);
+                            m_lastPressPos = pixPos;
+                        }else{
+                            setCursor(Qt::ArrowCursor);
+                            shape->setIsDrag(false);
+                        }
+                        if(shape->isPtsHavPt(pixPos,m_activePoint)){
+                            m_mouseDrag = true;
+                            shape->setIsSelect(true);
+                            break;
+                        }
+                        if(shape->isEdgeHavPt(pixPos,m_insertPoint)){
+                            m_mouseDrag = true;
+                            shape->setIsSelect(true);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -101,6 +136,26 @@ void Document2D::mouseReleaseEvent(QMouseEvent *event)
     QPointF pixPos = pixelPos(event->pos());
     QPointF boundedPixPos = boundedPixelPos(event->pos());
 
+    if(m_task == task_mode_e::segmentation){
+        if(m_operat == DocumentBase::draw){
+
+        }else if(m_operat == DocumentBase::edit){
+            if(m_draw == draw_mode_e::Polygon){
+                if(m_mouseDrag){
+                    m_mouseDrag = false; m_activePoint = -1;
+                }
+                for(ShapePtr shape : getShapeList()){
+                    if(!shape->isClosed() || !shape->label()->m_visible) continue;
+                    if(shape->isSelect()) shape->setIsSelect(false);
+                    shape->setIsDrag(false);
+                    if(!shape->isAreaHavPt(pixPos)) setCursor(Qt::ArrowCursor);
+                    else setCursor(Qt::OpenHandCursor);
+                }
+            }
+        }
+    }
+
+    update();
 }
 
 void Document2D::mouseDoubleClickEvent(QMouseEvent *event)
@@ -112,10 +167,11 @@ void Document2D::mouseDoubleClickEvent(QMouseEvent *event)
     if(m_task == DocumentBase::segmentation){
         if(m_operat == DocumentBase::draw){
             if (event->button()==Qt::LeftButton){
-                //结束绘制，弹出属性窗口
+                //结束绘制，弹出属性窗口 暂不使用
             }
         }
     }
+    update();
 }
 
 void Document2D::mouseMoveEvent(QMouseEvent *event)
@@ -125,27 +181,53 @@ void Document2D::mouseMoveEvent(QMouseEvent *event)
         return;
     }
     QPointF pixPos = pixelPos(event->pos());
-    QPointF boundedPixPos = boundedPixelPos(event->pos());
+    QPointF m_mousePos = pixPos;
 
     if(m_task == DocumentBase::detection){
 
     }else if(m_task == DocumentBase::segmentation){
         if(m_operat == DocumentBase::draw){
-            if(m_currentIndex == -1 && m_shapeList.count() == 0){//队列为空 || 都已经封闭
+            ShapePtr shape = currentShape();
+            if(!shape) return;
+            if(m_currentIndex == -1 ||
+                    m_shapeList.count() == 0 ||
+                    shape->isClosed()){//队列为空 || 都已经封闭
                 return;
             }
+
             if(m_draw == YShape::Polygon){
-//                if(m_shapeList.at(m_currentIndex).get()->points().size() > 1){
-                    m_shapeList.at(m_currentIndex).get()->updateEndPt(pixPos);
-                    update();
-//                }
+                shape->updateEndPt(pixPos);
 
             }
+        }else if(m_operat == DocumentBase::edit){
+            for(ShapePtr shape : getShapeList()){
+                if(!shape->isClosed() || !shape->label()->m_visible) continue;
+                if(shape->isSelect()) {
+                    setCursor(Qt::ArrowCursor);
+                } else {
+                    if(shape->isPtsHavPt(pixPos, m_activePoint) ||
+                        shape->isEdgeHavPt(pixPos, m_insertPoint)){
+                        setCursor(Qt::PointingHandCursor);
+                    }else if(shape->isDrag() && shape->isAreaHavPt(pixPos)){
+                        setCursor(Qt::ClosedHandCursor);
+                        QPointF movePos = m_mousePos - m_lastPressPos;
+                        shape->move(movePos);
+                        m_lastPressPos = m_mousePos;
+                    }else if(shape->isAreaHavPt(pixPos)){
+                        setCursor(Qt::OpenHandCursor);
+                    }else setCursor(Qt::ArrowCursor);
+                }
+                if(m_insertPoint >= 0 && shape->isSelect()){
+                    shape->insertPoint(pixPos, m_insertPoint);
+                    m_activePoint = m_insertPoint;
+                    m_insertPoint = -1;
+                }
+                if(m_mouseDrag && shape->isSelect()) shape->updatePoint(pixPos, m_activePoint);
+            }
         }
-
     }
     else throw "Unable to draw current pattern";
-
+    update();
 }
 
 void Document2D::wheelEvent(QWheelEvent *event)
@@ -154,6 +236,14 @@ void Document2D::wheelEvent(QWheelEvent *event)
         QWidget::wheelEvent(event);
         return;
     }
+    if(Qt::ControlModifier == QApplication::keyboardModifiers()){
+        if(event->delta() > 0){
+            zoomIn();
+        }else{
+            zoomOut();
+        }
+    }
+    update();
 }
 
 void Document2D::keyPressEvent(QKeyEvent *event)
@@ -166,9 +256,22 @@ void Document2D::keyPressEvent(QKeyEvent *event)
         if(m_operat == DocumentBase::draw){
             if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter){
                 //结束绘制，弹出属性窗口
+                ShapePtr shape = currentShape();
+                if(!shape) return;
+                if(shape->pointSize() > 2){
+                    shape->setIsClosed(true);
+                    emit sigSetProperty(shape);
+//                    LabelDialog::instance()->show();
+//                    shape->m_label->setProperty();
+                }
+                else{
+
+                }
             }
         }
+
     }
+    update();
     QWidget::keyPressEvent(event);
 }
 
@@ -179,8 +282,12 @@ void Document2D::paintEvent(QPaintEvent *event)
         return;
     }
     QPainter p(this);
-    p.setRenderHint(QPainter::SmoothPixmapTransform);
+//    p.setRenderHint(QPainter::SmoothPixmapTransform);
+    p.setRenderHint(QPainter::Antialiasing, true);
+    p.setRenderHint(QPainter::HighQualityAntialiasing, true);
+
     p.scale(m_scale,m_scale);
+    qDebug() << "center:" << offsetToCenter();
     p.translate(offsetToCenter());
     p.drawPixmap(0,0,m_pixmap);
     p.setPen(QPen(Qt::white));
@@ -194,11 +301,23 @@ void Document2D::paintEvent(QPaintEvent *event)
             QPainter p0(&colorMap);
             for(int i = 0;i < m_shapeList.count();++i){
                 ShapePtr shape = m_shapeList.at(i);
+                shape.get()->draw(p0,!shape->isClosed());
+            }
+
+            p0.end();
+//            p.setOpacity(0.5);
+            p.drawPixmap(0,0,colorMap);
+            p.end();
+        }else if(m_operat == DocumentBase::edit){
+            QPixmap colorMap(m_pixmap.size());
+            colorMap.fill(QColor(0,0,0,0));
+            QPainter p0(&colorMap);
+            for(int i = 0;i < m_shapeList.count();++i){
+                ShapePtr shape = m_shapeList.at(i);
                 shape.get()->draw(p0);
             }
 
             p0.end();
-            p.setOpacity(0.5);
             p.drawPixmap(0,0,colorMap);
             p.end();
         }
@@ -280,8 +399,8 @@ QPointF Document2D::offsetToCenter()
     qreal s = m_scale;
     qreal w = int(m_pixmap.width() * s), h=int(m_pixmap.height() * s);
     qreal aw = this->size().width(), ah = this->size().height();
-    qreal x = aw > w ? int((aw - w) / (2.0f * s)) : 0.0f;
-    qreal y = ah > h ? int((ah - h) / (2.0f * s)) : 0.0f;
+    qreal x = aw > w ? qreal((aw - w) / (2.0f * s)) : 0.0f;
+    qreal y = ah > h ? qreal((ah - h) / (2.0f * s)) : 0.0f;
     return QPointF(x,y);
 }
 
@@ -309,7 +428,7 @@ void Document2D::setCurrentShape(int index)
     QString currentName;
     m_currentIndex = index;
     if(m_currentIndex != -1){
-        const ShapePtr curShape = m_shapeList.at(m_currentIndex);
+        const ShapePtr curShape = currentShape();
         currentName = curShape.get()->name();
     }
     emit currentShapeChanged(currentName);
@@ -337,3 +456,12 @@ QString Document2D::uniqueName(const QString &name) const
     return unique;
 }
 
+void Document2D::zoomIn()
+{
+    setScale(getScale()*1.05);
+}
+
+void Document2D::zoomOut()
+{
+    setScale(getScale()*0.95);
+}

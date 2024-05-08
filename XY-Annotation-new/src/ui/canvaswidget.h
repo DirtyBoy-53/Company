@@ -7,6 +7,7 @@
 #include "documentbase.h"
 #include "document2d.h"
 #include "labelmanager.h"
+
 class CanvasWidget : public QScrollArea
 {
     Q_OBJECT
@@ -16,21 +17,32 @@ public:
 
     qreal scaleFitWindow() const;
     void adjustFitWindow();
+
+    Document2D *doc() const;
+    QUndoGroup *undoGroup() const;
+
 public slots:
     void addShape();
     void removeShape();
     void addPoint(const QPointF &point);
     void removePoint();
+    void saveFile();
 protected:
     void initUI();
     void initConnect();
 signals:
 public slots:
     void loadPixmap();
-public:
+private:
     Document2D *m_doc{nullptr};
     QUndoGroup *m_undoGroup{nullptr};
     LabelManager m_labelManager;
+
+
+
+    // QWidget interface
+protected:
+    virtual void wheelEvent(QWheelEvent *event) override;
 };
 
 #endif // CANVASWIDGET_H

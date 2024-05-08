@@ -13,7 +13,6 @@
 
 #include "annotationitem.h"
 #include "canvasbase.h"
-
 using AnnoItemPtr = std::shared_ptr<AnnotationItem>;
 
 enum ContainerOp{

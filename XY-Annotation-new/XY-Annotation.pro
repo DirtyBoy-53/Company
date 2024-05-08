@@ -2,7 +2,8 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+#CONFIG += c++17
+QMAKE_CXXFLAGS += -std=C++17
 
 CONFIG += sdk_no_version_check
 DEFINES -= UNICODE _UNICODE
@@ -28,6 +29,7 @@ RESOURCES += \
 #TRANSLATIONS = rc/lang/app_zh_CN.ts rc/lang/app_zh_CN.qm
 
 INCLUDEPATH += src
+include(3rd/thirdparty.pri)
 
 #global
 SRC_GLOBAL = src/global
@@ -41,9 +43,11 @@ SOURCES +=\
     src/canvas/document2d.cpp \
     src/canvas/documentbase.cpp \
     src/controllers/commands.cpp \
+    src/controllers/jsonManager.cpp \
     src/ui/canvaswidget.cpp \
     src/ui/labeldialog.cpp \
-    src/ui/window.cpp
+    src/ui/window.cpp \
+    src/ui/ydockwidget.cpp
 
 
 
@@ -58,9 +62,12 @@ HEADERS += \
     src/canvas/document2d.h \
     src/canvas/documentbase.h \
     src/controllers/commands.h \
+    src/controllers/jsonManager.h \
+    src/global/singleton.hpp \
     src/ui/canvaswidget.h \
     src/ui/labeldialog.h \
-    src/ui/window.h
+    src/ui/window.h \
+    src/ui/ydockwidget.h
 
 
 
@@ -125,19 +132,6 @@ HEADERS +=\
     $$SRC_CONTROL/annotationcontainer.h \
     $$SRC_CONTROL/filemanager.h \
     $$SRC_CONTROL/labelmanager.h \
-
-
-#3rd
-INCLUDEPATH += 3rd
-
-#spdlog
-_3RD_SPDLOG = 3rd/spdlog
-INCLUDEPATH += $$_3RD_SPDLOG
-SOURCES += \
-    $$_3RD_SPDLOG/ylog.cpp
-HEADERS += \
-    $$_3RD_SPDLOG/ylog.h
-
 
 #hv
 DEFINES += HV_SOURCE

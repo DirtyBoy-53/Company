@@ -1,4 +1,4 @@
-#ifndef LABELMANAGER_H
+﻿#ifndef LABELMANAGER_H
 #define LABELMANAGER_H
 
 #include <QObject>
@@ -13,10 +13,15 @@ class LabelProperty
 public:
     LabelProperty(QString label, QColor color, bool visible, int id);
     LabelProperty();
-    QString label;
-    QColor color;
-    bool visible;
-    int id;
+    QString m_label;
+    QColor m_color;
+    bool m_visible;
+    int m_id;
+    int m_groupId;
+    QString m_description;
+
+    void operator = (const LabelProperty &label);
+    void setProperty(QString label, QColor color, bool visible, int id);
 
     QJsonObject toJsonObject();
     void fromJsonObject(QJsonObject json);
@@ -31,7 +36,7 @@ public:
     LabelProperty operator[](QString label) const { return labels[label]; }
     bool hasLabel(QString label) const { return labels.find(label)!=labels.end(); }
     QList<LabelProperty> getLabels() const { return labels.values(); }
-    QColor getColor(QString label) const { checkLabel(label); return labels[label].color; }
+    QColor getColor(QString label) const { checkLabel(label); return labels[label].m_color; }
 
     QJsonArray toJsonArray();
     void fromJsonArray(QJsonArray json);

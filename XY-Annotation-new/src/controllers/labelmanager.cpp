@@ -1,4 +1,4 @@
-#include "labelmanager.h"
+﻿#include "labelmanager.h"
 #include "annotationitem.h"
 
 LabelManager::LabelManager(QObject *parent) : QObject(parent)
@@ -31,7 +31,7 @@ void LabelManager::fromJsonArray(QJsonArray json)
         }
     }
     for (auto item: items){
-        addLabel(item.label, item.color, item.visible, item.id);
+        addLabel(item.m_label, item.m_color, item.m_visible, item.m_id);
     }
 }
 
@@ -64,8 +64,8 @@ void LabelManager::removeLabel(QString label){
 
 void LabelManager::setColor(QString label, QColor color){
     checkLabel(label);
-    if (labels[label].color != color){
-        labels[label].color = color;
+    if (labels[label].m_color != color){
+        labels[label].m_color = color;
         emit colorChanged(label, color);
         emit labelChanged();
     }
@@ -73,8 +73,8 @@ void LabelManager::setColor(QString label, QColor color){
 
 void LabelManager::setVisible(QString label, bool visible){
     checkLabel(label);
-    if (labels[label].visible != visible){
-        labels[label].visible = visible;
+    if (labels[label].m_visible != visible){
+        labels[label].m_visible = visible;
         emit visibelChanged(label, visible);
         emit labelChanged();
     }
@@ -91,21 +91,37 @@ void LabelManager::allClear()
 //---------------------------------LabelProperty-------------------------------------//
 
 LabelProperty::LabelProperty(QString label, QColor color, bool visible, int id) :
-    label(label), color(color), visible(visible),id(id) { }
+    m_label(label), m_color(color), m_visible(visible),m_id(id) { }
 
-LabelProperty::LabelProperty():label(), color(), visible(true), id(-1) {
+LabelProperty::LabelProperty():m_label(), m_color(), m_visible(true), m_id(-1) {
+}
+
+void LabelProperty::operator =(const LabelProperty &label)
+{
+    this->m_color = label.m_color;
+    this->m_id = label.m_id;
+    this->m_label = label.m_label;
+    this->m_visible = label.m_visible;
+}
+
+void LabelProperty::setProperty(QString label, QColor color, bool visible, int id)
+{
+    m_label = label;
+    m_color = color;
+    m_visible = visible;
+    m_id = id;
 }
 
 QJsonObject LabelProperty::toJsonObject(){
     QJsonArray colorJson;
-    colorJson.append(color.red());
-    colorJson.append(color.green());
-    colorJson.append(color.blue());
+    colorJson.append(m_color.red());
+    colorJson.append(m_color.green());
+    colorJson.append(m_color.blue());
     QJsonObject json;
-    json.insert("label", label);
-    json.insert("id", id);
+    json.insert("label", m_label);
+    json.insert("id", m_id);
     json.insert("color", colorJson);
-    json.insert("visible", visible);
+    json.insert("visible", m_visible);
     return json;
 }
 
@@ -114,7 +130,7 @@ void LabelProperty::fromJsonObject(QJsonObject json)
     if (json.contains("label")){
         QJsonValue value = json.value("label");
         if (value.isString()){
-            label = value.toString();
+            m_label = value.toString();
         }else{
             throw JsonException("value of <label> is illegal");
         }
@@ -132,7 +148,7 @@ void LabelProperty::fromJsonObject(QJsonObject json)
             int r=static_cast<int>(array.at(0).toDouble());
             int g=static_cast<int>(array.at(1).toDouble());
             int b=static_cast<int>(array.at(2).toDouble());
-            color = QColor(r,g,b);
+            m_color = QColor(r,g,b);
         }else{
             throw JsonException("value of <color> is illegal");
         }
@@ -143,7 +159,7 @@ void LabelProperty::fromJsonObject(QJsonObject json)
     if (json.contains("visible")){
         QJsonValue value = json.value("visible");
         if (value.isBool()){
-            visible = value.toBool();
+            m_visible = value.toBool();
         }else{
             throw JsonException("value of <visible> is illegal");
         }
@@ -154,7 +170,7 @@ void LabelProperty::fromJsonObject(QJsonObject json)
     if (json.contains("id")){
         QJsonValue value = json.value("id");
         if (value.isDouble()){
-            id = static_cast<int>(value.toDouble());
+            m_id = static_cast<int>(value.toDouble());
         }else{
             throw JsonException("value of <id> is illegal");
         }

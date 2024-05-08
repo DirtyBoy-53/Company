@@ -7,7 +7,10 @@
 #include <QPointF>
 #include <QVector>
 #include <QObject>
+#include <memory>
+
 QT_FORWARD_DECLARE_CLASS(LabelManager)
+QT_FORWARD_DECLARE_CLASS(LabelProperty)
 
 
 class ShapeException : public std::exception{
@@ -34,17 +37,24 @@ class Shape : public QObject
 {
     Q_OBJECT
 public:
-    Q_ENUM(draw_mode_e)
-
     explicit Shape(const draw_mode_e type);
     virtual ~Shape(){}
+    static std::string drawModeToStr(const draw_mode_e &type);
     QString name()  const;
     int id()        const;
     QColor color()  const;
     bool isClosed() const;
-    void setColor(const QColor &color);
+    bool isDrag()   const;
+    bool isSelect() const;
+    LabelProperty *label() const;
 
-    virtual void draw(QPainter &p,bool fill=true)=0;
+    void setIsClosed(bool isClosed);
+    void setColor(const QColor &color);
+    void setLabel(const LabelProperty &label);
+    void setIsDrag(bool isDrag);
+    void setIsSelect(bool isSelect);
+
+    virtual void draw(QPainter &p, bool isdisEndPt=false, bool fill=true)=0;
 
 //    QJsonObject toJsonObject();
 
@@ -75,16 +85,26 @@ public:
 
     QVector<QPointF> points() const;
 
+
 protected:
     QVector<QPointF> m_points;
     draw_mode_e m_type{YShape::None};
     QColor m_color;
     QString m_name{""};
+
     int m_id{0};
+
     bool m_isClosed{false};
+    bool m_isDrag{false};
+    bool m_isSelect{false};
+
+
     int m_senseDis{8};
     int m_lineWidth{3};
-    int m_pointSize{5};
+    int m_pointSize{3};
+
+    QPointF m_disPoit;//Move the mouse to display the point
+    LabelProperty *m_label{nullptr};
 };
 }
 

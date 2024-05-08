@@ -4,9 +4,10 @@
 #include <QMainWindow>
 #include "qtheaders.h"
 #include "qtstyles.h"
-#include "singleton.h"
+#include "singleton.hpp"
 #include "canvaswidget.h"
-#include "customlistwidget.h"
+#include "ydockwidget.h"
+
 class Window : public QMainWindow
 {
     Q_OBJECT
@@ -19,17 +20,22 @@ public:
         MAXIMIZED,
         FULLSCREEN,
     } window_state;
+
+    void saveFile();
 protected:
     void initUI();
     void initConnect();
     void initDockWidget();
 
     void initMenu();
+    void actionEnable(bool state);
 
+signals:
+    void sigLabelAdded(QString label, QColor color, bool checked);
 public slots:
     void about();
     void mv_fullscreen();
-
+    void slotSetProperty(ShapePtr shape);
 private:
     QAction *mFileAction{nullptr};
     QAction *mEditAction{nullptr};
@@ -37,16 +43,15 @@ private:
 
     CanvasWidget *m_canvas{nullptr};
 
-    QDockWidget *m_annoDockWidget{nullptr};
-    QDockWidget *m_labelDockWidget{nullptr};
-    QDockWidget *m_fileDockWidget{nullptr};
-    CustomListWidget *m_annoListWidget{nullptr};
-    CustomListWidget *m_labelListWidget{nullptr};
-    CustomListWidget *m_fileListWidget{nullptr};
+    YDockWidget m_dockWidget;
 
     QComboBox *m_taskComboBox{nullptr};
     QComboBox *m_drawComboBox{nullptr};
     QComboBox *m_optComboBox{nullptr};
+
+    QAction *m_undoAction{nullptr};
+    QAction *m_redoAction{nullptr};
+
 };
 
 #endif // WINDOW_H

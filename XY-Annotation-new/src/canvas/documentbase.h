@@ -39,13 +39,18 @@ public:
 
     // 返回未缩放情况下的画布大小，可用于适应窗口大小（fitWindow）等
     virtual QSize sizeUnscaled() const = 0;
+    QVector<ShapePtr> getShapeList() const;
 
 
+
+    draw_mode_e getDraw() const;
 
 signals:
     void currentShapeChanged(const QString &shapeName);
     void sigAddShape();
     void sigAddPoint(const QPointF &point);
+
+    void sigSetProperty(ShapePtr shape);
 public slots:
     virtual void setScale(qreal newScale) = 0;
     virtual void changeTask(task_mode_e task) = 0;
@@ -62,6 +67,12 @@ protected:
     draw_mode_e m_draw;
     QUndoStack *m_undoStack{nullptr};
     LabelManager *m_labelManager{nullptr};
+
+    QPointF m_lastPressPos;
+    QPointF m_mousePos;
+    int m_activePoint{-1};
+    bool m_mouseDrag{false};
+    int m_insertPoint{-1};
 };
 
 #endif // DOCUMENTBASE_H

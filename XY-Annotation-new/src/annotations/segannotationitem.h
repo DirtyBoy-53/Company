@@ -9,6 +9,7 @@
 #include <QByteArray>
 #include <QVector>
 #include "annotationitem.h"
+#include <memory>
 struct SegStroke{//每个图形需要有自己的名字
     QString type;
     int penWidth;

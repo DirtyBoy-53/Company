@@ -1,9 +1,25 @@
 ﻿#include "shape.h"
+#include <QDebug>
+#include <math.h>
+#include "labelmanager.h"
 using namespace YShape;
 Shape::Shape(const draw_mode_e type)
     : m_type(type)
+    , m_label(new LabelProperty)
 {
 
+}
+
+std::string Shape::drawModeToStr(const draw_mode_e &type)
+{
+    switch (type) {
+        case Rectangle: return "rectangle"; break;
+        case Line: return "line";break;
+        case Curve: return "curve";break;
+        case Polygon: return "polygon";break;
+        case None: return "none";break;
+        default: return ""; break;
+    }
 }
 
 QString Shape::name() const
@@ -202,14 +218,10 @@ void Shape::appendPoint(const QPointF &point)
 
 void Shape::updateEndPt(const QPointF &point)
 {
-    if(m_points.isEmpty()){
-        m_points.push_back(point);
-    }
-
-    m_points.back() = point;
-    // qDebug("update end pt,pos:%d  point:(%f,%f)",
-        // m_points.size()-1,m_points.at(m_points.size()-1).x(),m_points.at(m_points.size()-1).y());
+    m_disPoit = point;
 }
+
+
 
 void Shape::deletePoint(const int &index)
 {
@@ -223,6 +235,41 @@ QVector<QPointF> Shape::points() const
     return m_points;
 }
 
+LabelProperty *Shape::label() const
+{
+    return m_label;
+}
+
+void Shape::setLabel(const LabelProperty &label)
+{
+    *m_label = label;
+    m_color = label.m_color;
+}
+
+bool Shape::isDrag() const
+{
+    return m_isDrag;
+}
+
+void Shape::setIsDrag(bool isDrag)
+{
+    m_isDrag = isDrag;
+}
+
+bool Shape::isSelect() const
+{
+    return m_isSelect;
+}
+
+void Shape::setIsSelect(bool isSelect)
+{
+    m_isSelect = isSelect;
+}
+
+void Shape::setIsClosed(bool isClosed)
+{
+    m_isClosed = isClosed;
+}
 
 int Shape::lineWidth() const
 {

@@ -3,6 +3,7 @@
 #include "shape.h"
 #include "shapefactory.h"
 #include "commands.h"
+
 CanvasWidget::CanvasWidget(QWidget *parent)
     : QScrollArea(parent)
     , m_undoGroup (new QUndoGroup(this))
@@ -60,6 +61,11 @@ void CanvasWidget::removePoint()
 
 }
 
+void CanvasWidget::saveFile()
+{
+
+}
+
 void CanvasWidget::initUI()
 {
     setAlignment(Qt::AlignCenter);
@@ -82,8 +88,23 @@ void CanvasWidget::loadPixmap()
     QString fileName = QFileDialog::getOpenFileName(this, "open a file", "/",
                                                     "Image Files (*.jpg *.png *.bmp);;JPEG Files (*.jpg);;PNG Files (*.png);;BMP Files (*.bmp)");
     if (!fileName.isNull() && !fileName.isEmpty()){
-
         m_doc->loadPixmap(fileName);
         adjustFitWindow();
     }
 }
+#include <QApplication>
+void CanvasWidget::wheelEvent(QWheelEvent *event)
+{
+    if(Qt::ControlModifier == QApplication::keyboardModifiers()){
+        if(event->delta() > 0){
+            m_doc->zoomIn();
+        }else{
+            m_doc->zoomOut();
+        }
+    }
+    m_doc->update();
+}
+
+
+QUndoGroup *CanvasWidget::undoGroup() const { return m_undoGroup; }
+Document2D *CanvasWidget::doc() const { return m_doc; }

@@ -1,4 +1,4 @@
-#ifndef QT_FUNCTIONS_H
+﻿#ifndef QT_FUNCTIONS_H
 #define QT_FUNCTIONS_H
 
 #include "qtheaders.h"
@@ -49,7 +49,7 @@ inline void loadLang(const char* lang) {
     qApp->installTranslator(qt_translator);
 }
 
-inline QPushButton* genPushButton(QPixmap pixmap, QString tooltip = QString(), QSize sz = QSize(0,0), QWidget* parent = NULL) {
+inline QPushButton* genPushButton(QPixmap pixmap, QString tooltip = "", QString style= "", QSize sz = QSize(0,0), QWidget* parent = NULL) {
     QPushButton* btn = new QPushButton(parent);
     btn->setFlat(true);
     if (sz.isEmpty()) {
@@ -58,7 +58,12 @@ inline QPushButton* genPushButton(QPixmap pixmap, QString tooltip = QString(), Q
     btn->setFixedSize(sz);
     btn->setIconSize(sz);
     btn->setIcon(pixmap.scaled(sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-    btn->setToolTip(tooltip);
+    if(!tooltip.isEmpty()){
+        btn->setToolTip(tooltip);
+    }
+    if(!style.isEmpty()){
+        btn->setStyleSheet(style);
+    }
     return btn;
 }
 

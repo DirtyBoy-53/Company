@@ -1,12 +1,15 @@
-#ifndef LABELDIALOG_H
+﻿#ifndef LABELDIALOG_H
 #define LABELDIALOG_H
 
 #include <QDialog>
 #include <QLineEdit>
 #include "labelmanager.h"
-class QListWidget;
-class QTextEdit;
-class LabelDialog;
+#include "singleton.hpp"
+#include "documentbase.h"
+
+QT_FORWARD_DECLARE_CLASS(QListWidget)
+QT_FORWARD_DECLARE_CLASS(QTextEdit)
+QT_FORWARD_DECLARE_CLASS(LabelDialog)
 
 class LabelLineEdit : public QLineEdit{
     friend LabelDialog;
@@ -25,12 +28,13 @@ private:
 
 
 
-class LabelDialog : public QDialog
+class LabelDialog : public QDialog/*, public Singleton<LabelDialog>*/
 {
     Q_OBJECT
 public:
-    LabelDialog(const LabelManager& labelManager,QWidget* parent = nullptr);
+    explicit LabelDialog(const QVector<ShapePtr> shapeList,QWidget* parent = nullptr);
     QString getLabel() const;
+
 protected:
     void initUi();
     void initConnect();

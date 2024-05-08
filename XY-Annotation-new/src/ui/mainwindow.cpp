@@ -305,20 +305,21 @@ void MainWindow::newLabelRequest(QString newLabel)
 }
 QString MainWindow::_labelRequest()
 {
-    QString curLabel = getCurrentLabel();
-    if (curLabel==""){
-        LabelDialog dialog(m_labelManager, this);
-        if (dialog.exec() == QDialog::Accepted) {
-            QString newLabel = dialog.getLabel();
-            // newLabel 也有可能是 "" ，说明dialog被点击了取消
-            newLabelRequest(newLabel);
-            return newLabel;
-        }else {
-            return "";
-        }
-    }else{
-        return curLabel;
-    }
+//    QString curLabel = getCurrentLabel();
+//    if (curLabel==""){
+//        LabelDialog dialog(m_labelManager, this);
+//        if (dialog.exec() == QDialog::Accepted) {
+//            QString newLabel = dialog.getLabel();
+//            // newLabel 也有可能是 "" ，说明dialog被点击了取消
+//            newLabelRequest(newLabel);
+//            return newLabel;
+//        }else {
+//            return "";
+//        }
+//    }else{
+//        return curLabel;
+//    }
+    return "";
 }
 void MainWindow::getNewStrokes(const QList<SegStroke> &strokes)
 {

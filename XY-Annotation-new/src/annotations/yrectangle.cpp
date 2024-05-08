@@ -1,4 +1,4 @@
-#include "yrectangle.h"
+﻿#include "yrectangle.h"
 
 YRectangle::YRectangle(const YShape::draw_mode_e type)
     : YShape::Shape(type)
@@ -6,7 +6,7 @@ YRectangle::YRectangle(const YShape::draw_mode_e type)
 
 }
 
-void YRectangle::draw(QPainter &p, bool fill)
+void YRectangle::draw(QPainter &p, bool isdisEndPt, bool fill)
 {
 
 }

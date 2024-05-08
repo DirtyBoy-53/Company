@@ -1,19 +1,18 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'filemanager.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.12.5)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include <memory>
 #include "../../../src/controllers/filemanager.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'filemanager.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.15.2. It"
+#error "This file was generated using the moc from 5.12.5. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -135,7 +134,7 @@ void FileManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
 }
 
 QT_INIT_METAOBJECT const QMetaObject FileManager::staticMetaObject = { {
-    QMetaObject::SuperData::link<QObject::staticMetaObject>(),
+    &QObject::staticMetaObject,
     qt_meta_stringdata_FileManager.data,
     qt_meta_data_FileManager,
     qt_static_metacall,
@@ -177,14 +176,14 @@ int FileManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void FileManager::prevEnableChanged(bool _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void FileManager::nextEnableChanged(bool _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 

@@ -1,12 +1,11 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'canvas2d.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.12.5)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include <memory>
 #include "../../../src/canvas/canvas2d.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
@@ -14,7 +13,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'canvas2d.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.15.2. It"
+#error "This file was generated using the moc from 5.12.5. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -183,7 +182,7 @@ void Canvas2D::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
 }
 
 QT_INIT_METAOBJECT const QMetaObject Canvas2D::staticMetaObject = { {
-    QMetaObject::SuperData::link<CanvasBase::staticMetaObject>(),
+    &CanvasBase::staticMetaObject,
     qt_meta_stringdata_Canvas2D.data,
     qt_meta_data_Canvas2D,
     qt_static_metacall,
@@ -225,35 +224,35 @@ int Canvas2D::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void Canvas2D::mouseMoved(QPointF _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void Canvas2D::newRectangleAnnotated(QRect _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
 void Canvas2D::newStrokesAnnotated(const QList<SegStroke> & _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3
 void Canvas2D::modifySelectedRectRequest(int _t1, QRect _t2)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))), const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t2))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 
 // SIGNAL 4
 void Canvas2D::removeRectRequest(int _t1)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 4, _a);
 }
 QT_WARNING_POP

@@ -1,4 +1,4 @@
-#include "labeldialog.h"
+﻿#include "labeldialog.h"
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QPushButton>
@@ -10,29 +10,33 @@
 
 #include "qtfunctions.h"
 #include "common.h"
-LabelDialog::LabelDialog(const LabelManager &labelManager, QWidget *parent)
+
+
+LabelDialog::LabelDialog(const QVector<ShapePtr> shapeList, QWidget *parent)
     : QDialog(parent)
 {
-    setWindowTitle(tr("Label Attribute"));
+    setWindowTitle("标签属性");
     initUi();
     setFixedSize(350,450);
-    for (auto label:labelManager.getLabels()){
-        QListWidgetItem *item = new QListWidgetItem(ColorUtils::iconFromColor(label.color),label.label, m_LabelListWidget);
+    for(ShapePtr shape : shapeList){
+        auto label = shape->label();
+        auto item = new QListWidgetItem(ColorUtils::iconFromColor(label->m_color),label->m_label, m_LabelListWidget);
         m_LabelListWidget->addItem(item);
     }
-
     m_edtiLabel->setLabelListWidget(m_LabelListWidget);
 }
+
 
 QString LabelDialog::getLabel() const
 {
     return m_edtiLabel->text();
 }
 
+
 void LabelDialog::initUi()
 {
     m_edtiLabel = new LabelLineEdit;
-    m_edtiLabel->setPlaceholderText(tr("Label"));
+    m_edtiLabel->setPlaceholderText("Label");
 
     m_editGroup = new QLineEdit;
     m_editGroup->setMaximumWidth(90);
@@ -41,28 +45,34 @@ void LabelDialog::initUi()
     hlayout_Edit->addWidget(m_edtiLabel);
     hlayout_Edit->addWidget(m_editGroup);
 
+//    std::string btnstyle = R"(background-color:transparent;)";
+    std::string btnstyle = R"(background-color:rgb(228,231,230);)";
+    QString picStr{""};
     QDialogButtonBox* btns = new QDialogButtonBox(QDialogButtonBox::Yes | QDialogButtonBox::Cancel);
+    for(auto btn : btns->buttons()){
+        if(btns->buttonRole(btn) == QDialogButtonBox::ButtonRole::YesRole){
+            picStr = ":confirm";
+        }else picStr = ":cancel";
+
+        btn->setStyleSheet(QString::fromStdString(btnstyle));
+        auto pix = QPixmap(picStr);     auto sz = pix.size();
+        btn->setFixedSize(sz);          btn->setIconSize(sz);
+        btn->setIcon(pix.scaled(sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    }
     connect(btns, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(btns, &QDialogButtonBox::rejected, this, &QDialog::reject);
-
-    //QPushButton* btnConfirm = genPushButton(QPixmap(":confirm"),tr("Confirm"));
-    //QPushButton* btnCancel = genPushButton(QPixmap(":cancel"),tr("Cancel"));
-    //QHBoxLayout* hlayout_Btn = genHBoxLayout();
-    //hlayout_Btn->addStretch();
-    //hlayout_Btn->addWidget(btnConfirm);
-    //hlayout_Btn->setSpacing(5);
-    //hlayout_Btn->addWidget(btnCancel);
 
     m_LabelListWidget = new QListWidget;
     m_editDescription = new QTextEdit;
     m_LabelListWidget->setMinimumWidth(150);
     m_editDescription->setMinimumHeight(50);
-    m_editDescription->setPlaceholderText(tr("Label description"));
+    m_editDescription->setPlaceholderText(tr("Label描述"));
 
     QVBoxLayout* vlayout = genVBoxLayout();
     vlayout->addLayout(hlayout_Edit);
     vlayout->addSpacing(5);
     vlayout->addWidget(btns);
+//    vlayout->addLayout(hlayout_Btn);
     vlayout->addSpacing(5);
     vlayout->addWidget(m_LabelListWidget);
     vlayout->addSpacing(5);
@@ -71,6 +81,12 @@ void LabelDialog::initUi()
 
 }
 
+
+
+/**************************************************************************************************
+ * LabelLineEdit(输入Label名称)
+ *
+ **************************************************************************************************/
 void LabelDialog::initConnect(){}
 
 void LabelLineEdit::setLabelListWidget(QListWidget *listWidget)

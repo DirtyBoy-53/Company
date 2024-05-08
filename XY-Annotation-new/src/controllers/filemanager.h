@@ -6,7 +6,7 @@
 #include <QStringList>
 #include <exception>
 #include <string>
-
+#include "jsonManager.h"
 enum FileMode{
     Close, SingleImage, MultiImage, ThirdDImage
 };
@@ -29,6 +29,8 @@ public:
     static QString getNameWithExtension(QString fileName);
     static void saveJson(QJsonObject json, QString fileName);
     static QJsonObject readJson(QString fileName);
+    static bool saveJson(const shape_json::root_s &root, QString fileName);
+    static bool readJson(shape_json::root_s &root, QString fileName);
 
     explicit FileManager(QObject *parent = nullptr);
 

@@ -80,6 +80,16 @@ QJsonObject FileManager::readJson(QString fileName)
     }
 }
 
+bool FileManager::saveJson(const shape_json::root_s &root, QString fileName)
+{
+    return JsonManager::writeJson(fileName.toStdString(), root);
+}
+
+bool FileManager::readJson(shape_json::root_s &root, QString fileName)
+{
+    return JsonManager::readJson(fileName.toStdString(), root);
+}
+
 
 FileManager::FileManager(QObject *parent) : QObject(parent)
 {

@@ -285,8 +285,8 @@ QImage drawColorImage(const QSize &size, const AnnotationContainer *pAnnoContain
     for (int i=0;i<pAnnoContainer->length();i++){
         auto item = SegAnnotationItem::castPointer((*pAnnoContainer)[i]);
         QString label = item->getLabel();
-        if ((*pLabelManager)[label].visible){
-            QColor color = (*pLabelManager)[label].color;
+        if ((*pLabelManager)[label].m_visible){
+            QColor color = (*pLabelManager)[label].m_color;
             for (auto stroke: item->getStrokes())
                 stroke.drawSelf(p,color);
         }
@@ -303,8 +303,8 @@ QImage drawLabelIdImage(const QSize &size, const AnnotationContainer *pAnnoConta
     for (int i=0;i<pAnnoContainer->length();i++){
         auto item = SegAnnotationItem::castPointer((*pAnnoContainer)[i]);
         QString label = item->getLabel();
-        int labelId = (*pLabelManager)[label].id;
-        if ((*pLabelManager)[label].visible){
+        int labelId = (*pLabelManager)[label].m_id;
+        if ((*pLabelManager)[label].m_visible){
             QColor color = QColor(labelId, labelId, labelId);
             for (auto stroke: item->getStrokes())
                 stroke.drawSelf(p,color);

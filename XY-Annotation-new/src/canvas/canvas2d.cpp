@@ -5,6 +5,7 @@
 #include "segannotationitem.h"
 #include "annotationcontainer.h"
 #include "common.h"
+#include <QDebug>
 using namespace CanvasUtils;
 Canvas2D::Canvas2D(const LabelManager *pLabelManager, const AnnotationContainer *pAnnoContainer, QWidget *parent)
     : CanvasBase (pLabelManager, pAnnoContainer, parent)
@@ -98,10 +99,10 @@ void Canvas2D::paintEvent(QPaintEvent *event)
                 auto item = SegAnnotationItem::castPointer((*pAnnoContainer)[i]);
                 QString label = item->getLabel();
 
-                if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].visible==false)
+                if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].m_visible==false)
                     continue;
 
-                QColor color = (*pLabelManager)[label].color;
+                QColor color = (*pLabelManager)[label].m_color;
                 for (auto stroke: item->getStrokes())
                     stroke.drawSelf(p0,color,true);
             }
@@ -142,10 +143,10 @@ void Canvas2D::paintEvent(QPaintEvent *event)
                 auto item = SegAnnotationItem::castPointer((*pAnnoContainer)[i]);
                 QString label = item->getLabel();
 
-                if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].visible==false)
+                if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].m_visible==false)
                     continue;
 
-                QColor color = (*pLabelManager)[label].color;
+                QColor color = (*pLabelManager)[label].m_color;
                 for (auto stroke: item->getStrokes())
                     stroke.drawSelf(p0,color);
             }
@@ -315,7 +316,7 @@ void Canvas2D::mousePressEvent(QMouseEvent *event)
                         auto item = SegAnnotationItem::castPointer((*pAnnoContainer)[i]);
                         QString label = item->getLabel();
 
-                        if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].visible==false)
+                        if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].m_visible==false)
                             continue;
                         auto &stroke = item->getStroke();
                         if(stroke.isContains(pixPos)){
@@ -414,7 +415,7 @@ void Canvas2D::mouseMoveEvent(QMouseEvent *event)
                 auto item = SegAnnotationItem::castPointer((*pAnnoContainer)[i]);
                 QString label = item->getLabel();
 
-                if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].visible==false)
+                if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].m_visible==false)
                     continue;
 
                 //                for (auto stroke: item->getStrokes()){
@@ -500,7 +501,7 @@ void Canvas2D::mouseReleaseEvent(QMouseEvent *event){
                         auto item = SegAnnotationItem::castPointer((*pAnnoContainer)[i]);
                         QString label = item->getLabel();
 
-                        if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].visible==false)
+                        if (pLabelManager->hasLabel(label) && (*pLabelManager)[label].m_visible==false)
                             continue;
 
                         auto &stroke = item->getStroke();

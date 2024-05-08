@@ -1,16 +1,22 @@
 ﻿#include "ypolygon.h"
 #include <QPainterPath>
-
+#include "labelmanager.h"
 YPolygon::YPolygon(const YShape::draw_mode_e type)
     : YShape::Shape(type)
 {
 
 }
 
-void YPolygon::draw(QPainter &p, bool fill)
+void YPolygon::draw(QPainter &p, bool isdisEndPt, bool fill)
 {
+//    p.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
+
     QPainterPath path;
-    QPolygonF polygon(m_points);
+    QColor color(0,255,0);
+    QVector<QPointF> points = m_points;
+    if(isdisEndPt)
+        points.append(m_disPoit);
+    QPolygonF polygon(points);
     path.addPolygon(polygon);
     // Draw the Polygon
     if(m_isClosed){
@@ -18,16 +24,14 @@ void YPolygon::draw(QPainter &p, bool fill)
         p.setPen(QPen(m_color, m_lineWidth, Qt::SolidLine));
     }else{
         p.setBrush(QColor(10, 0, 0,100));
-        p.setPen(QPen(Qt::green, m_lineWidth, Qt::SolidLine));
+        p.setPen(QPen(color, m_lineWidth, Qt::SolidLine));
     }
 
     if (fill) path.setFillRule(Qt::WindingFill);
     p.save();
-
-
-    p.setRenderHint(QPainter::Antialiasing);
+    p.setRenderHint(QPainter::Antialiasing, true);
+    p.setRenderHint(QPainter::HighQualityAntialiasing, true);
     p.drawPath(path);
-
 
     // Draw the control points
     if(m_isClosed){
@@ -43,8 +47,8 @@ void YPolygon::draw(QPainter &p, bool fill)
         p.setBrush(Qt::NoBrush);
         p.drawPolyline(m_points);
     }else{
-        p.setPen(QColor(0, 255, 0, 255));
-        p.setBrush(QColor(0, 255, 0, 255));
+        p.setPen(color);
+        p.setBrush(color);
         for (int i=0; i<m_points.size(); ++i) {
             QPointF pos = m_points.at(i);
             p.drawEllipse(QRectF(pos.x() - m_pointSize,
@@ -54,3 +58,4 @@ void YPolygon::draw(QPainter &p, bool fill)
     }
     p.restore();
 }
+

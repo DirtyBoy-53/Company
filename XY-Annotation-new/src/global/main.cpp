@@ -13,7 +13,6 @@ char g_run_dir[256]{0};
 char g_conf_file[256]{0};
 char g_log_file[256]{0};
 
-
 static void qLogHandler(QtMsgType type, const QMessageLogContext & ctx, const QString & msg) {
 
     //enum QtMsgType { QtDebugMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg, QtInfoMsg, QtSystemMsg = QtCriticalMsg };
@@ -40,8 +39,8 @@ static void qLogHandler(QtMsgType type, const QMessageLogContext & ctx, const QS
         file.close();
     }
 #else
-    QString strLog = QString::asprintf("%d-%s:[%s] [%s]",
-                                       ctx.line,ctx.function,szType,
+    QString strLog = QString::asprintf("文件%s:第%d行-%s:[%s] [%s]",
+                                       ctx.file,ctx.line,ctx.function,szType,
                                        msg.toLocal8Bit().data()
                                        );
     qDebug() << strLog;
@@ -116,12 +115,13 @@ int window_init(Window& window)
     return 1;
 }
 
-
+#include <QApplication>
 int main(int argc,char** argv)
 {
     load_config();
     qInstallMessageHandler(qLogHandler);
     qInfo("================<app start>================");
+qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1.5");
     QApplication a(argc,argv);
     a.setApplicationName(APP_NAME);
 

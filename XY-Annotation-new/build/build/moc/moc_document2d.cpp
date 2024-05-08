@@ -1,19 +1,18 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'document2d.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.12.5)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include <memory>
 #include "../../../src/canvas/document2d.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'document2d.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.15.2. It"
+#error "This file was generated using the moc from 5.12.5. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -22,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Document2D_t {
-    QByteArrayData data[14];
-    char stringdata0[131];
+    QByteArrayData data[16];
+    char stringdata0[146];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -45,13 +44,15 @@ QT_MOC_LITERAL(9, 89, 3), // "opt"
 QT_MOC_LITERAL(10, 93, 14), // "changeDrawMode"
 QT_MOC_LITERAL(11, 108, 11), // "draw_mode_e"
 QT_MOC_LITERAL(12, 120, 4), // "draw"
-QT_MOC_LITERAL(13, 125, 5) // "clean"
+QT_MOC_LITERAL(13, 125, 5), // "clean"
+QT_MOC_LITERAL(14, 131, 6), // "zoomIn"
+QT_MOC_LITERAL(15, 138, 7) // "zoomOut"
 
     },
     "Document2D\0setScale\0\0newScale\0changeTask\0"
     "task_mode_e\0task\0changeOperatMode\0"
     "operat_mode_e\0opt\0changeDrawMode\0"
-    "draw_mode_e\0draw\0clean"
+    "draw_mode_e\0draw\0clean\0zoomIn\0zoomOut"
 };
 #undef QT_MOC_LITERAL
 
@@ -61,7 +62,7 @@ static const uint qt_meta_data_Document2D[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -69,17 +70,21 @@ static const uint qt_meta_data_Document2D[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   39,    2, 0x0a /* Public */,
-       4,    1,   42,    2, 0x0a /* Public */,
-       7,    1,   45,    2, 0x0a /* Public */,
-      10,    1,   48,    2, 0x0a /* Public */,
-      13,    0,   51,    2, 0x0a /* Public */,
+       1,    1,   49,    2, 0x0a /* Public */,
+       4,    1,   52,    2, 0x0a /* Public */,
+       7,    1,   55,    2, 0x0a /* Public */,
+      10,    1,   58,    2, 0x0a /* Public */,
+      13,    0,   61,    2, 0x0a /* Public */,
+      14,    0,   62,    2, 0x0a /* Public */,
+      15,    0,   63,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QReal,    3,
     QMetaType::Void, 0x80000000 | 5,    6,
     QMetaType::Void, 0x80000000 | 8,    9,
     QMetaType::Void, 0x80000000 | 11,   12,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -96,13 +101,15 @@ void Document2D::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 2: _t->changeOperatMode((*reinterpret_cast< operat_mode_e(*)>(_a[1]))); break;
         case 3: _t->changeDrawMode((*reinterpret_cast< draw_mode_e(*)>(_a[1]))); break;
         case 4: _t->clean(); break;
+        case 5: _t->zoomIn(); break;
+        case 6: _t->zoomOut(); break;
         default: ;
         }
     }
 }
 
 QT_INIT_METAOBJECT const QMetaObject Document2D::staticMetaObject = { {
-    QMetaObject::SuperData::link<DocumentBase::staticMetaObject>(),
+    &DocumentBase::staticMetaObject,
     qt_meta_stringdata_Document2D.data,
     qt_meta_data_Document2D,
     qt_static_metacall,
@@ -130,13 +137,13 @@ int Document2D::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 7;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 5)
+        if (_id < 7)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 5;
+        _id -= 7;
     }
     return _id;
 }

@@ -9,6 +9,7 @@ DocumentBase::DocumentBase(LabelManager *labelManager, QWidget *parent)
 
 }
 
+
 QString DocumentBase::currentShapeName() const
 {
     if(m_currentIndex == -1)
@@ -22,3 +23,14 @@ ShapePtr DocumentBase::currentShape() const
         return nullptr;
     return m_shapeList.at(m_currentIndex);
 }
+
+QVector<ShapePtr> DocumentBase::getShapeList() const
+{
+    return m_shapeList;
+}
+
+draw_mode_e DocumentBase::getDraw() const
+{
+    return m_draw;
+}
+

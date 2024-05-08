@@ -1,4 +1,4 @@
-#ifndef YRECTANGLE_H
+﻿#ifndef YRECTANGLE_H
 #define YRECTANGLE_H
 #include "shape.h"
 
@@ -10,7 +10,7 @@ public:
 
     // Shape interface
 public:
-    virtual void draw(QPainter &p, bool fill) override;
+    virtual void draw(QPainter &p, bool isdisEndPt, bool fill) override;
 };
 
 #endif // YRECTANGLE_H

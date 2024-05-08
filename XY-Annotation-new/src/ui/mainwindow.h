@@ -4,7 +4,7 @@
 
 #include "qtheaders.h"
 #include "qtstyles.h"
-#include "singleton.h"
+#include "singleton.hpp"
 
 
 #include "labelmanager.h"

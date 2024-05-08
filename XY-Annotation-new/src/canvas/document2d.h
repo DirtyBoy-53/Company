@@ -35,6 +35,7 @@ public:
     virtual QSize sizeUnscaled() const override;
     virtual QSize minimumSizeHint() const override;
 
+
 public slots:
     virtual void setScale(qreal newScale) override;
     virtual void changeTask(task_mode_e task) override;
@@ -42,6 +43,8 @@ public slots:
     virtual void changeDrawMode(draw_mode_e draw) override;
     virtual void clean() override;
 
+    void zoomIn();
+    void zoomOut();
 
 private:
     /* 坐标相关的函数 */
@@ -59,6 +62,7 @@ private:
     void setCurrentShape(int index);
     int indexOf(const QString &shapeName) const;
     QString uniqueName(const QString &name) const;
+
 
 };
 

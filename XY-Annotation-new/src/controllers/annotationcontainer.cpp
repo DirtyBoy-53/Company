@@ -1,6 +1,6 @@
 ﻿#include "annotationcontainer.h"
 #include "segannotationitem.h"
-
+#include <QDebug>
 #include <algorithm>
 using std::shared_ptr;
 

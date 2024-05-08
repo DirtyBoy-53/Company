@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/new/image">
-        <file>image/admin.jpg</file>
-    </qresource>
-</RCC>
