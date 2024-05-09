@@ -27,8 +27,7 @@ public:
     static QString getName(QString fileName);
     static QString getSuffix(QString fileName);
     static QString getNameWithExtension(QString fileName);
-    static void saveJson(QJsonObject json, QString fileName);
-    static QJsonObject readJson(QString fileName);
+
     static bool saveJson(const shape_json::root_s &root, QString fileName);
     static bool readJson(shape_json::root_s &root, QString fileName);
 

@@ -65,7 +65,7 @@ void Window::saveFile()
         shapelist.append(s);
     }
 
-    root.version = "5.4.1";
+    root.version = APP_VERSION;
     root.imageData = "1";
     root.imageHeight = "2";
     root.imagePath = "3";
