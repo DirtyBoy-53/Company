@@ -2,7 +2,7 @@
 #define SHAPEFACTORY_H
 #include "shape.h"
 #include "ypolygon.h"
-#include "documentbase.h"
+#include "CanvasBase.h"
 class ShapeFactory{
 public:
     static ShapePtr create(const YShape::draw_mode_e type){

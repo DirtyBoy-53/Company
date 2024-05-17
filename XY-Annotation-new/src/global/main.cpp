@@ -3,9 +3,9 @@
 #include "appdef.h"
 #include "confile.h"
 //#include <format>
-#include "mainwindow.h"
 #include <iostream>
 #include "window.h"
+#include "ylog.h"
 IniParser* g_config = nullptr;
 char g_exec_path[256]{0};
 char g_exec_dir[256]{0};
@@ -23,27 +23,22 @@ static void qLogHandler(QtMsgType type, const QMessageLogContext & ctx, const QS
     }
 
 #ifdef QT_NO_DEBUG
-    QString strLog = QString::asprintf("[%s][%s] %s\n",
-                                       QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz").toLocal8Bit().data(),
-                                       szType,
-                                       msg.toLocal8Bit().data());
-    QString logpath = QString("%1/logs/").arg(g_exec_dir);
-    QDir dir(logpath);
-    if(dir.exists() == false){
-        dir.mkpath(logpath);
-    }
-    logpath.append(QDateTime::currentDateTime().toString("yyyy-MM-dd")+"-qt.log");
-    QFile file(logpath);
-    if (file.open(QIODevice::WriteOnly | QIODevice::Append)) {
-        file.write(strLog.toLocal8Bit());
-        file.close();
+    switch (type) {
+        case QtDebugMsg: YLog::Logger->debug(msg.toStdString()); break;
+        case QtWarningMsg: YLog::Logger->warn(msg.toStdString()); break;
+        case QtCriticalMsg: YLog::Logger->critical(msg.toStdString()); break;
+        case QtFatalMsg: YLog::Logger->error(msg.toStdString()); break;
+        case QtInfoMsg: YLog::Logger->info(msg.toStdString()); break;
+        default: YLog::Logger->error(msg.toStdString()); break;
     }
 #else
-    QString strLog = QString::asprintf("文件%s:第%d行-%s:[%s] [%s]",
+    QString strLog = QString::asprintf("%s:%d-%s:[%s] [%s]\n",
                                        ctx.file,ctx.line,ctx.function,szType,
                                        msg.toLocal8Bit().data()
                                        );
-    qDebug() << strLog;
+    //qDebug() << strLog;
+    //std::cout << strLog.toStdString();
+    OutputDebugString(strLog.toStdString().c_str());
 #endif
 
 }
@@ -74,7 +69,7 @@ static int load_config(){
     YLog::initLog(g_log_file);
 
     // first log here
-    YLog::Logger->info("{} version: {}",g_exec_path, hv_compile_version());
+    YLog::Logger->info("{} version: {}",g_exec_path, APP_VERSION);
 #endif
     return 1;
 

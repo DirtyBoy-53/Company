@@ -1,4 +1,4 @@
-#include "labellineedit.h"
+﻿#include "labellineedit.h"
 #include <QListWidgetItem>
 #include <QKeyEvent>
 #include <QtDebug>
@@ -9,7 +9,7 @@ LabelLineEdit::LabelLineEdit(QWidget *parent):QLineEdit(parent), labelListWidget
 {
 }
 
-void LabelLineEdit::setLabelListWidget(QListWidget *listWidget){
+void LabelLineEdit::setLabelsListWidget(QListWidget *listWidget){
     labelListWidget = listWidget;
 
     // 功能 a: 输入时根据 labelListWidget 的 items 的 text 提供自动补全

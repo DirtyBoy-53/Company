@@ -29,7 +29,7 @@ public:
 
     const CustomListWidget &annoListWidget();
     const CustomListWidget &labelListWidget();
-    const CustomListWidget &fileListWidget();
+    CustomListWidget &fileListWidget();
 
 private:
     void initUI();

@@ -9,7 +9,7 @@
 #include <QtCore>
 #include <QtGui>
 #include <QtWidgets>
-#include "3rd/spdlog/ylog.h"
+#include "ylog.h"
 
 #if _MSC_VER >= 1600
 //#pragma execution_character_set("utf-8")

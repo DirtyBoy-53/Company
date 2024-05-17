@@ -5,7 +5,7 @@
 #include <QLineEdit>
 #include "labelmanager.h"
 #include "singleton.hpp"
-#include "documentbase.h"
+#include "CanvasBase.h"
 
 QT_FORWARD_DECLARE_CLASS(QListWidget)
 QT_FORWARD_DECLARE_CLASS(QTextEdit)

@@ -1,12 +1,12 @@
 ﻿#include "filemanager.h"
-#include "annotationitem.h"
-#include "common.h"
+#include "ycommon.h"
 #include <QtDebug>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QMessageBox>
 #include <QFile>
+#include <QFileInfo>
 
 FileException::FileException(std::string message):message(message) {}
 
@@ -16,68 +16,29 @@ const char *FileException::what() const noexcept {
 
 
 
-QString FileManager::getDir(QString fileName)
+QString FileManager::getPath(QString fileName)
 {
-    QStringList list = fileName.split('/');
-    list.pop_back();
-    return list.join("/")+"/";
+    QFileInfo info(fileName);
+    return info.absolutePath();
 }
 
-
-QString FileManager::getName(QString fileName)
+QString FileManager::getBaseName(QString fileName)
 {
-    QStringList list = fileName.split('/');
-    fileName = list.back();
-    list = fileName.split('.');
-    list.pop_back();
-    return list.join('.');
+    QFileInfo info(fileName);
+    return info.baseName();
 }
+
 
 QString FileManager::getSuffix(QString fileName)
 {
-    QStringList list = fileName.split('.');
-    return list.back();
+    QFileInfo info(fileName);
+    return info.suffix();
 }
 
-
-QString FileManager::getNameWithExtension(QString fileName)
+QString FileManager::getFileName(QString fileName)
 {
-    QStringList list = fileName.split('/');
-    return list.back();
-}
-
-void FileManager::saveJson(QJsonObject json, QString fileName)
-{
-    QJsonDocument document;
-    document.setObject(json);
-    QFile file(fileName);
-    if (!file.open(QFile::WriteOnly | QFile::Text)){
-        QMessageBox::warning(nullptr, "File Error", fileName+": file not open");
-    }else{
-        file.write(document.toJson());
-        file.close();
-    }
-}
-
-QJsonObject FileManager::readJson(QString fileName)
-{
-    QFile file(fileName);
-    if (!file.open(QFile::ReadOnly | QFile::Text)){
-        throw FileException(std::string(QByteArray(fileName.toLocal8Bit()).data())+": file not open");
-    }else{
-        QString val = file.readAll();
-        file.close();
-        QJsonDocument document = QJsonDocument::fromJson(val.toUtf8());
-        if (!document.isNull()){
-            if (document.isObject()){
-                return document.object();
-            }else{
-                throw JsonException("document is not object");
-            }
-        }else{
-            throw JsonException("document read error");
-        }
-    }
+    QFileInfo info(fileName);
+    return info.fileName();
 }
 
 bool FileManager::saveJson(const shape_json::root_s &root, QString fileName)
@@ -118,24 +79,24 @@ void FileManager::setSingleImage(QString fileName, QString outputSuffix)
     mode = SingleImage;
     curIdx = 0;
     imageFiles<<fileName;
-    outputFiles<<getDir(fileName) + getName(fileName) + outputSuffix;
+//    outputFiles<<getDir(fileName) + getName(fileName) + outputSuffix;
     emitPrevNextEnable();
     emit fileListSetup();
 }
 
-void FileManager::setMultiImage(QStringList fileNames, QString outputSuffix)
+void FileManager::setMultiImage(QString path, QStringList suffix)
 {
     imageFiles.clear(); outputFiles.clear(); labelFile = QString();
     changeNotSaved=false;
-
+    m_path = path+"/";
+    qDebug() << m_path;
     mode = MultiImage;
     curIdx = 0;
-    fileNames.sort();
-    for (auto fileName: fileNames){
-        imageFiles<<fileName;
-        outputFiles<<getDir(fileName) + getName(fileName) + outputSuffix;
-    }
-    labelFile = getDir(fileNames[0]) + StringConstants::FILENAME_DIR_LABEL;
+    QDir dir(m_path);
+    imageFiles = dir.entryList(suffix, QDir::Files | QDir::Readable, QDir::Name);
+    imageFiles.sort();
+    if(imageFiles.size() > 0)
+        labelFile = getPath(imageFiles[0]) + StringConstants::FILENAME_DIR_LABEL;
     emitPrevNextEnable();
     emit fileListSetup();
 }
@@ -149,7 +110,7 @@ void FileManager::set3DImage(QStringList fileNames, QString outputSuffix)
     curIdx = 0;
     fileNames.sort();
     imageFiles = fileNames;
-    outputFiles << getDir(fileNames[0])+outputSuffix;
+//    outputFiles << getDir(fileNames[0])+outputSuffix;
     emitPrevNextEnable();
     emit fileListSetup();
 }
@@ -166,6 +127,11 @@ void FileManager::selectFile(int idx){
     if (curIdx==idx) return;
     curIdx=idx;
     emitPrevNextEnable();
+}
+
+QStringList FileManager::getImageFiles() const
+{
+    return imageFiles;
 }
 
 void FileManager::emitPrevNextEnable(){

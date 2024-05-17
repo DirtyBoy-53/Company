@@ -8,7 +8,7 @@ CanvasWidget::CanvasWidget(QWidget *parent)
     : QScrollArea(parent)
     , m_undoGroup (new QUndoGroup(this))
 {
-    m_doc = new Document2D(&m_labelManager);
+    m_doc = new Canvas2D(this);
     initUI();
     initConnect();
 }
@@ -79,8 +79,8 @@ void CanvasWidget::initUI()
 
 void CanvasWidget::initConnect()
 {
-    connect(m_doc,&Document2D::sigAddShape,this,&CanvasWidget::addShape);
-    connect(m_doc,&Document2D::sigAddPoint,this,&CanvasWidget::addPoint);
+    connect(m_doc,&Canvas2D::sigAddShape,this,&CanvasWidget::addShape);
+    connect(m_doc,&Canvas2D::sigAddPoint,this,&CanvasWidget::addPoint);
 }
 
 void CanvasWidget::loadPixmap()
@@ -107,4 +107,4 @@ void CanvasWidget::wheelEvent(QWheelEvent *event)
 
 
 QUndoGroup *CanvasWidget::undoGroup() const { return m_undoGroup; }
-Document2D *CanvasWidget::doc() const { return m_doc; }
+Canvas2D *CanvasWidget::doc() const { return m_doc; }

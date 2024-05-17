@@ -15,12 +15,12 @@ QT_FORWARD_DECLARE_CLASS(LabelProperty)
 
 class ShapeException : public std::exception{
 public:
-    ShapeException(std::string message) : msg(message){}
-    const char* what() const noexcept{
-        return msg.c_str();
-    }
+    ShapeException() : m_msg("ShapeError.") {};
+    ShapeException(const std::string& msg) : m_msg(msg) {}
+    ~ShapeException() throw() {}
+    const char* what() const throw() { return m_msg.c_str(); }
 private:
-    std::string msg;
+    std::string m_msg;
 };
 
 namespace YShape {
@@ -32,12 +32,45 @@ enum draw_mode_e{
     None,
 };
 
+struct YPolygonPoints
+{
+private:
+    QPolygonF m_imgPoints;//图像点-坐标原点在图像左上角
+    QPolygonF m_oriPoints;//原始点-坐标原点在图像中心
+    QPointF offset;
+public:
+    void setImgWH(const QSize &size) {
+        offset.setX(size.width());
+        offset.setY(size.height());
+    }
+    void append(const QPointF& point) {
+        m_oriPoints.append(point);
+        m_imgPoints.append(point + offset);
+    }
+    const QPolygonF getImgPoints() const {
+        return m_imgPoints;
+    }
+    const QPolygonF getOriPoints() const {
+        return m_oriPoints;
+    }
+    inline const int size() const {
+        return m_oriPoints.size();
+    }
+    inline const QPointF at(const int& idx);
+    inline void replace(const QPointF& point, int& pos);
+    inline void insert(const QPointF& point, int& pos);
+    
+    void erase(const int& idx);
+
+    bool containsPoint(const QPointF& point);
+};
+
 
 class Shape : public QObject
 {
     Q_OBJECT
 public:
-    explicit Shape(const draw_mode_e type);
+    explicit Shape(const draw_mode_e& type);
     virtual ~Shape(){}
     static std::string drawModeToStr(const draw_mode_e &type);
     QString name()  const;
@@ -54,7 +87,7 @@ public:
     void setIsDrag(bool isDrag);
     void setIsSelect(bool isSelect);
 
-    virtual void draw(QPainter &p, bool isdisEndPt=false, bool fill=true)=0;
+    virtual void draw(QPainter *p, bool isdisEndPt=false, bool fill=true)=0;
 
 //    QJsonObject toJsonObject();
 
@@ -83,11 +116,11 @@ public:
 
     void deletePoint(const int &index);
 
-    QVector<QPointF> points() const;
+    const YPolygonPoints &points() const;
 
-
+    void setimgWH(QSize size = QSize(640,512)) { m_points.setImgWH(size); };
 protected:
-    QVector<QPointF> m_points;
+    YPolygonPoints m_points;
     draw_mode_e m_type{YShape::None};
     QColor m_color;
     QString m_name{""};

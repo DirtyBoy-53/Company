@@ -1,6 +1,7 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-include(nlohmannJson/json.pri)
-include(spdlog/ylog.pri)
-include(magic_enum/magic_enum.pri)
+include(NlohmannJson/Json.pri)
+include(Spdlog/Ylog.pri)
+include(Magic_enum/Magic_enum.pri)
+include(Hv/Hv.pri)

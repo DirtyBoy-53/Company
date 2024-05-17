@@ -1,74 +1,115 @@
 #ifndef CANVASBASE_H
 #define CANVASBASE_H
 
+#include <QGraphicsItem>
+#include <QUndoStack>
 #include <QObject>
-#include <QWidget>
+#include <exception>
+#include <string>
 
-
-enum TaskMode{
-    DETECTION, SEGMENTATION, DETECTION3D, SEGMENTATION3D
+#include "shape.h"
+using namespace YShape;
+typedef std::shared_ptr<Shape> ShapePtr;
+class CanvasException : public std::exception
+{
+public:
+    CanvasException() : m_msg("CanvasError.") {};
+    CanvasException(const std::string& msg) : m_msg(msg) {}
+    ~CanvasException() throw() {}
+	const char* what() const throw() { return m_msg.c_str(); }
+private:
+	std::string m_msg;
 };
 
-enum CanvasMode{
-    DRAW, SELECT, MOVE
-};
-
-enum DrawMode{
-    RECTANGLE,
-    CONTOUR, SQUAREPEN, CIRCLEPEN, POLYGEN
-};
-
-class AnnotationContainer;
-class LabelManager;
-class CanvasBase : public QWidget
+class CanvasBase : public QObject, public QGraphicsItem
 {
     Q_OBJECT
+    Q_INTERFACES(QGraphicsItem)
 public:
-    explicit CanvasBase(const LabelManager *LabelManager, const AnnotationContainer *AnnoContainer, QWidget *parent = nullptr);
+    enum task_mode_e {
+        detection,
+        segmentation,
+    };
+    enum operat_mode_e {
+        draw,
+        edit,
+    };
+    CanvasBase(QObject *parent = nullptr);
 
-    TaskMode getTaskMode() const { return task; }
-    CanvasMode getCanvasMode() const { return mode; }
-    DrawMode getDrawMode() const { return drawMode; }
-    qreal getScale() const { return scale; }
-    int getLastPenWidth() const { return lastPenWidth; }
+    void    setSize(QSize size);
+
+    QPointF mapToImg(const QPointF& pt) const;
+    QPointF mapFromImg(const QPointF& pt) const;
+    QPointF bindImgEdge(const QPointF& pt);
+    QRectF boundingRect() const ;
+
+    QRectF imgRectF() const;
+    int imgWidth() const { return getImage().width(); };
+    int imgHeight() const { return getImage().height(); };
+    QImage getImage() const;
+    void setImage(const QImage & img);
+
+    const task_mode_e& getTaskMode() const { return m_task; }
+    const operat_mode_e& getCanvasMode() const { return m_operat; }
+    const draw_mode_e& getDrawMode() const { return m_draw; }
+    void changeTask(const task_mode_e& task) { m_task = task; };
+    void changeOperatMode(const operat_mode_e &opt) { m_operat = opt;   };
+    void changeDrawMode(const draw_mode_e &draw) { m_draw = draw; };
+
+    QUndoStack* undoStack() { return m_undoStack; }
+    ShapePtr currentShape() const;
+    QString currentShapeName() const;
+    QVector<ShapePtr> getShapeList() const { return m_shapeList; };
 
 
-    QSize sizeHint() const override { return minimumSizeHint(); }
-    QSize minimumSizeHint() const override = 0;
+    QString addShape(const ShapePtr shape);
+    void deleteShape(const QString& shapeName);
 
-    virtual QSize sizeUnscaled() const = 0;
+    QString addPoint(ShapePtr shape, const QPointF& point);
+    void deletePoint(ShapePtr shape, const QString& pointName);
 
-    virtual QString modeString() const;
+    ShapePtr shape(const QString& shapeName) const;
 
-
+    void setCurrentShape(int index);
+    int indexOf(const QString& shapeName) const;
+    QString uniqueName(const QString& name) const;
 
 signals:
-    void modeChanged(QString mode);
+    void sigCurShapeChanged(const QString& shapeName);
+    void sigAddShape();
+    void sigAddPoint(const QPointF& point);
 
+    void sigSetProperty(ShapePtr shape);
 public slots:
-    virtual void setScale(qreal newScale) = 0;
-    virtual void setPenWidth(int) = 0;
-    virtual void changeTask(TaskMode _task) = 0;
-    virtual void changeCanvasMode(CanvasMode _mode) = 0;
-    virtual void changeDrawMode(DrawMode _draw) = 0;
-
-    virtual void close() = 0;
+    void clean();
+    void zoomIn();
+    void zoomOut();
 
 protected:
+    // Í¨¹ý QGraphicsItem ¼Ì³Ð
+    void    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
+    void    wheelEvent(QGraphicsSceneWheelEvent* event); 
 
-    qreal scale;
+    virtual void drawShape(QPainter* painter);
 
+protected:
+    QImage              m_image;
+    int                 m_penLineWidth{ 3 };
+    const qreal         m_scaleStep{ 0.05 };
+    int                 m_currentIndex{ -1 };
+    QVector<ShapePtr>   m_shapeList;
+    qreal               m_scaleValue{ 1.0f };
 
-    TaskMode task;
-    CanvasMode mode;
-    DrawMode drawMode;
+    task_mode_e         m_task;
+    operat_mode_e       m_operat;
+    draw_mode_e         m_draw;
+    QUndoStack*         m_undoStack{ nullptr };
 
-
-    const AnnotationContainer *pAnnoContainer;
-    const LabelManager* pLabelManager;
-
-    int lastPenWidth;
-    int curPenWidth;
+    QPointF             m_lastPressPos;
+    QPointF             m_mousePos;
+    int                 m_activePoint{ -1 };
+    bool                m_mouseDrag{ false };
+    int                 m_insertPoint{ -1 };
 };
 
 #endif // CANVASBASE_H

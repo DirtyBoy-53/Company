@@ -26,7 +26,7 @@ void YDockWidget::initUI()
 }
 
 
-const CustomListWidget &YDockWidget::fileListWidget() { return m_fileListWidget; }
+CustomListWidget &YDockWidget::fileListWidget() { return m_fileListWidget; }
 
 const CustomListWidget &YDockWidget::labelListWidget() { return m_labelListWidget; }
 
@@ -44,6 +44,7 @@ QDockWidget &YDockWidget::annoDockWidget() { return m_annoDockWidget; }
 
 YTitleWidget::YTitleWidget(QString title, QWidget *parent)
 {
+    Q_UNUSED(parent)
     initUI(title);
 }
 

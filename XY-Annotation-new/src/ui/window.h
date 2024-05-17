@@ -7,6 +7,9 @@
 #include "singleton.hpp"
 #include "canvaswidget.h"
 #include "ydockwidget.h"
+#include "filemanager.h"
+
+QT_FORWARD_DECLARE_CLASS(CanvasView)
 
 class Window : public QMainWindow
 {
@@ -37,21 +40,23 @@ public slots:
     void mv_fullscreen();
     void slotSetProperty(ShapePtr shape);
 private:
-    QAction *mFileAction{nullptr};
-    QAction *mEditAction{nullptr};
-    QAction *mViewAction{nullptr};
+    QAction         *mFileAction{nullptr};
+    QAction         *mEditAction{nullptr};
+    QAction         *mViewAction{nullptr};
 
-    CanvasWidget *m_canvas{nullptr};
+    //CanvasWidget *m_canvas{nullptr};
+    CanvasView      *m_canvasView{nullptr};
 
-    YDockWidget m_dockWidget;
+    YDockWidget     m_dockWidget;
 
-    QComboBox *m_taskComboBox{nullptr};
-    QComboBox *m_drawComboBox{nullptr};
-    QComboBox *m_optComboBox{nullptr};
+    QComboBox       *m_taskComboBox{nullptr};
+    QComboBox       *m_drawComboBox{nullptr};
+    QComboBox       *m_optComboBox{nullptr};
 
-    QAction *m_undoAction{nullptr};
-    QAction *m_redoAction{nullptr};
+    QAction         *m_undoAction{nullptr};
+    QAction         *m_redoAction{nullptr};
 
+    FileManager     m_fileManager;
 };
 
 #endif // WINDOW_H

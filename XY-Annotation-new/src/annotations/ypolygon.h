@@ -10,7 +10,7 @@ public:
 
     // Shape interface
 public:
-    virtual void draw(QPainter &p,bool isdisEndPt, bool fill) override;
+    virtual void draw(QPainter *p,bool isdisEndPt, bool fill) override;
 
 };
 

@@ -1,4 +1,4 @@
-#ifndef LABELLINEEDIT_H
+﻿#ifndef LABELLINEEDIT_H
 #define LABELLINEEDIT_H
 
 #include <QLineEdit>
@@ -21,7 +21,7 @@ public:
     explicit LabelLineEdit(QWidget *parent = nullptr);
 
     // 设置 labelListWidget，并实现功能 a 和 b (自动补全 和 相应list的选中)
-    void setLabelListWidget(QListWidget* listWidget);
+    void setLabelsListWidget(QListWidget* listWidget);
 
 protected:
     // 处理 up 和 down 键的按下事件，实现功能 c (改变list的选中项)

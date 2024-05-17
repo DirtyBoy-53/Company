@@ -1,8 +1,0 @@
-﻿cl : 命令行 warning D9002: 忽略未知选项“-Zc:__cplusplus”
-  labeldialog.cpp
-src\ui\labeldialog.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\software\company\xy-annotation\3rd\spdlog\spdlog\fmt\bundled\format-inl.h(1154): warning C4307: “*”: 整型常量溢出
-d:\software\company\xy-annotation\3rd\spdlog\spdlog\fmt\bundled\format-inl.h(1186): warning C4307: “*”: 整型常量溢出
-d:\software\company\xy-annotation\3rd\spdlog\spdlog\fmt\bundled\format-inl.h(1207): warning C4307: “*”: 整型常量溢出
-  XY-Annotation.vcxproj -> D:\Software\Company\XY-Annotation\bin\msvc2015_x64\XY-Annotation.exe
-  XY-Annotation.vcxproj -> bin\msvc2015_x64\XY-Annotation.pdb (Full PDB)

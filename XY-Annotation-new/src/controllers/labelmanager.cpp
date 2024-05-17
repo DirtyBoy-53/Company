@@ -1,5 +1,4 @@
 ﻿#include "labelmanager.h"
-#include "annotationitem.h"
 
 LabelManager::LabelManager(QObject *parent) : QObject(parent)
 {
@@ -42,7 +41,7 @@ void LabelManager::fromJsonObject(QJsonObject json)
         if (value.isArray())
             fromJsonArray(value.toArray());
         else {
-            throw JsonException("value of <labels> is illegal");
+//            throw JsonException("value of <labels> is illegal");
         }
     }else{
         //        qDebug()<<"no content <labels> in json";
@@ -132,10 +131,10 @@ void LabelProperty::fromJsonObject(QJsonObject json)
         if (value.isString()){
             m_label = value.toString();
         }else{
-            throw JsonException("value of <label> is illegal");
+//            throw JsonException("value of <label> is illegal");
         }
     }else{
-        throw JsonException("no data <label>");
+//        throw JsonException("no data <label>");
     }
 
     if (json.contains("color")){
@@ -143,17 +142,17 @@ void LabelProperty::fromJsonObject(QJsonObject json)
         if (value.isArray()){
             QJsonArray array = value.toArray();
             if (!array.at(0).isDouble() || !array.at(1).isDouble() || !array.at(2).isDouble()){
-                throw JsonException("value of <color> is illegal");
+//                throw JsonException("value of <color> is illegal");
             }
             int r=static_cast<int>(array.at(0).toDouble());
             int g=static_cast<int>(array.at(1).toDouble());
             int b=static_cast<int>(array.at(2).toDouble());
             m_color = QColor(r,g,b);
         }else{
-            throw JsonException("value of <color> is illegal");
+//            throw JsonException("value of <color> is illegal");
         }
     }else{
-        throw JsonException("no data <color>");
+//        throw JsonException("no data <color>");
     }
 
     if (json.contains("visible")){
@@ -161,10 +160,10 @@ void LabelProperty::fromJsonObject(QJsonObject json)
         if (value.isBool()){
             m_visible = value.toBool();
         }else{
-            throw JsonException("value of <visible> is illegal");
+//            throw JsonException("value of <visible> is illegal");
         }
     }else{
-        throw JsonException("no data <visible>");
+//        throw JsonException("no data <visible>");
     }
 
     if (json.contains("id")){
@@ -172,9 +171,9 @@ void LabelProperty::fromJsonObject(QJsonObject json)
         if (value.isDouble()){
             m_id = static_cast<int>(value.toDouble());
         }else{
-            throw JsonException("value of <id> is illegal");
+//            throw JsonException("value of <id> is illegal");
         }
     }else{
-        throw JsonException("no data <id>");
+//        throw JsonException("no data <id>");
     }
 }

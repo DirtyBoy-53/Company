@@ -4,8 +4,8 @@
 #include <QScrollArea>
 #include <QUndoGroup>
 #include <QAction>
-#include "documentbase.h"
-#include "document2d.h"
+#include "CanvasBase.h"
+#include "Canvas2D.h"
 #include "labelmanager.h"
 
 class CanvasWidget : public QScrollArea
@@ -18,7 +18,7 @@ public:
     qreal scaleFitWindow() const;
     void adjustFitWindow();
 
-    Document2D *doc() const;
+    CanvasBase *canvas() const;
     QUndoGroup *undoGroup() const;
 
 public slots:
@@ -34,7 +34,7 @@ signals:
 public slots:
     void loadPixmap();
 private:
-    Document2D *m_doc{nullptr};
+    Canvas2D *m_doc{nullptr};
     QUndoGroup *m_undoGroup{nullptr};
     LabelManager m_labelManager;
 

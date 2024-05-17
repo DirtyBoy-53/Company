@@ -2,19 +2,19 @@
 #define COMMANDS_H
 
 #include <QUndoCommand>
-#include "documentbase.h"
-#include "document2d.h"
+#include "CanvasBase.h"
+#include "CanvasBase.h"
 
 class AddShapeCommand : public QUndoCommand
 {
 public:
-    AddShapeCommand(Document2D *doc, const ShapePtr shape,
+    AddShapeCommand(CanvasBase *canvas, const ShapePtr shape,
                     QUndoCommand *parent = nullptr);
     void undo() override;
     void redo() override;
 
 private:
-    Document2D *m_doc;
+    CanvasBase *m_canvas;
     ShapePtr m_shape;
     QString m_shapeName;
 };
@@ -22,13 +22,13 @@ private:
 class RemoveShapeCommand : public QUndoCommand
 {
 public:
-    RemoveShapeCommand(Document2D *doc, const QString shapeName,
+    RemoveShapeCommand(CanvasBase *canvas, const QString shapeName,
                     QUndoCommand *parent = nullptr);
     void undo() override;
     void redo() override;
 
 private:
-    Document2D *m_doc;
+    CanvasBase *m_canvas;
     ShapePtr m_shape;
     QString m_shapeName;
 };
@@ -36,13 +36,13 @@ private:
 class AddPointCommand : public QUndoCommand
 {
 public:
-    AddPointCommand(Document2D *doc, const ShapePtr shape, const QPointF &point,
+    AddPointCommand(CanvasBase *canvas, const ShapePtr shape, const QPointF &point,
                     QUndoCommand *parent = nullptr);
     void undo() override;
     void redo() override;
 
 private:
-    Document2D *m_doc;
+    CanvasBase *m_canvas;
     ShapePtr m_shape;
     QPointF m_point;
     QString m_pointName;
@@ -51,13 +51,13 @@ private:
 class RemovePointCommand : public QUndoCommand
 {
 public:
-    RemovePointCommand(Document2D *doc, const ShapePtr shape, const QPointF &point,
+    RemovePointCommand(CanvasBase *canvas, const ShapePtr shape, const QPointF &point,
                        QUndoCommand *parent = nullptr);
     void undo() override;
     void redo() override;
 
 private:
-    Document2D *m_doc;
+    CanvasBase *m_canvas;
     ShapePtr m_shape;
     QPointF m_point;
     QString m_pointName;

@@ -9,7 +9,7 @@
 
 
 #include "qtfunctions.h"
-#include "common.h"
+#include "ycommon.h"
 
 
 LabelDialog::LabelDialog(const QVector<ShapePtr> shapeList, QWidget *parent)

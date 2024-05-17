@@ -6,6 +6,8 @@
 #include <QStringList>
 #include <exception>
 #include <string>
+#include <QFileDialog>
+
 #include "jsonManager.h"
 enum FileMode{
     Close, SingleImage, MultiImage, ThirdDImage
@@ -23,10 +25,10 @@ class FileManager : public QObject
 {
     Q_OBJECT
 public:
-    static QString getDir(QString fileName);
-    static QString getName(QString fileName);
+    static QString getPath(QString fileName);
+    static QString getBaseName(QString fileName);
     static QString getSuffix(QString fileName);
-    static QString getNameWithExtension(QString fileName);
+    static QString getFileName(QString fileName);
 
     static bool saveJson(const shape_json::root_s &root, QString fileName);
     static bool readJson(shape_json::root_s &root, QString fileName);
@@ -35,7 +37,7 @@ public:
 
     QString imageFileNameAt(int idx) const { return imageFiles[idx]; }
     bool hasChangeNotSaved() const { return changeNotSaved; }
-    QString getCurrentImageFile() const { return imageFiles[curIdx]; }
+    QString getCurrentImageFile() const { return m_path + imageFiles[curIdx]; }
     QString getCurrentOutputFile() const { return mode==ThirdDImage ? outputFiles[0] : outputFiles[curIdx]; }
     QString getLabelFile() const { return labelFile; }
     FileMode getMode() const { return mode; }
@@ -48,8 +50,10 @@ public:
 
 
     void setSingleImage(QString fileName, QString outputSuffix);
-    void setMultiImage(QStringList fileNames, QString outputSuffix);
+    void setMultiImage(QString path, QStringList suffix=QStringList() << "*.jpg" << "*.png" << "*.bmp");
     void set3DImage(QStringList fileNames, QString outputSuffix);
+
+    QStringList getImageFiles() const;
 
 signals:
     void prevEnableChanged(bool);
@@ -66,10 +70,12 @@ private:
     QStringList imageFiles;
     QStringList outputFiles;
     QString labelFile;
+    QString m_path;
 
     int curIdx;
-    bool changeNotSaved;
+    bool changeNotSaved{false};
     FileMode mode;
+
 
     void emitPrevNextEnable();
 };

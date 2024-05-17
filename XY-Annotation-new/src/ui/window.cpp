@@ -4,12 +4,14 @@
 #include "qtstyles.h"
 #include "shape.h"
 #include "labeldialog.h"
-#include "common.h"
+#include "ycommon.h"
 #include "filemanager.h"
+#include "CanvasView.h"
+
 
 Window::Window(QWidget *parent)
     : QMainWindow(parent)
-    , m_canvas(new CanvasWidget(this))
+    , m_canvasView(new CanvasView(this))
 {
     initUI();
     initConnect();
@@ -22,7 +24,7 @@ void Window::initUI()
 {
     setWindowIcon(QIcon(":ICON"));
 
-    setCentralWidget(m_canvas);
+    setCentralWidget(m_canvasView);
 
     initDockWidget();
     initMenu();
@@ -32,12 +34,25 @@ void Window::initUI()
 
 void Window::initConnect()
 {
-    connect(m_canvas->doc(), &Document2D::sigSetProperty, this, &Window::slotSetProperty);
+    connect(m_canvasView->canvas(), &Canvas2D::sigSetProperty, this, &Window::slotSetProperty);
 
 
     // label changed -> ui list changed
     connect(this, &Window::sigLabelAdded,
             &m_dockWidget.labelListWidget(), &CustomListWidget::addCustomItem);
+
+    connect(&m_dockWidget.fileListWidget(), &QListWidget::clicked, this, [=](QModelIndex index){
+        if(!m_fileManager.hasChangeNotSaved()){
+            m_fileManager.selectFile(index.row());
+            QString path = m_fileManager.getCurrentImageFile();
+            m_canvasView->loadImage(path);
+        }else{
+            //提示保存
+        }
+
+
+//        m_canvasView->loadPixmap();
+    });
 }
 
 void Window::initDockWidget()
@@ -48,7 +63,7 @@ void Window::initDockWidget()
 }
 void Window::saveFile()
 {
-    auto list = m_canvas->doc()->getShapeList();
+    auto list = m_canvasView->canvas()->getShapeList();
     if(list.size() <= 0) return;
     shape_json::root_s root;
 
@@ -60,7 +75,7 @@ void Window::saveFile()
         s.group_id = 1;
         s.label = shape->label()->m_label.toStdString();
         s.mask = 1;
-        s.points = shape->points();
+        s.points = shape->points().getImgPoints();
         s.shape_type = Shape::drawModeToStr(shape->type());
         shapelist.append(s);
     }
@@ -81,8 +96,8 @@ void Window::initMenu()
 {
     Qt::ToolBarArea toolBar_location = static_cast<Qt::ToolBarArea>(g_config->Get<int>("toolbar_location", "ui", TOOLBAR_LOCATION));
 
-    m_undoAction = m_canvas->undoGroup()->createUndoAction(this);
-    m_redoAction = m_canvas->undoGroup()->createRedoAction(this);
+    m_undoAction = m_canvasView->undoGroup()->createUndoAction(this);
+    m_redoAction = m_canvasView->undoGroup()->createRedoAction(this);
 
     //File
     QMenu *fileMenu = menuBar()->addMenu(tr("&文件"));
@@ -91,17 +106,31 @@ void Window::initMenu()
     addToolBar(toolBar_location,fileToolbar);//set toolbar location
 
     //File->OpenFile
-    QAction* actOpenFile = new QAction(QIcon(":open_file"),tr("打开文件  "));
+    QAction* actOpenFile = new QAction(QIcon(":open_file"),"打开文件  ");
     actOpenFile->setShortcut(QKeySequence("Ctrl+O"));
 
     connect(actOpenFile, &QAction::triggered, this, [=](){
-        m_canvas->loadPixmap();
+        //m_canvasView->loadPixmap();
     });
     fileMenu->addAction(actOpenFile);
     fileToolbar->addAction(actOpenFile);
 
+    //File->OpenDir
+    QAction* actOpenDir = new QAction(QIcon(":open_file"), "打开文件夹 ");
+    actOpenDir->setShortcut(QKeySequence("Ctrl+Shift+O"));
+    connect(actOpenDir, &QAction::triggered, this, [=](){
+       QString path = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+                                          "/home",
+                                          QFileDialog::ShowDirsOnly
+                                          | QFileDialog::DontResolveSymlinks);
+        m_fileManager.setMultiImage(path);
+        m_dockWidget.fileListWidget().addItems(m_fileManager.allImageFiles());
+    });
+    fileMenu->addAction(actOpenDir);
+    fileToolbar->addAction(actOpenDir);
+
     //File->SaveFile
-    QAction* actSaveFile = new QAction(QIcon(":save_file"),tr("保存文件  "));
+    QAction* actSaveFile = new QAction(QIcon(":save_file"),"保存文件  ");
     actSaveFile->setShortcut(QKeySequence("Ctrl+S"));
     connect(actSaveFile,&QAction::triggered,this,[=](){
         saveFile();
@@ -119,13 +148,13 @@ void Window::initMenu()
 
     m_taskComboBox = new QComboBox(editToolbar);
     m_taskComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    m_taskComboBox->insertItem(DocumentBase::detection,"检测");
-    m_taskComboBox->insertItem(DocumentBase::segmentation,"分割");
-    m_taskComboBox->setCurrentIndex(DocumentBase::segmentation);
+    m_taskComboBox->insertItem(CanvasBase::detection,"检测");
+    m_taskComboBox->insertItem(CanvasBase::segmentation,"分割");
+    m_taskComboBox->setCurrentIndex(CanvasBase::segmentation);
     editToolbar->addWidget(m_taskComboBox);
-    m_canvas->doc()->changeTask(DocumentBase::segmentation);
+    m_canvasView->canvas()->changeTask(CanvasBase::segmentation);
     connect(m_taskComboBox,QOverload<int>::of(&QComboBox::currentIndexChanged),[=](int idx){
-        m_canvas->doc()->changeTask(static_cast<DocumentBase::task_mode_e>(idx));
+        m_canvasView->canvas()->changeTask(static_cast<CanvasBase::task_mode_e>(idx));
     });
 
     m_drawComboBox = new QComboBox(editToolbar);
@@ -136,24 +165,24 @@ void Window::initMenu()
     m_drawComboBox->insertItem(YShape::Polygon,"多边形");
     m_drawComboBox->setCurrentIndex(YShape::Polygon);
     editToolbar->addWidget(m_drawComboBox);
-    m_canvas->doc()->changeDrawMode(YShape::Polygon);
+    m_canvasView->canvas()->changeDrawMode(YShape::Polygon);
     connect(m_drawComboBox,QOverload<int>::of(&QComboBox::currentIndexChanged),[=](int idx){
-        m_canvas->doc()->changeDrawMode(static_cast<YShape::draw_mode_e>(idx));
+        m_canvasView->canvas()->changeDrawMode(static_cast<YShape::draw_mode_e>(idx));
     });
 
     m_optComboBox = new QComboBox(editToolbar);
     m_optComboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    m_optComboBox->insertItem(DocumentBase::draw,"绘制");
-    m_optComboBox->insertItem(DocumentBase::edit,"编辑");
-    m_optComboBox->setCurrentIndex(DocumentBase::draw);
+    m_optComboBox->insertItem(CanvasBase::draw,"绘制");
+    m_optComboBox->insertItem(CanvasBase::edit,"编辑");
+    m_optComboBox->setCurrentIndex(CanvasBase::draw);
     editToolbar->addWidget(m_optComboBox);
-    m_canvas->doc()->changeOperatMode(DocumentBase::draw);
+    m_canvasView->canvas()->changeOperatMode(CanvasBase::draw);
     connect(m_optComboBox,QOverload<int>::of(&QComboBox::currentIndexChanged),[=](int idx){
-        DocumentBase::operat_mode_e mode = static_cast<DocumentBase::operat_mode_e>(idx);
-        m_canvas->doc()->changeOperatMode(mode);
-        if(mode == DocumentBase::edit){
+        CanvasBase::operat_mode_e mode = static_cast<CanvasBase::operat_mode_e>(idx);
+        m_canvasView->canvas()->changeOperatMode(mode);
+        if(mode == CanvasBase::edit){
 //            actionEnable(true);
-        }else if(mode == DocumentBase::draw){
+        }else if(mode == CanvasBase::draw){
 //            actionEnable(false);
         }
     });
@@ -163,7 +192,7 @@ void Window::initMenu()
 
     connect(actCreatPolygon, &QAction::triggered, this, [=](){
         qInfo() << "Creat polygon";
-        m_canvas->addShape();
+        m_canvasView->addShape();
     });
     editMenu->addAction(actCreatPolygon);
     editToolbar->addAction(actCreatPolygon);
@@ -216,9 +245,9 @@ void Window::initMenu()
     viewToolbar->addAction(zoom_in_Action);
     viewToolbar->addAction(zoom_out_Action);
     viewToolbar->addAction(zoom_fit_Action);
-    connect(zoom_in_Action, &QAction::triggered, this, [=](){m_canvas->doc()->zoomIn();});
-    connect(zoom_out_Action, &QAction::triggered, this, [=](){m_canvas->doc()->zoomOut();});
-    connect(zoom_fit_Action, &QAction::triggered, this, [=](){m_canvas->adjustFitWindow();});
+    connect(zoom_in_Action, &QAction::triggered, this, [=](){m_canvasView->canvas()->zoomIn();});
+    connect(zoom_out_Action, &QAction::triggered, this, [=](){m_canvasView->canvas()->zoomOut();});
+    connect(zoom_fit_Action, &QAction::triggered, this, [=](){m_canvasView->adjustFitWindow();});
 
 
 
@@ -274,7 +303,7 @@ void Window::mv_fullscreen()
 void Window::slotSetProperty(ShapePtr shape)
 {
     if(!shape) return;
-    LabelDialog dialog(m_canvas->doc()->getShapeList(),this);
+    LabelDialog dialog(m_canvasView->canvas()->getShapeList(),this);
     if(dialog.exec() == QDialog::Accepted){
         QString name = dialog.getLabel();
         if(name.isEmpty()) return;

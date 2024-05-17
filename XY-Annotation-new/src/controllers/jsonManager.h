@@ -1,5 +1,6 @@
 ﻿#ifndef JSONMANAGER_HPP
 #define JSONMANAGER_HPP
+
 #include "fifo_map.hpp"
 #include "json.hpp"
 #include <fstream>
