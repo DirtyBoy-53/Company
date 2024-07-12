@@ -256,14 +256,39 @@ void Shape::setIsDrag(bool isDrag)
     m_isDrag = isDrag;
 }
 
-bool Shape::isSelect() const
+bool Shape::isPress() const
+{
+    return m_isPress;
+}
+
+bool Shape::isActive() const
+{
+    return m_isActive;
+}
+
+bool YShape::Shape::isSelect() const
 {
     return m_isSelect;
 }
 
-void Shape::setIsSelect(bool isSelect)
+void Shape::setIsPress(bool isPress)
 {
-    m_isSelect = isSelect;
+    m_isPress = isPress;
+}
+
+void Shape::setIsActive(bool active)
+{
+    m_isActive = active;
+}
+
+void YShape::Shape::setIsSelect(bool select)
+{
+    m_isSelect = select;
+}
+
+void Shape::setControlPtActive(int active)
+{
+    m_controlPtActive = active;
 }
 
 void Shape::setIsClosed(bool isClosed)
@@ -271,12 +296,12 @@ void Shape::setIsClosed(bool isClosed)
     m_isClosed = isClosed;
 }
 
-int Shape::lineWidth() const
+qreal Shape::lineWidth() const
 {
     return m_lineWidth;
 }
 
-void Shape::setLineWidth(int newLineWidth)
+void Shape::setLineWidth(qreal newLineWidth)
 {
     m_lineWidth = newLineWidth;
 }
@@ -289,6 +314,11 @@ int Shape::pointSize() const
 void Shape::setPointSize(int newPointSize)
 {
     m_pointSize = newPointSize;
+}
+
+int YShape::Shape::pointCount() const
+{
+    return m_points.size();
 }
 
 QString Shape::typeToString(draw_mode_e type)
@@ -349,8 +379,8 @@ inline void YShape::YPolygonPoints::insert(const QPointF& point, int& pos)
 {
     if (size() < pos) 
         throw ShapeException(std::string(__FUNCDNAME__) + "idx out of range");
-    m_oriPoints.replace(pos, point);
-    m_imgPoints.replace(pos, point + offset);
+    m_oriPoints.insert(pos, point);
+    m_imgPoints.insert(pos, point + offset);
 }
 
 void YShape::YPolygonPoints::erase(const int& idx)

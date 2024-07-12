@@ -131,6 +131,9 @@
     <ClCompile Include="Src\Canvas\Canvas2D.cpp">
       <Filter>Src\Canvas</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Ui\ImageAdj.cpp">
+      <Filter>Src\Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Annotations\shapefactory.h">
@@ -237,6 +240,12 @@
     </ClInclude>
     <ClInclude Include="Src\Canvas\Canvas2D.h">
       <Filter>Src\Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Global\ydefine.h">
+      <Filter>Src\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="res\Resource\resource.h">
+      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1547,7 +1556,9 @@
     <None Include="res\image\rc\zoom-out.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="cpp.hint" />
+    <None Include="res\Resource\Resource.aps">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\Annotations\shape.h">
@@ -1563,6 +1574,9 @@
       <Filter>Src\Canvas</Filter>
     </QtMoc>
     <QtMoc Include="Src\Ui\CanvasView.h">
+      <Filter>Src\Ui</Filter>
+    </QtMoc>
+    <QtMoc Include="Src\Ui\ImageAdj.h">
       <Filter>Src\Ui</Filter>
     </QtMoc>
   </ItemGroup>
@@ -1582,5 +1596,10 @@
     <ClInclude Include="src\Ui\customlistwidget.h">
       <Filter>Src\Ui</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\Resource\Resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

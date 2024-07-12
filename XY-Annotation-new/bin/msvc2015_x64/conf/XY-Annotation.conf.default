@@ -7,7 +7,7 @@ log_filesize = 16M
 
 [ui]
 #darkstyle lightstyle
-skin = darkstyle
+skin = lightstyle
 # 0xAARRGGBB
 palette = 0xFF132D48
 # language = [en, zh_CN, ...]
@@ -19,7 +19,7 @@ main_window_height = 800
 # [NORMAL=0, MINIMIZED=1, MAXMIZED=2, FULLSCREEN=3]
 main_window_state = 0
 # rect(x,y,w,h)
-main_window_rect = rect(-1941,53,1920,1017)
+main_window_rect = rect(-1755,116,1620,827)
 
 menubar_visible = true
 toolbar_visible = true
@@ -30,7 +30,13 @@ mv_fullscreen = false
 # [LeftToolBarArea = 1, RightToolBarArea = 2, TopToolBarArea = 4, BottomToolBarArea = 8]
 toolbar_location = 1
 
+[draw]
+point_size = 5
+line_width = 1
+# Mouse response distance ,default <= point_size
+res_distance = 
 
 [resource]
 last_file_source = E:/Desktop/vid_01.jpg
 last_folder_source = E:/Desktop/新建文件夹
+

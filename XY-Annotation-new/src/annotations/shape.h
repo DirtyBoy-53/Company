@@ -40,8 +40,8 @@ private:
     QPointF offset;
 public:
     void setImgWH(const QSize &size) {
-        offset.setX(size.width());
-        offset.setY(size.height());
+        offset.setX(size.width()/2.0);
+        offset.setY(size.height()/2.0);
     }
     void append(const QPointF& point) {
         m_oriPoints.append(point);
@@ -70,74 +70,83 @@ class Shape : public QObject
 {
     Q_OBJECT
 public:
-    explicit Shape(const draw_mode_e& type);
-    virtual ~Shape(){}
-    static std::string drawModeToStr(const draw_mode_e &type);
-    QString name()  const;
-    int id()        const;
-    QColor color()  const;
-    bool isClosed() const;
-    bool isDrag()   const;
-    bool isSelect() const;
-    LabelProperty *label() const;
+    explicit            Shape(const draw_mode_e& type);
+    virtual             ~Shape(){}
+    static std::string  drawModeToStr(const draw_mode_e &type);
+    QString             name()      const;
+    int                 id()        const;
+    QColor              color()     const;
+    bool                isClosed()  const;
+    bool                isDrag()    const;
+    bool                isPress()   const;
+    bool                isActive()  const;
+    bool                isSelect()  const;
+    LabelProperty       *label()    const;
 
-    void setIsClosed(bool isClosed);
-    void setColor(const QColor &color);
-    void setLabel(const LabelProperty &label);
-    void setIsDrag(bool isDrag);
-    void setIsSelect(bool isSelect);
+    void                setIsClosed(bool isClosed);
+    void                setColor(const QColor &color);
+    void                setLabel(const LabelProperty &label);
+    void                setIsDrag(bool isDrag);
+    void                setIsPress(bool isPress);
+    void                setIsActive(bool active);
+    void                setIsSelect(bool select);
+    void                setControlPtActive(int active);
 
-    virtual void draw(QPainter *p, bool isdisEndPt=false, bool fill=true)=0;
+    virtual void        draw(QPainter *p, bool isdisEndPt=false, bool fill=true)=0;
 
 //    QJsonObject toJsonObject();
 
-    virtual bool isPtsHavPt(const QPointF &pt,int &pos);
-    virtual bool isEdgeHavPt(const QPointF &pt,int &pos);
-    virtual bool isAreaHavPt(const QPointF &pt);
-    virtual bool updatePoint(const QPointF &pt,int &pos);
-    virtual bool insertPoint(const QPointF &pt,int &pos);
+    virtual bool        isPtsHavPt(const QPointF &pt,int &pos);
+    virtual bool        isEdgeHavPt(const QPointF &pt,int &pos);
+    virtual bool        isAreaHavPt(const QPointF &pt);
+    virtual bool        updatePoint(const QPointF &pt,int &pos);
+    virtual bool        insertPoint(const QPointF &pt,int &pos);
 
-    static QString typeToString(draw_mode_e type);
-    static draw_mode_e stringToType(QString &str,bool &result);
+    static QString      typeToString(draw_mode_e type);
+    static draw_mode_e  stringToType(QString &str,bool &result);
 
-    int lineWidth() const;
-    void setLineWidth(int newLineWidth);
+    qreal               lineWidth()     const;
+    void                setLineWidth(qreal newLineWidth);
 
-    int pointSize() const;
-    void setPointSize(int newPointSize);
+    int                 pointSize()     const;
+    void                setPointSize(int newPointSize);
 
-    bool move(const QPointF &point);
-    draw_mode_e type() const;
-    void setType(draw_mode_e newType);
+    int                 pointCount()    const;
 
-    void setName(const QString &newName);
-    void appendPoint(const QPointF &point);
-    void updateEndPt(const QPointF &point);
+    bool                move(const QPointF &point);
+    draw_mode_e         type()          const;
+    void                setType(draw_mode_e newType);
 
-    void deletePoint(const int &index);
+    void                setName(const QString &newName);
+    void                appendPoint(const QPointF &point);
+    void                updateEndPt(const QPointF &point);
+
+    void                deletePoint(const int &index);
 
     const YPolygonPoints &points() const;
 
-    void setimgWH(QSize size = QSize(640,512)) { m_points.setImgWH(size); };
+    void                setimgWH(QSize size = QSize(640,512)) { m_points.setImgWH(size); };
 protected:
-    YPolygonPoints m_points;
-    draw_mode_e m_type{YShape::None};
-    QColor m_color;
-    QString m_name{""};
+    YPolygonPoints      m_points;
+    draw_mode_e         m_type{YShape::None};
+    QColor              m_color;
+    QString             m_name{""};
 
-    int m_id{0};
+    int                 m_id{0};
 
-    bool m_isClosed{false};
-    bool m_isDrag{false};
-    bool m_isSelect{false};
+    bool                m_isClosed{false};
+    bool                m_isDrag{false};
+    bool                m_isPress{false};
+    bool                m_isActive{false};
+    bool                m_isSelect{ false };
+    int                 m_controlPtActive{-1};
 
+    int                 m_senseDis{8};      //鼠标敏感距离
+    qreal               m_lineWidth{1};     //线宽
+    qreal               m_pointSize{2.5};   //点大小
 
-    int m_senseDis{8};
-    int m_lineWidth{3};
-    int m_pointSize{3};
-
-    QPointF m_disPoit;//Move the mouse to display the point
-    LabelProperty *m_label{nullptr};
+    QPointF             m_disPoit;//Move the mouse to display the point
+    LabelProperty       *m_label{nullptr};
 };
 }
 

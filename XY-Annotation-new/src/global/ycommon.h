@@ -26,7 +26,7 @@ namespace StringConstants{
     const QString SUFFIX_SEG_LABEL_ANNO("_segment_labels_annotations.json");
 
     // for multiple image
-    const QString FILENAME_DIR_LABEL("labels.json");
+    const QString FILENAME_DIR_LABEL("_labels.json");
     const QString SUFFIX_DET_ANNO("_detect_annotations.json");
     const QString SUFFIX_SEG_ANNO("_segment_annotations.json");
 

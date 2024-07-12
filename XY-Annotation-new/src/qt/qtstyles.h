@@ -43,4 +43,6 @@
 
 #define TOOLBAR_LOCATION    1   //toolbar default location
 
+
+
 #endif // QT_STYLES_H

@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_CanvasBase_t {
-    QByteArrayData data[13];
-    char stringdata0[122];
+    QByteArrayData data[19];
+    char stringdata0[194];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -43,13 +43,21 @@ QT_MOC_LITERAL(8, 86, 8), // "ShapePtr"
 QT_MOC_LITERAL(9, 95, 5), // "shape"
 QT_MOC_LITERAL(10, 101, 5), // "clean"
 QT_MOC_LITERAL(11, 107, 6), // "zoomIn"
-QT_MOC_LITERAL(12, 114, 7) // "zoomOut"
+QT_MOC_LITERAL(12, 114, 7), // "zoomOut"
+QT_MOC_LITERAL(13, 122, 11), // "getContrast"
+QT_MOC_LITERAL(14, 134, 11), // "setContrast"
+QT_MOC_LITERAL(15, 146, 8), // "contrast"
+QT_MOC_LITERAL(16, 155, 13), // "getBrightness"
+QT_MOC_LITERAL(17, 169, 13), // "setBrightness"
+QT_MOC_LITERAL(18, 183, 10) // "brightness"
 
     },
     "CanvasBase\0sigCurShapeChanged\0\0shapeName\0"
     "sigAddShape\0sigAddPoint\0point\0"
     "sigSetProperty\0ShapePtr\0shape\0clean\0"
-    "zoomIn\0zoomOut"
+    "zoomIn\0zoomOut\0getContrast\0setContrast\0"
+    "contrast\0getBrightness\0setBrightness\0"
+    "brightness"
 };
 #undef QT_MOC_LITERAL
 
@@ -59,7 +67,7 @@ static const uint qt_meta_data_CanvasBase[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -67,15 +75,19 @@ static const uint qt_meta_data_CanvasBase[] = {
        4,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   49,    2, 0x06 /* Public */,
-       4,    0,   52,    2, 0x06 /* Public */,
-       5,    1,   53,    2, 0x06 /* Public */,
-       7,    1,   56,    2, 0x06 /* Public */,
+       1,    1,   69,    2, 0x06 /* Public */,
+       4,    0,   72,    2, 0x06 /* Public */,
+       5,    1,   73,    2, 0x06 /* Public */,
+       7,    1,   76,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      10,    0,   59,    2, 0x0a /* Public */,
-      11,    0,   60,    2, 0x0a /* Public */,
-      12,    0,   61,    2, 0x0a /* Public */,
+      10,    0,   79,    2, 0x0a /* Public */,
+      11,    0,   80,    2, 0x0a /* Public */,
+      12,    0,   81,    2, 0x0a /* Public */,
+      13,    0,   82,    2, 0x0a /* Public */,
+      14,    1,   83,    2, 0x0a /* Public */,
+      16,    0,   86,    2, 0x0a /* Public */,
+      17,    1,   87,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    3,
@@ -87,6 +99,10 @@ static const uint qt_meta_data_CanvasBase[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Int,
+    QMetaType::Void, QMetaType::Int,   15,
+    QMetaType::Int,
+    QMetaType::Void, QMetaType::Int,   18,
 
        0        // eod
 };
@@ -104,6 +120,12 @@ void CanvasBase::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 4: _t->clean(); break;
         case 5: _t->zoomIn(); break;
         case 6: _t->zoomOut(); break;
+        case 7: { int _r = _t->getContrast();
+            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
+        case 8: _t->setContrast((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 9: { int _r = _t->getBrightness();
+            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
+        case 10: _t->setBrightness((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -172,13 +194,13 @@ int CanvasBase::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 11;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
+        if (_id < 11)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 7;
+        _id -= 11;
     }
     return _id;
 }

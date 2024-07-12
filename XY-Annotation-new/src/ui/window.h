@@ -10,6 +10,7 @@
 #include "filemanager.h"
 
 QT_FORWARD_DECLARE_CLASS(CanvasView)
+QT_FORWARD_DECLARE_CLASS(ImageAdj)
 
 class Window : public QMainWindow
 {
@@ -28,11 +29,13 @@ public:
 protected:
     void initUI();
     void initConnect();
+    void initParams();
     void initDockWidget();
 
     void initMenu();
     void actionEnable(bool state);
 
+    void closeEvent(QCloseEvent* event);
 signals:
     void sigLabelAdded(QString label, QColor color, bool checked);
 public slots:
@@ -57,6 +60,8 @@ private:
     QAction         *m_redoAction{nullptr};
 
     FileManager     m_fileManager;
+
+    ImageAdj*       m_imageAdj{nullptr}; // image adjustment widget
 };
 
 #endif // WINDOW_H

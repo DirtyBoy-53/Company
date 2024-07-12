@@ -16,9 +16,9 @@ protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
-    //virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
     virtual void wheelEvent(QGraphicsSceneWheelEvent* event) override;
     virtual void hoverMoveEvent(QGraphicsSceneHoverEvent* event) override;
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
     virtual void keyPressEvent(QKeyEvent* event) override;
     virtual void drawShape(QPainter* painter);
 

@@ -204,6 +204,7 @@
     <ClCompile Include="3rd\hv\base\hversion.c" />
     <ClCompile Include="3rd\hv\utils\iniparser.cpp" />
     <ClCompile Include="src\Controllers\jsonManager.cpp" />
+    <ClCompile Include="Src\Ui\ImageAdj.cpp" />
     <ClCompile Include="src\Ui\labeldialog.cpp" />
     <ClCompile Include="src\Controllers\labelmanager.cpp" />
     <ClCompile Include="src\Global\main.cpp" />
@@ -216,12 +217,15 @@
     <ClInclude Include="3rd\NlohmannJson\fifo_map.hpp" />
     <ClInclude Include="3rd\NlohmannJson\json.hpp" />
     <ClInclude Include="3rd\Spdlog\ylog.h" />
+    <ClInclude Include="res\Resource\resource.h" />
     <ClInclude Include="Src\Canvas\Canvas2D.h" />
     <ClInclude Include="src\Global\appdef.h" />
+    <QtMoc Include="Src\Ui\ImageAdj.h" />
     <QtMoc Include="src\Canvas\CanvasBase.h" />
     <ClInclude Include="src\Controllers\commands.h" />
     <ClInclude Include="src\Global\ycommon.h" />
     <ClInclude Include="src\Global\confile.h" />
+    <ClInclude Include="Src\Global\ydefine.h" />
     <ClInclude Include="src\Qt\custom_event_type.h" />
     <ClInclude Include="Src\Qt\qtheaders.h" />
     <QtMoc Include="Src\Ui\CanvasView.h" />
@@ -272,7 +276,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="cpp.hint" />
+    <None Include="res\Resource\Resource.aps" />
     <None Include="res\skin\dark\rc\arrow_down.png" />
     <None Include="res\skin\light\rc\arrow_down.png" />
     <None Include="res\skin\dark\rc\arrow_down@2x.png" />
@@ -716,6 +720,9 @@
     <None Include="res\image\rc\zoom-fit.png" />
     <None Include="res\image\rc\zoom-in.png" />
     <None Include="res\image\rc\zoom-out.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\Resource\Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />

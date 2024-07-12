@@ -16,8 +16,8 @@ void YDockWidget::initUI()
 //    m_fileDockWidget.setWindowTitle("文件列表");
 
     //自定义标题栏
-    m_annoDockWidget.setTitleBarWidget(new YTitleWidget("标注列表"));
-    m_labelDockWidget.setTitleBarWidget(new YTitleWidget("标签列表"));
+    m_annoDockWidget.setTitleBarWidget(new YTitleWidget("标签列表"));
+    m_labelDockWidget.setTitleBarWidget(new YTitleWidget("多边形列表"));
     m_fileDockWidget.setTitleBarWidget(new YTitleWidget("文件列表"));
 
     m_annoDockWidget .setWidget(&m_annoListWidget);

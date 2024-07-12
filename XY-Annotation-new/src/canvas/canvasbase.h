@@ -59,7 +59,7 @@ public:
     QUndoStack* undoStack() { return m_undoStack; }
     ShapePtr currentShape() const;
     QString currentShapeName() const;
-    QVector<ShapePtr> getShapeList() const { return m_shapeList; };
+    QVector<ShapePtr> &getShapeList() { return m_shapeList; };
 
 
     QString addShape(const ShapePtr shape);
@@ -85,6 +85,11 @@ public slots:
     void zoomIn();
     void zoomOut();
 
+    int getContrast() const { return m_contrast; }
+    void setContrast(int contrast);
+    int getBrightness() const { return m_brightness; }
+    void setBrightness(int brightness);
+
 protected:
     // Í¨¹ý QGraphicsItem ¼Ì³Ð
     void    paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
@@ -92,9 +97,11 @@ protected:
 
     virtual void drawShape(QPainter* painter);
 
+    QImage lightContrastImage(const QImage& img,const int &light,const int &contrast);
 protected:
     QImage              m_image;
-    int                 m_penLineWidth{ 3 };
+    QImage              m_disImg;
+    int                 m_penLineWidth{ 2 };
     const qreal         m_scaleStep{ 0.05 };
     int                 m_currentIndex{ -1 };
     QVector<ShapePtr>   m_shapeList;
@@ -110,6 +117,9 @@ protected:
     int                 m_activePoint{ -1 };
     bool                m_mouseDrag{ false };
     int                 m_insertPoint{ -1 };
+
+    int                 m_contrast{ 150 };
+    int                 m_brightness{ 150 };
 };
 
 #endif // CANVASBASE_H

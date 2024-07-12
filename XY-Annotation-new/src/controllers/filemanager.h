@@ -39,7 +39,10 @@ public:
     bool hasChangeNotSaved() const { return changeNotSaved; }
     QString getCurrentImageFile() const { return m_path + imageFiles[curIdx]; }
     QString getCurrentOutputFile() const { return mode==ThirdDImage ? outputFiles[0] : outputFiles[curIdx]; }
-    QString getLabelFile() const { return labelFile; }
+    const QString &getLabelFile();
+    const QString& getSavePath();
+
+
     FileMode getMode() const { return mode; }
     const QStringList &allImageFiles() const { return imageFiles; }
     int getCurIdx() const  { return curIdx; }
@@ -54,6 +57,8 @@ public:
     void set3DImage(QStringList fileNames, QString outputSuffix);
 
     QStringList getImageFiles() const;
+
+    std::string bmpToBase64(const QImage &img);
 
 signals:
     void prevEnableChanged(bool);
@@ -71,6 +76,7 @@ private:
     QStringList outputFiles;
     QString labelFile;
     QString m_path;
+    QString m_savePath;
 
     int curIdx;
     bool changeNotSaved{false};

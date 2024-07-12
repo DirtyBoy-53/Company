@@ -12,3 +12,4 @@ extern char g_conf_file[256];
 extern char g_log_file[256];
 
 #endif  // HPLAYER_CONFILE_H_
+

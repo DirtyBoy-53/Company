@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include <QFile>
 #include <QFileInfo>
-
+#include <QBuffer>
 FileException::FileException(std::string message):message(message) {}
 
 const char *FileException::what() const noexcept {
@@ -56,6 +56,20 @@ FileManager::FileManager(QObject *parent) : QObject(parent)
 {
     changeNotSaved=false;
     mode = Close;
+}
+
+const QString &FileManager::getLabelFile()
+{
+    labelFile = getBaseName(imageFileNameAt(curIdx)) + StringConstants::FILENAME_DIR_LABEL;
+    return labelFile;
+}
+
+const QString& FileManager::getSavePath()
+{
+    if (m_savePath.isEmpty()) {
+        m_savePath = QFileDialog::getExistingDirectory(NULL, "保存路径", m_path);
+    }
+    return m_savePath;
 }
 
 void FileManager::close()
@@ -140,3 +154,16 @@ void FileManager::emitPrevNextEnable(){
 }
 
 
+std::string FileManager::bmpToBase64(const QImage& img)
+{
+    auto _img = img;
+    QByteArray ba;
+    QBuffer buf(&ba);
+    buf.open(QIODevice::WriteOnly);
+
+    _img.save(&buf, "BMP");
+    QByteArray ba2 = ba.toBase64();
+    QString b64str = QString::fromLatin1(ba2);
+
+    return b64str.toStdString();
+}

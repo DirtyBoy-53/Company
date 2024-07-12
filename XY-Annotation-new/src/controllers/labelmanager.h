@@ -15,10 +15,10 @@ public:
     LabelProperty();
     QString m_label;
     QColor m_color;
-    bool m_visible;
-    int m_id;
-    int m_groupId;
-    QString m_description;
+    bool m_visible{ true };
+    int m_id{0};
+    int m_groupId{0};
+    QString m_description{"description"};
 
     void operator = (const LabelProperty &label);
     void setProperty(QString label, QColor color, bool visible, int id);

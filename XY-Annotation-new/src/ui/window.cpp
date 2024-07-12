@@ -7,14 +7,20 @@
 #include "ycommon.h"
 #include "filemanager.h"
 #include "CanvasView.h"
-
+#include "ImageAdj.h"
+#include "ydefine.h"
 
 Window::Window(QWidget *parent)
     : QMainWindow(parent)
     , m_canvasView(new CanvasView(this))
+    , m_imageAdj(new ImageAdj)
 {
+    setWindowIcon(QIcon(":ICON"));
+    initParams();
     initUI();
     initConnect();
+
+    statusBar()->showMessage(tr("No Message!"), 5000);
 }
 
 Window::~Window()
@@ -22,14 +28,10 @@ Window::~Window()
 
 void Window::initUI()
 {
-    setWindowIcon(QIcon(":ICON"));
-
     setCentralWidget(m_canvasView);
 
     initDockWidget();
     initMenu();
-
-    statusBar()->showMessage(tr("No Message!"));
 }
 
 void Window::initConnect()
@@ -39,7 +41,10 @@ void Window::initConnect()
 
     // label changed -> ui list changed
     connect(this, &Window::sigLabelAdded,
-            &m_dockWidget.labelListWidget(), &CustomListWidget::addCustomItem);
+            &m_dockWidget.labelListWidget(), &CustomListWidget::addCustomItem);   
+
+    connect(this, &Window::sigLabelAdded,
+            &m_dockWidget.annoListWidget(), &CustomListWidget::addCustomItem);
 
     connect(&m_dockWidget.fileListWidget(), &QListWidget::clicked, this, [=](QModelIndex index){
         if(!m_fileManager.hasChangeNotSaved()){
@@ -48,11 +53,35 @@ void Window::initConnect()
             m_canvasView->loadImage(path);
         }else{
             //提示保存
+            auto res = QMessageBox::warning(this, "提示", "有文件未保存,是否保存?");
+			if(res == QMessageBox::Yes){
+				saveFile();
+			}
+            m_fileManager.selectFile(index.row());
+            QString path = m_fileManager.getCurrentImageFile();
+            m_canvasView->loadImage(path);
         }
-
-
 //        m_canvasView->loadPixmap();
     });
+
+    
+
+    connect(m_imageAdj, &ImageAdj::contrastChanged, this, [=](int contrast) {
+        m_canvasView->canvas()->setContrast(contrast);
+        });
+    connect(m_imageAdj, &ImageAdj::brightnessChanged, this, [=](int brightness) {
+        m_canvasView->canvas()->setBrightness(brightness);
+        });
+}
+
+void Window::initParams()
+{
+    int contrast        = g_config->Get<int>("default_contrast",   "image", DEFAULT_CONTRAST);
+    int brightness      = g_config->Get<int>("default_brightness", "image", DEFAULT_BRIGHTNESS);
+
+    m_canvasView->canvas()->setContrast(contrast);
+    m_canvasView->canvas()->setBrightness(brightness);
+
 }
 
 void Window::initDockWidget()
@@ -63,6 +92,13 @@ void Window::initDockWidget()
 }
 void Window::saveFile()
 {
+    QString path = m_fileManager.getSavePath();
+    do {
+        if(path.isEmpty())
+            QMessageBox::warning(this, "警告", "保存路径为空，请重新选择");
+    } while (path.isEmpty());
+
+    QString filename = path + "/" + m_fileManager.getLabelFile();
     auto list = m_canvasView->canvas()->getShapeList();
     if(list.size() <= 0) return;
     shape_json::root_s root;
@@ -70,26 +106,27 @@ void Window::saveFile()
     QVector<shape_json::shape_s> shapelist;
     for(ShapePtr shape : list){
         shape_json::shape_s s;
-        s.description = "des";
-        s.flags = "1";
-        s.group_id = 1;
+        s.description = shape->label()->m_description.toStdString();
+        s.flags = std::string();
+        s.group_id = shape->label()->m_groupId;
         s.label = shape->label()->m_label.toStdString();
-        s.mask = 1;
+        s.mask = 0;
         s.points = shape->points().getImgPoints();
         s.shape_type = Shape::drawModeToStr(shape->type());
         shapelist.append(s);
     }
-
+    QString ImgPath{ m_fileManager.getCurrentImageFile() };
+    QImage img(ImgPath);
     root.version = APP_VERSION;
-    root.imageData = "1";
-    root.imageHeight = "2";
-    root.imagePath = "3";
-    root.imageWidth = "4";
-    root.flags = "5";
+    root.imageData = m_fileManager.bmpToBase64(img);
+    root.imageHeight = std::to_string(img.height());
+    root.imagePath = ImgPath.toStdString();
+    root.imageWidth = std::to_string(img.width());
+    root.flags = std::string();
     for(auto &p : shapelist)
         root.shapes.push_back(p);
 
-    QString filename = QApplication::applicationDirPath() + "/test.json";
+ 
     FileManager::saveJson(root, filename);
 }
 void Window::initMenu()
@@ -251,18 +288,18 @@ void Window::initMenu()
 
 
 
-    QAction* actMark = new QAction(QIcon(":check"),tr("Mark  "));
+    QAction* actImageAdj = new QAction(QIcon(":check"),tr("亮度/对比度 "));
 
-    actMark->setCheckable(true);
-    connect(actMark, &QAction::triggered, this, [=](){
-        static bool flag{true};
-        flag = !flag;
-        actMark->setChecked(flag);
-        actMark->setIcon(flag == true ? QIcon(":check") : QIcon(":uncheck"));
-        qInfo() << "Mark:" << flag;
+    
+
+    connect(actImageAdj, &QAction::triggered, this, [=](){
+        auto contrast = m_canvasView->canvas()->getContrast();
+        auto brightness = m_canvasView->canvas()->getBrightness();
+        m_imageAdj->setParam(contrast, brightness);
+        m_imageAdj->show();
     });
-    viewMenu->addAction(actMark);
-    viewToolbar->addAction(actMark);
+    viewMenu->addAction(actImageAdj);
+    viewToolbar->addAction(actImageAdj);
 
     // Help
     QMenu *helpMenu = menuBar()->addMenu(tr("&帮助"));
@@ -276,6 +313,11 @@ void Window::actionEnable(bool state)
     if(!m_undoAction || !m_redoAction) return;
     m_undoAction->setVisible(state);
     m_redoAction->setVisible(state);
+}
+
+void Window::closeEvent(QCloseEvent* event)
+{
+    m_imageAdj->close();
 }
 
 void Window::about()
