@@ -28,9 +28,9 @@ void YDockWidget::initUI()
 
 CustomListWidget &YDockWidget::fileListWidget() { return m_fileListWidget; }
 
-const CustomListWidget &YDockWidget::labelListWidget() { return m_labelListWidget; }
+CustomListWidget &YDockWidget::labelListWidget() { return m_labelListWidget; }
 
-const CustomListWidget &YDockWidget::annoListWidget() { return m_annoListWidget; }
+CustomListWidget &YDockWidget::annoListWidget() { return m_annoListWidget; }
 
 QDockWidget &YDockWidget::fileDockWidget() { return m_fileDockWidget; }
 

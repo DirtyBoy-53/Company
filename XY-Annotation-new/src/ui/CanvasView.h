@@ -26,6 +26,7 @@ public slots:
     void removePoint();
     void saveFile();
     void loadImage(const QImage& img);
+    void clean();
 
 protected:
     void initUI();

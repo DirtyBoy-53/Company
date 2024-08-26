@@ -194,7 +194,10 @@ void CanvasBase::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
     Q_UNUSED(option)
     Q_UNUSED(widget)
     painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-    if(m_disImg.isNull()) return;
+    if (m_disImg.isNull()) {
+        painter->fillRect(boundingRect(), Qt::white);
+        return;
+    }
     painter->drawImage(imgRectF().topLeft(), m_disImg);
     drawShape(painter);
 }
@@ -292,5 +295,7 @@ void CanvasBase::setBrightness(int brightness)
 void CanvasBase::clean()
 {
     m_image = QImage();
+    m_shapeList.clear();
+    m_undoStack->clear();
     update();
 }

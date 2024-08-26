@@ -27,8 +27,8 @@ public:
     QDockWidget &labelDockWidget();
     QDockWidget &fileDockWidget();
 
-    const CustomListWidget &annoListWidget();
-    const CustomListWidget &labelListWidget();
+    CustomListWidget &annoListWidget();
+    CustomListWidget &labelListWidget();
     CustomListWidget &fileListWidget();
 
 private:

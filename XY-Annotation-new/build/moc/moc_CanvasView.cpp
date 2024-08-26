@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_CanvasView_t {
-    QByteArrayData data[10];
-    char stringdata0[83];
+    QByteArrayData data[11];
+    char stringdata0[89];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -40,12 +40,13 @@ QT_MOC_LITERAL(5, 42, 5), // "point"
 QT_MOC_LITERAL(6, 48, 11), // "removePoint"
 QT_MOC_LITERAL(7, 60, 8), // "saveFile"
 QT_MOC_LITERAL(8, 69, 9), // "loadImage"
-QT_MOC_LITERAL(9, 79, 3) // "img"
+QT_MOC_LITERAL(9, 79, 3), // "img"
+QT_MOC_LITERAL(10, 83, 5) // "clean"
 
     },
     "CanvasView\0addShape\0\0removeShape\0"
     "addPoint\0point\0removePoint\0saveFile\0"
-    "loadImage\0img"
+    "loadImage\0img\0clean"
 };
 #undef QT_MOC_LITERAL
 
@@ -55,7 +56,7 @@ static const uint qt_meta_data_CanvasView[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -63,12 +64,13 @@ static const uint qt_meta_data_CanvasView[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   44,    2, 0x0a /* Public */,
-       3,    0,   45,    2, 0x0a /* Public */,
-       4,    1,   46,    2, 0x0a /* Public */,
-       6,    0,   49,    2, 0x0a /* Public */,
-       7,    0,   50,    2, 0x0a /* Public */,
-       8,    1,   51,    2, 0x0a /* Public */,
+       1,    0,   49,    2, 0x0a /* Public */,
+       3,    0,   50,    2, 0x0a /* Public */,
+       4,    1,   51,    2, 0x0a /* Public */,
+       6,    0,   54,    2, 0x0a /* Public */,
+       7,    0,   55,    2, 0x0a /* Public */,
+       8,    1,   56,    2, 0x0a /* Public */,
+      10,    0,   59,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -77,6 +79,7 @@ static const uint qt_meta_data_CanvasView[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QImage,    9,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -93,6 +96,7 @@ void CanvasView::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 3: _t->removePoint(); break;
         case 4: _t->saveFile(); break;
         case 5: _t->loadImage((*reinterpret_cast< const QImage(*)>(_a[1]))); break;
+        case 6: _t->clean(); break;
         default: ;
         }
     }
@@ -127,13 +131,13 @@ int CanvasView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 7;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 7)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }

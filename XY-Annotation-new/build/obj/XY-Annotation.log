@@ -1,3 +1,38 @@
 ﻿  Generate moc_predefs.h
 F:\Compile\VisualStudio2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(241,5): warning MSB8064: 项“build\moc\moc_predefs.h.cbt”的自定义生成成功，但指定的依赖项“e:\persionaldata\github\company\xy-annotation-new\build\moc\moc_predefs.h.cbt”不存在。这可能会导致增量生成无法正常工作。
+  Moc'ing src\Ui\ydockwidget.h...
+  main.cpp
+  customlistwidget.cpp
+  window.cpp
+  ydockwidget.cpp
+E:\PersionalData\github\Company\XY-Annotation-new\src\Canvas\CanvasBase.h(1,1): warning C4828: 文件包含在偏移 0xb13 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Canvas\CanvasBase.h(1,1): warning C4828: 文件包含在偏移 0xb14 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Canvas\CanvasBase.h(1,1): warning C4828: 文件包含在偏移 0xb24 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Canvas\CanvasBase.h(1,1): warning C4828: 文件包含在偏移 0xb27 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Canvas\CanvasBase.h(1,1): warning C4828: 文件包含在偏移 0xb13 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Global\main.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Canvas\CanvasBase.h(1,1): warning C4828: 文件包含在偏移 0xb14 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Global\main.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Canvas\CanvasBase.h(1,1): warning C4828: 文件包含在偏移 0xb24 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Global\main.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Canvas\CanvasBase.h(1,1): warning C4828: 文件包含在偏移 0xb27 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Global\main.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x32f 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x330 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x331 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x335 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x336 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x33a 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x33b 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x33c 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x33d 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x33f 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x341 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x342 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x343 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x344 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x349 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Ui\CanvasView.h(1,1): warning C4828: 文件包含在偏移 0x34a 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 src\Ui\window.cpp)
+  moc_window.cpp
+  moc_ydockwidget.cpp
+E:\PersionalData\github\Company\XY-Annotation-new\src\Canvas\CanvasBase.h(1,1): warning C4828: 文件包含在偏移 0xb13 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 build\moc\moc_window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Canvas\CanvasBase.h(1,1): warning C4828: 文件包含在偏移 0xb14 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 build\moc\moc_window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Canvas\CanvasBase.h(1,1): warning C4828: 文件包含在偏移 0xb24 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 build\moc\moc_window.cpp)
+E:\PersionalData\github\Company\XY-Annotation-new\src\Canvas\CanvasBase.h(1,1): warning C4828: 文件包含在偏移 0xb27 处开始的字符，该字符在当前源字符集中无效(代码页 65001)。 (编译源文件 build\moc\moc_window.cpp)
   XY-Annotation.vcxproj -> E:\PersionalData\github\Company\XY-Annotation-new\bin\msvc2015_x64\XY-Annotation.exe

@@ -71,6 +71,12 @@ void CanvasView::loadImage(const QImage& img)
 	adjustFitWindow();
 }
 
+void CanvasView::clean()
+{
+	m_scene->setBackgroundBrush(Qt::white);
+	m_scene->update();
+}
+
 void CanvasView::initUI()
 {
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

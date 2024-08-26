@@ -94,6 +94,12 @@ void CustomListWidget::changeTextByIdx(int idx, QString text)
     item->setText(text);
 }
 
+void CustomListWidget::clean()
+{
+    this->clear();
+}
+
+
 QListWidgetItem *CustomListWidget::_findItemByText(QString label){
     auto items = this->findItems(label, Qt::MatchExactly);
     if (items.length()>0){

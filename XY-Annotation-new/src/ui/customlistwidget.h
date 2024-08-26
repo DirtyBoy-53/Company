@@ -35,6 +35,8 @@ public slots:
 
     void changeTextByIdx(int idx, QString text);
 
+    void clean();
+
 private:
     QListWidgetItem* _findItemByText(QString label);
 };

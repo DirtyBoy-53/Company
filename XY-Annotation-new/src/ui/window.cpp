@@ -138,6 +138,10 @@ void Window::saveFile()
 void Window::openFile()
 {
     //TODO:注意保存当前已操作的画布
+    m_canvasView->canvas()->clean();
+    m_canvasView->clean();
+    m_dockWidget.labelListWidget().clean();
+    m_dockWidget.annoListWidget().clean();
     m_canvasView->canvas()->changeOperatMode(CanvasBase::edit);
     shape_json::root_s root;
     m_fileManager.openFile(root, chooseFile());
@@ -186,8 +190,16 @@ void Window::initMenu()
                                           "/home",
                                           QFileDialog::ShowDirsOnly
                                           | QFileDialog::DontResolveSymlinks);
+       
+       m_canvasView->canvas()->clean();
+       m_canvasView->clean();
+       m_dockWidget.labelListWidget().clean();
+       m_dockWidget.annoListWidget().clean();
         m_fileManager.setMultiImage(path);
         m_dockWidget.fileListWidget().addItems(m_fileManager.allImageFiles());
+        m_fileManager.selectFile(0);
+        QString imgpath = m_fileManager.getCurrentImageFile();
+        m_canvasView->loadImage(QImage(imgpath));
     });
     fileMenu->addAction(actOpenDir);
     fileToolbar->addAction(actOpenDir);
