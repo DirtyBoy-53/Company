@@ -14,13 +14,13 @@
     <ProjectGuid>{D93C898E-00D5-347D-A3AB-D09EBF576086}</ProjectGuid>
     <RootNamespace>XY-Annotation</RootNamespace>
     <Keyword>QtVS_v304</Keyword>
-    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.22621.0</WindowsTargetPlatformMinVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <OutputDirectory>bin\msvc2015_x64\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>NotSet</CharacterSet>
@@ -29,7 +29,7 @@
     <PrimaryOutput>XY-Annotation</PrimaryOutput>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <OutputDirectory>bin\msvc2015_x64\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>NotSet</CharacterSet>
@@ -44,7 +44,7 @@
     <QtModules>core;gui;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtInstall>5.12.5_msvc2015_64</QtInstall>
+    <QtInstall>msvc2015_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') OR !Exists('$(QtMsBuild)\Qt.props')">
@@ -132,7 +132,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);GeneratedFiles;.;3rd;3rd\Hv;3rd\Hv\base;3rd\Hv\utils;3rd\NlohmannJson;3rd\Spdlog;3rd\Spdlog\spdlog;src;src\Util;src\Ui;src\Qt;src\Global;src\Controllers;src\Canvas;src\Annotations;build\moc;/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>build\obj\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -187,8 +187,8 @@
   <ItemGroup>
     <ClCompile Include="3rd\Spdlog\ylog.cpp" />
     <ClCompile Include="Src\Annotations\shape.cpp" />
-    <ClCompile Include="Src\Annotations\ypolygon.cpp" />
-    <ClCompile Include="Src\Annotations\yrectangle.cpp" />
+    <ClCompile Include="src\annotations\ypolygon.cpp" />
+    <ClCompile Include="src\annotations\yrectangle.cpp" />
     <ClCompile Include="Src\Canvas\Canvas2D.cpp" />
     <ClCompile Include="src\Canvas\CanvasBase.cpp" />
     <ClCompile Include="Src\Ui\CanvasView.cpp" />
@@ -220,6 +220,7 @@
     <ClInclude Include="res\Resource\resource.h" />
     <ClInclude Include="Src\Canvas\Canvas2D.h" />
     <ClInclude Include="src\Global\appdef.h" />
+    <ClInclude Include="yfunction.h" />
     <QtMoc Include="Src\Ui\ImageAdj.h" />
     <QtMoc Include="src\Canvas\CanvasBase.h" />
     <ClInclude Include="src\Controllers\commands.h" />

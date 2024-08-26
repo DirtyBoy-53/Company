@@ -63,6 +63,13 @@ public:
     void erase(const int& idx);
 
     bool containsPoint(const QPointF& point);
+
+    YPolygonPoints& operator = (const YPolygonPoints & other) {
+        if (this == &other) return *this;
+        m_imgPoints = other.m_imgPoints;
+        m_oriPoints = other.m_oriPoints;
+        offset      = other.offset;
+    }
 };
 
 
@@ -123,9 +130,10 @@ public:
 
     void                deletePoint(const int &index);
 
-    const YPolygonPoints &points() const;
+    const YPolygonPoints&     points() const;
 
     void                setimgWH(QSize size = QSize(640,512)) { m_points.setImgWH(size); };
+    void                setClosed() { m_isClosed = true; }
 protected:
     YPolygonPoints      m_points;
     draw_mode_e         m_type{YShape::None};

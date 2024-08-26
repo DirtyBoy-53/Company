@@ -3,22 +3,23 @@
 #include <math.h>
 #include "labelmanager.h"
 using namespace YShape;
-Shape::Shape(const draw_mode_e type)
+
+YShape::Shape::Shape(const draw_mode_e& type)
     : m_type(type)
     , m_label(new LabelProperty)
 {
 
 }
 
-std::string Shape::drawModeToStr(const draw_mode_e &type)
+std::string Shape::drawModeToStr(const draw_mode_e& type)
 {
     switch (type) {
-        case Rectangle: return "rectangle"; break;
-        case Line: return "line";break;
-        case Curve: return "curve";break;
-        case Polygon: return "polygon";break;
-        case None: return "none";break;
-        default: return ""; break;
+    case Rectangle: return "rectangle"; break;
+    case Line: return "line"; break;
+    case Curve: return "curve"; break;
+    case Polygon: return "polygon"; break;
+    case None: return "none"; break;
+    default: return ""; break;
     }
 }
 
@@ -42,20 +43,20 @@ bool Shape::isClosed() const
     return m_isClosed;
 }
 
-void Shape::setColor(const QColor &color)
+void Shape::setColor(const QColor& color)
 {
     m_color = color;
 }
 
-bool Shape::isPtsHavPt(const QPointF &pt, int &pos)
+bool Shape::isPtsHavPt(const QPointF& pt, int& pos)
 {
-    if(m_type == YShape::Rectangle || m_type == YShape::Line){
-        qInfo()<< "cur type:" << m_name << " Unable to use, need to override this method";
+    if (m_type == YShape::Rectangle || m_type == YShape::Line) {
+        qInfo() << "cur type:" << m_name << " Unable to use, need to override this method";
         return false;
     }
-    for(auto i = 0;i < m_points.size();++i){
-        auto curDis = QPointF(m_points.at(i)-pt).manhattanLength();
-        if(curDis <= m_senseDis){
+    for (auto i = 0; i < m_points.size(); ++i) {
+        auto curDis = QPointF(m_points.at(i) - pt).manhattanLength();
+        if (curDis <= m_senseDis) {
             pos = i;
             return true;
         }
@@ -64,55 +65,55 @@ bool Shape::isPtsHavPt(const QPointF &pt, int &pos)
 }
 
 QPointF GetFootOfPerpendicular(
-    const QPointF &pt,
-    const QPointF &begin,
-    const QPointF &end)
+    const QPointF& pt,
+    const QPointF& begin,
+    const QPointF& end)
 {
     double dx = begin.x() - end.x();
     double dy = begin.y() - end.y();
-    if(fabs(dx)<0x00000001 && fabs(dy) < 0x00000001){
+    if (fabs(dx) < 0x00000001 && fabs(dy) < 0x00000001) {
         return begin;
     }
-    double u = (pt.x() - begin.x())*(begin.x() - end.x())+
-               (pt.y()-begin.y())*(begin.y()-end.y());
-    u = u/((dx*dx)+(dy*dy));
-    double x = begin.x() + u*dx;
-    double y = begin.y() + u*dy;
-    return QPointF(x,y);
+    double u = (pt.x() - begin.x()) * (begin.x() - end.x()) +
+        (pt.y() - begin.y()) * (begin.y() - end.y());
+    u = u / ((dx * dx) + (dy * dy));
+    double x = begin.x() + u * dx;
+    double y = begin.y() + u * dy;
+    return QPointF(x, y);
 }
 
-//ÂúÜ
-struct Circle{
+//‘≤
+struct Circle {
 public:
-    Circle()=default;
-    Circle(double r,const QPointF& pt):r(r),x(pt.x()),y(pt.y()){}
-    double r,x,y;
+    Circle() = default;
+    Circle(double r, const QPointF& pt) :r(r), x(pt.x()), y(pt.y()) {}
+    double r, x, y;
 };
-bool judge(QPointF p1,QPointF p2,Circle c)
+bool judge(QPointF p1, QPointF p2, Circle c)
 {
-    bool flag1=(p1.x()-c.x)*(p1.x()-c.x)+(p1.y()-c.y)*(p1.y()-c.y)<=c.r*c.r;
-    bool flag2=(p2.x()-c.x)*(p2.x()-c.x)+(p2.y()-c.y)*(p2.y()-c.y)<=c.r*c.r;
+    bool flag1 = (p1.x() - c.x) * (p1.x() - c.x) + (p1.y() - c.y) * (p1.y() - c.y) <= c.r * c.r;
+    bool flag2 = (p2.x() - c.x) * (p2.x() - c.x) + (p2.y() - c.y) * (p2.y() - c.y) <= c.r * c.r;
 
-    if(flag1&&flag2)	//ÊÉÖÂÜµ‰∏Ä„ÄÅ‰∏§ÁÇπÈÉΩÂú®ÂúÜÂÜÖ :‰∏ÄÂÆö‰∏çÁõ∏‰∫§
+    if (flag1 && flag2)	//«Èøˆ“ª°¢¡Ωµ„∂º‘⁄‘≤ƒ⁄ :“ª∂®≤ªœ‡Ωª
         return false;
-    else if(flag1||flag2) //ÊÉÖÂÜµ‰∫å„ÄÅ‰∏Ä‰∏™ÁÇπÂú®ÂúÜÂÜÖÔºå‰∏Ä‰∏™ÁÇπÂú®ÂúÜÂ§ñÔºö‰∏ÄÂÆöÁõ∏‰∫§
-        return false;//Â∞ΩÁÆ°Áõ∏‰∫§Ôºå‰ΩÜÊòØ‰ºöÂØºËá¥ÈÄªËæëÊ∑∑‰π±Ôºå‰∏ç‰∫àËÆ§ÂèØ
-    else //ÊÉÖÂÜµ‰∏â„ÄÅ‰∏§‰∏™ÁÇπÈÉΩÂú®ÂúÜÂ§ñ
+    else if (flag1 || flag2) //«Èøˆ∂˛°¢“ª∏ˆµ„‘⁄‘≤ƒ⁄£¨“ª∏ˆµ„‘⁄‘≤Õ‚£∫“ª∂®œ‡Ωª
+        return false;//æ°π‹œ‡Ωª£¨µ´ «ª·µº÷¬¬ﬂº≠ªÏ¬“£¨≤ª”Ë»œø…
+    else //«Èøˆ»˝°¢¡Ω∏ˆµ„∂º‘⁄‘≤Õ‚
     {
-        double A,B,C,dist1,dist2,angle1,angle2;
-        //Â∞ÜÁõ¥Á∫øp1p2Âåñ‰∏∫‰∏ÄËà¨ÂºèÔºöAx+By+C=0ÁöÑÂΩ¢Âºè„ÄÇÂÖàÂåñ‰∏∫‰∏§ÁÇπÂºèÔºåÁÑ∂ÂêéÁî±‰∏§ÁÇπÂºèÂæóÂá∫‰∏ÄËà¨Âºè
-        A=p1.y()-p2.y();
-        B=p2.x()-p1.x();
-        C=p1.x()*p2.y()-p2.x()*p1.y();
-        //‰ΩøÁî®Ë∑ùÁ¶ªÂÖ¨ÂºèÂà§Êñ≠ÂúÜÂøÉÂà∞Áõ¥Á∫øax+by+c=0ÁöÑË∑ùÁ¶ªÊòØÂê¶Â§ß‰∫éÂçäÂæÑ
-        dist1=A*c.x+B*c.y+C;
-        dist1*=dist1;
-        dist2=(A*A+B*B)*c.r*c.r;
-        if(dist1>dist2)//ÂúÜÂøÉÂà∞Áõ¥Á∫øp1p2ÁöÑË∑ùÁ¶ªÂ§ß‰∫éÂçäÂæÑÔºå‰∏çÁõ∏‰∫§
+        double A, B, C, dist1, dist2, angle1, angle2;
+        //Ω´÷±œﬂp1p2ªØŒ™“ª∞„ Ω£∫Ax+By+C=0µƒ–Œ Ω°£œ»ªØŒ™¡Ωµ„ Ω£¨»ª∫Û”…¡Ωµ„ Ωµ√≥ˆ“ª∞„ Ω
+        A = p1.y() - p2.y();
+        B = p2.x() - p1.x();
+        C = p1.x() * p2.y() - p2.x() * p1.y();
+        // π”√æ‡¿Îπ´ Ω≈–∂œ‘≤–ƒµΩ÷±œﬂax+by+c=0µƒæ‡¿Î «∑Ò¥Û”⁄∞Îæ∂
+        dist1 = A * c.x + B * c.y + C;
+        dist1 *= dist1;
+        dist2 = (A * A + B * B) * c.r * c.r;
+        if (dist1 > dist2)//‘≤–ƒµΩ÷±œﬂp1p2µƒæ‡¿Î¥Û”⁄∞Îæ∂£¨≤ªœ‡Ωª
             return false;
-        angle1=(c.x-p1.x())*(p2.x()-p1.x())+(c.y-p1.y())*(p2.y()-p1.y());
-        angle2=(c.x-p2.x())*(p1.x()-p2.x())+(c.y-p2.y())*(p1.y()-p2.y());
-        if(angle1>0&&angle2>0)//‰ΩôÂº¶‰∏∫Ê≠£ÔºåÂàôÊòØÈîêËßíÔºå‰∏ÄÂÆöÁõ∏‰∫§
+        angle1 = (c.x - p1.x()) * (p2.x() - p1.x()) + (c.y - p1.y()) * (p2.y() - p1.y());
+        angle2 = (c.x - p2.x()) * (p1.x() - p2.x()) + (c.y - p2.y()) * (p1.y() - p2.y());
+        if (angle1 > 0 && angle2 > 0)//”‡œ“Œ™’˝£¨‘Ú «»ÒΩ«£¨“ª∂®œ‡Ωª
             return true;
         else
             return false;
@@ -121,77 +122,77 @@ bool judge(QPointF p1,QPointF p2,Circle c)
 }
 
 
-bool Shape::isEdgeHavPt(const QPointF &point,int& pos)
+bool Shape::isEdgeHavPt(const QPointF& point, int& pos)
 {
-    if(m_type == YShape::Rectangle || m_type == YShape::Line){
-        qInfo()<< "cur type:" << m_name << " Unable to use, need to override this method";
+    if (m_type == YShape::Rectangle || m_type == YShape::Line) {
+        qInfo() << "cur type:" << m_name << " Unable to use, need to override this method";
         return false;
     }
     auto size = m_points.size();
-    if(size < 2) return false;
-    for(auto i = 0;i < size;i++){
-        QPointF begin = m_points.at(i),end;
-        if(i+1 < size)
-            end = m_points.at(i+1);
+    if (size < 2) return false;
+    for (auto i = 0; i < size; i++) {
+        QPointF begin = m_points.at(i), end;
+        if (i + 1 < size)
+            end = m_points.at(i + 1);
         else end = m_points.at(0);
 
-        if(!judge(begin,end,Circle(m_senseDis,point))) continue;
-        QPointF FootPt = GetFootOfPerpendicular(point,begin,end);
-        auto curDis = (point-FootPt).manhattanLength();
-        if(curDis <= m_senseDis){
-            pos = i+1;
+        if (!judge(begin, end, Circle(m_senseDis, point))) continue;
+        QPointF FootPt = GetFootOfPerpendicular(point, begin, end);
+        auto curDis = (point - FootPt).manhattanLength();
+        if (curDis <= m_senseDis) {
+            pos = i + 1;
             return true;
         }
     }
     return false;
 }
 
-bool Shape::isAreaHavPt(const QPointF &point)
+bool Shape::isAreaHavPt(const QPointF& point)
 {
-    if(m_type == YShape::Rectangle || m_type == YShape::Line){
-        qInfo()<< "cur type:" << m_name << " Unable to use, need to override this method.";
+    if (m_type == YShape::Rectangle || m_type == YShape::Line) {
+        qInfo() << "cur type:" << m_name << " Unable to use, need to override this method.";
         return false;
     }
-    QPolygonF polygon(m_points);
-    return polygon.containsPoint(point,Qt::WindingFill);
+    return m_points.containsPoint(point);
 }
 
-bool Shape::updatePoint(const QPointF &point, int &pos)
+bool Shape::updatePoint(const QPointF& point, int& pos)
 {
-    if(m_type == YShape::Rectangle || m_type == YShape::Line){
-        qInfo()<< "cur type:" << m_name << " Unable to use, need to override this method.";
+    if (m_type == YShape::Rectangle || m_type == YShape::Line) {
+        qInfo() << "cur type:" << m_name << " Unable to use, need to override this method.";
         return false;
     }
-    if(pos < m_points.size() && pos >=0){
-        m_points.replace(pos,point);
+    if (pos < m_points.size() && pos >= 0) {
+        m_points.replace(point, pos);
         return true;
     }
     else throw ShapeException("<pos> out of range");
     return false;
 }
 
-bool Shape::insertPoint(const QPointF &point, int &pos)
+bool Shape::insertPoint(const QPointF& point, int& pos)
 {
-    if(m_type == YShape::Rectangle || m_type == YShape::Line){
-        qInfo()<< "cur type:" << m_name << " Unable to use, need to override this method.";
+    if (m_type == YShape::Rectangle || m_type == YShape::Line) {
+        qInfo() << "cur type:" << m_name << " Unable to use, need to override this method.";
         return false;
     }
-    if(pos < m_points.size() && pos >=0){
-        m_points.insert(pos,point);
-    }else if(pos == m_points.size()){
+    if (pos < m_points.size() && pos >= 0) {
+        m_points.insert(point, pos);
+    }
+    else if (pos == m_points.size()) {
         m_points.append(point);
     }
     return true;
 }
 
-bool Shape::move(const QPointF &point)
+bool Shape::move(const QPointF& point)
 {
-    if(m_type == YShape::Rectangle || m_type == YShape::Line){
-        qInfo()<< "cur type:" << m_name << " Unable to use, need to override this method.";
+    if (m_type == YShape::Rectangle || m_type == YShape::Line) {
+        qInfo() << "cur type:" << m_name << " Unable to use, need to override this method.";
         return false;
     }
-    for(auto i = 0;i < m_points.size();i++){
-        m_points.replace(i,(m_points.at(i)+point));
+    for (auto i = 0; i < m_points.size(); i++) {
+        m_points.replace((m_points.at(i) + point), i);
     }
     return true;
 }
@@ -206,41 +207,40 @@ void Shape::setType(draw_mode_e newType)
     m_type = newType;
 }
 
-void Shape::setName(const QString &newName)
+void Shape::setName(const QString& newName)
 {
     m_name = newName;
 }
 
-void Shape::appendPoint(const QPointF &point)
+void Shape::appendPoint(const QPointF& point)
 {
     m_points.append(point);
 }
 
-void Shape::updateEndPt(const QPointF &point)
+void Shape::updateEndPt(const QPointF& point)
 {
     m_disPoit = point;
 }
 
 
 
-void Shape::deletePoint(const int &index)
+void Shape::deletePoint(const int& index)
 {
-    if(index >= m_points.size()) return;
-
-    m_points.erase(m_points.begin()+index);
+    if (index >= m_points.size()) return;
+    m_points.erase(index);
 }
 
-QVector<QPointF> Shape::points() const
+const YPolygonPoints &Shape::points() const
 {
     return m_points;
 }
 
-LabelProperty *Shape::label() const
+LabelProperty* Shape::label() const
 {
     return m_label;
 }
 
-void Shape::setLabel(const LabelProperty &label)
+void Shape::setLabel(const LabelProperty& label)
 {
     *m_label = label;
     m_color = label.m_color;
@@ -256,14 +256,39 @@ void Shape::setIsDrag(bool isDrag)
     m_isDrag = isDrag;
 }
 
-bool Shape::isSelect() const
+bool Shape::isPress() const
+{
+    return m_isPress;
+}
+
+bool Shape::isActive() const
+{
+    return m_isActive;
+}
+
+bool YShape::Shape::isSelect() const
 {
     return m_isSelect;
 }
 
-void Shape::setIsSelect(bool isSelect)
+void Shape::setIsPress(bool isPress)
 {
-    m_isSelect = isSelect;
+    m_isPress = isPress;
+}
+
+void Shape::setIsActive(bool active)
+{
+    m_isActive = active;
+}
+
+void YShape::Shape::setIsSelect(bool select)
+{
+    m_isSelect = select;
+}
+
+void Shape::setControlPtActive(int active)
+{
+    m_controlPtActive = active;
 }
 
 void Shape::setIsClosed(bool isClosed)
@@ -271,12 +296,12 @@ void Shape::setIsClosed(bool isClosed)
     m_isClosed = isClosed;
 }
 
-int Shape::lineWidth() const
+qreal Shape::lineWidth() const
 {
     return m_lineWidth;
 }
 
-void Shape::setLineWidth(int newLineWidth)
+void Shape::setLineWidth(qreal newLineWidth)
 {
     m_lineWidth = newLineWidth;
 }
@@ -291,37 +316,82 @@ void Shape::setPointSize(int newPointSize)
     m_pointSize = newPointSize;
 }
 
+int YShape::Shape::pointCount() const
+{
+    return m_points.size();
+}
+
 QString Shape::typeToString(draw_mode_e type)
 {
-    switch(type){
-    case YShape::Rectangle :
+    switch (type) {
+    case YShape::Rectangle:
         return "Rectangle"; break;
-    case YShape::Line :
+    case YShape::Line:
         return "Line"; break;
-    case YShape::Curve :
+    case YShape::Curve:
         return "Curve"; break;
-    case YShape::Polygon :
+    case YShape::Polygon:
         return "Ploygon"; break;
-    default :
+    default:
         return QString(""); break;
     }
 }
-draw_mode_e Shape::stringToType(QString &str, bool &result)
+draw_mode_e Shape::stringToType(QString& str, bool& result)
 {
-    if(str == "Rectangle"){
+    if (str == "Rectangle") {
         result = false;
         return YShape::Rectangle;
-    }else if(str == "Line"){
+    }
+    else if (str == "Line") {
         result = false;
         return YShape::Line;
-    }else if(str == "Curve"){
+    }
+    else if (str == "Curve") {
         result = false;
         return YShape::Curve;
-    }else if(str == "Polygon"){
+    }
+    else if (str == "Polygon") {
         result = false;
         return YShape::Polygon;
-    }else{}
+    }
+    else {}
 
     result = true;
     return YShape::None;
+}
+
+inline const QPointF YShape::YPolygonPoints::at(const int& idx)
+{
+    if (size() < idx) 
+        throw ShapeException(std::string(__FUNCDNAME__) + "idx out of range");
+    return m_oriPoints.at(idx);
+}
+
+inline void YShape::YPolygonPoints::replace(const QPointF& point, int& pos)
+{
+    if (size() < pos) 
+        throw ShapeException(std::string(__FUNCDNAME__) + "idx out of range");
+    m_oriPoints.replace(pos, point);
+    m_imgPoints.replace(pos, point + offset);
+}
+
+inline void YShape::YPolygonPoints::insert(const QPointF& point, int& pos)
+{
+    if (size() < pos) 
+        throw ShapeException(std::string(__FUNCDNAME__) + "idx out of range");
+    m_oriPoints.insert(pos, point);
+    m_imgPoints.insert(pos, point + offset);
+}
+
+void YShape::YPolygonPoints::erase(const int& idx)
+{
+    if (m_oriPoints.begin() + idx >= m_oriPoints.end()) 
+        throw ShapeException(std::string(__FUNCDNAME__) + "idx out of range");
+    m_oriPoints.erase(m_oriPoints.begin() + idx);
+    m_imgPoints.erase(m_imgPoints.begin() + idx);
+}
+
+bool YShape::YPolygonPoints::containsPoint(const QPointF& point)
+{
+    return m_oriPoints.containsPoint(point, Qt::WindingFill);
 }

@@ -58,9 +58,24 @@ FileManager::FileManager(QObject *parent) : QObject(parent)
     mode = Close;
 }
 
+ bool FileManager::openFile(shape_json::root_s &root_, QString&& fileName)
+{
+    if (!readJson(root_, fileName)) {
+        qWarning() << "无法读取数据:" << fileName;
+        return false;
+    }
+    root = root_;
+    isOpenJsonFile = true;
+    clearAllImg();
+    m_savePath = getPath(fileName);
+    labelFile = getFileName(fileName);
+    return true;
+}
+
 const QString &FileManager::getLabelFile()
 {
-    labelFile = getBaseName(imageFileNameAt(curIdx)) + StringConstants::FILENAME_DIR_LABEL;
+    if(!allImageFiles().isEmpty())
+        labelFile = getBaseName(imageFileNameAt(curIdx)) + StringConstants::FILENAME_DIR_LABEL;
     return labelFile;
 }
 
@@ -148,13 +163,30 @@ QStringList FileManager::getImageFiles() const
     return imageFiles;
 }
 
+QImage FileManager::Base64ToImg(const std::string& base64)
+{
+    // 将 Base64 字符串解码为字节数组
+    QByteArray imageData = QByteArray::fromBase64(base64.c_str());
+
+    // 将字节数组转换为 QImage
+    QImage image;
+    image.loadFromData(imageData);
+
+    if (image.isNull()) {
+        qWarning() << "Failed to convert Base64 to QImage";
+        return QImage();
+    }
+
+    return image;
+}
+
 void FileManager::emitPrevNextEnable(){
     emit prevEnableChanged(curIdx>0);
     emit nextEnableChanged(curIdx<count()-1);
 }
 
 
-std::string FileManager::bmpToBase64(const QImage& img)
+std::string FileManager::imgToBase64(const QImage& img)
 {
     auto _img = img;
     QByteArray ba;

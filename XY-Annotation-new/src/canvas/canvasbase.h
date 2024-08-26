@@ -42,6 +42,7 @@ public:
     QPointF mapFromImg(const QPointF& pt) const;
     QPointF bindImgEdge(const QPointF& pt);
     QRectF boundingRect() const ;
+    bool isCloseToEdge(ShapePtr shape, QPointF& delta);
 
     QRectF imgRectF() const;
     int imgWidth() const { return getImage().width(); };

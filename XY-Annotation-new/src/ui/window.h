@@ -26,6 +26,7 @@ public:
     } window_state;
 
     void saveFile();
+    
 protected:
     void initUI();
     void initConnect();
@@ -42,6 +43,7 @@ public slots:
     void about();
     void mv_fullscreen();
     void slotSetProperty(ShapePtr shape);
+    void openFile();
 private:
     QAction         *mFileAction{nullptr};
     QAction         *mEditAction{nullptr};

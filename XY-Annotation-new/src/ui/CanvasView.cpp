@@ -64,9 +64,9 @@ void CanvasView::saveFile()
 {
 }
 
-void CanvasView::loadImage(const QString& fileName)
+void CanvasView::loadImage(const QImage& img)
 {
-	m_canvas->setImage(QImage(fileName));
+	m_canvas->setImage(img);
 	m_scene->setSceneRect(m_canvas->boundingRect());
 	adjustFitWindow();
 }

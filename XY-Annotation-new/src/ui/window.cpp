@@ -9,7 +9,9 @@
 #include "CanvasView.h"
 #include "ImageAdj.h"
 #include "ydefine.h"
-
+#include "yfunction.h"
+#include "CanvasBase.h"
+#include "shapefactory.h"
 Window::Window(QWidget *parent)
     : QMainWindow(parent)
     , m_canvasView(new CanvasView(this))
@@ -50,7 +52,7 @@ void Window::initConnect()
         if(!m_fileManager.hasChangeNotSaved()){
             m_fileManager.selectFile(index.row());
             QString path = m_fileManager.getCurrentImageFile();
-            m_canvasView->loadImage(path);
+            m_canvasView->loadImage(QImage(path));
         }else{
             //提示保存
             auto res = QMessageBox::warning(this, "提示", "有文件未保存,是否保存?");
@@ -59,7 +61,7 @@ void Window::initConnect()
 			}
             m_fileManager.selectFile(index.row());
             QString path = m_fileManager.getCurrentImageFile();
-            m_canvasView->loadImage(path);
+            m_canvasView->loadImage(QImage(path));
         }
 //        m_canvasView->loadPixmap();
     });
@@ -93,16 +95,25 @@ void Window::initDockWidget()
 void Window::saveFile()
 {
     QString path = m_fileManager.getSavePath();
-    do {
-        if(path.isEmpty())
-            QMessageBox::warning(this, "警告", "保存路径为空，请重新选择");
-    } while (path.isEmpty());
 
+    if (path.isEmpty()) {
+        QMessageBox::warning(this, "警告", "保存路径为空，请重新选择");
+        return;
+    }
+       
     QString filename = path + "/" + m_fileManager.getLabelFile();
     auto list = m_canvasView->canvas()->getShapeList();
     if(list.size() <= 0) return;
     shape_json::root_s root;
-
+    if (!m_fileManager.IsOpenJsonFile()) {
+        QString ImgPath{ m_fileManager.getCurrentImageFile() };
+        QImage img(ImgPath);
+        root.imageData = m_fileManager.imgToBase64(img);
+        root.imageHeight = std::to_string(img.height());
+        root.imagePath = ImgPath.toStdString();
+        root.imageWidth = std::to_string(img.width());
+    }else root = m_fileManager.root;
+    root.shapes.clear();
     QVector<shape_json::shape_s> shapelist;
     for(ShapePtr shape : list){
         shape_json::shape_s s;
@@ -115,19 +126,36 @@ void Window::saveFile()
         s.shape_type = Shape::drawModeToStr(shape->type());
         shapelist.append(s);
     }
-    QString ImgPath{ m_fileManager.getCurrentImageFile() };
-    QImage img(ImgPath);
+
     root.version = APP_VERSION;
-    root.imageData = m_fileManager.bmpToBase64(img);
-    root.imageHeight = std::to_string(img.height());
-    root.imagePath = ImgPath.toStdString();
-    root.imageWidth = std::to_string(img.width());
     root.flags = std::string();
     for(auto &p : shapelist)
         root.shapes.push_back(p);
 
  
     FileManager::saveJson(root, filename);
+}
+void Window::openFile()
+{
+    //TODO:注意保存当前已操作的画布
+    m_canvasView->canvas()->changeOperatMode(CanvasBase::edit);
+    shape_json::root_s root;
+    m_fileManager.openFile(root, chooseFile());
+    m_canvasView->loadImage(m_fileManager.Base64ToImg(root.imageData));
+    for (auto it : root.shapes) {
+        ShapePtr newShape = ShapeFactory::create(m_canvasView->canvas()->getDrawMode());
+        newShape->setimgWH(m_canvasView->canvas()->getImage().size());
+        std::for_each(it.points.begin(), it.points.end(), [=](auto point) {newShape->appendPoint(m_canvasView->canvas()->mapFromImg(point)); });
+        newShape->setClosed();
+        m_canvasView->canvas()->addShape(newShape);
+
+        QString name(it.label.c_str());
+        if (name.isEmpty()) name = "unknonw"; 
+        LabelProperty label(name, ColorUtils::randomColor(), true, 0);
+        newShape->setLabel(label);
+        emit sigLabelAdded(label.m_label, label.m_color, label.m_visible);
+    }
+
 }
 void Window::initMenu()
 {
@@ -146,9 +174,7 @@ void Window::initMenu()
     QAction* actOpenFile = new QAction(QIcon(":open_file"),"打开文件  ");
     actOpenFile->setShortcut(QKeySequence("Ctrl+O"));
 
-    connect(actOpenFile, &QAction::triggered, this, [=](){
-        //m_canvasView->loadPixmap();
-    });
+    connect(actOpenFile, &QAction::triggered, this, &Window::openFile);
     fileMenu->addAction(actOpenFile);
     fileToolbar->addAction(actOpenFile);
 

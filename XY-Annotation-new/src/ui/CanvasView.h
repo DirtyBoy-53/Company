@@ -25,7 +25,7 @@ public slots:
     void addPoint(const QPointF& point);
     void removePoint();
     void saveFile();
-    void loadImage(const QString& fileName);
+    void loadImage(const QImage& img);
 
 protected:
     void initUI();

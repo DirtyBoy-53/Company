@@ -35,6 +35,7 @@ public:
 
     explicit FileManager(QObject *parent = nullptr);
 
+    bool openFile(shape_json::root_s& root, QString&& fileName);
     QString imageFileNameAt(int idx) const { return imageFiles[idx]; }
     bool hasChangeNotSaved() const { return changeNotSaved; }
     QString getCurrentImageFile() const { return m_path + imageFiles[curIdx]; }
@@ -47,6 +48,7 @@ public:
     const QStringList &allImageFiles() const { return imageFiles; }
     int getCurIdx() const  { return curIdx; }
     int count() const { return imageFiles.length(); }
+    void clearAllImg(){  imageFiles.clear();  }
 
 
     void close();
@@ -58,7 +60,10 @@ public:
 
     QStringList getImageFiles() const;
 
-    std::string bmpToBase64(const QImage &img);
+    std::string imgToBase64(const QImage &img);
+    QImage Base64ToImg(const std::string& base64);
+
+    bool IsOpenJsonFile() const { return isOpenJsonFile; }
 
 signals:
     void prevEnableChanged(bool);
@@ -70,7 +75,8 @@ public slots:
     void prevFile();
     void nextFile();
     void selectFile(int idx);
-
+public:
+    shape_json::root_s root;
 private:
     QStringList imageFiles;
     QStringList outputFiles;
@@ -79,7 +85,8 @@ private:
     QString m_savePath;
 
     int curIdx;
-    bool changeNotSaved{false};
+    bool changeNotSaved{ false };
+    bool isOpenJsonFile{ false };
     FileMode mode;
 
 

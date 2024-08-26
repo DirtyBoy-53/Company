@@ -116,13 +116,7 @@
     <ClCompile Include="3rd\Spdlog\ylog.cpp">
       <Filter>3rd\SpdLog</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Annotations\yrectangle.cpp">
-      <Filter>Src\Annotations</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Annotations\shape.cpp">
-      <Filter>Src\Annotations</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Annotations\ypolygon.cpp">
       <Filter>Src\Annotations</Filter>
     </ClCompile>
     <ClCompile Include="Src\Ui\CanvasView.cpp">
@@ -133,6 +127,12 @@
     </ClCompile>
     <ClCompile Include="Src\Ui\ImageAdj.cpp">
       <Filter>Src\Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\annotations\ypolygon.cpp">
+      <Filter>Src\Annotations</Filter>
+    </ClCompile>
+    <ClCompile Include="src\annotations\yrectangle.cpp">
+      <Filter>Src\Annotations</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -246,6 +246,9 @@
     </ClInclude>
     <ClInclude Include="res\Resource\resource.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="yfunction.h">
+      <Filter>Src\Global</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

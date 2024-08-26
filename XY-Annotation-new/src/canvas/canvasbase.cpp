@@ -36,7 +36,7 @@ QPointF CanvasBase::bindImgEdge(const QPointF& pt)
 {
     auto point = mapToImg(pt);
     auto w = point.x(), h = point.y();
-    double edge = 2 * m_penLineWidth / 3.0;
+    double edge = 2 * static_cast<double>(m_penLineWidth) / 3.0;
     w = w >= (imgWidth() - edge) ? (imgWidth() - edge) : w;
     w = w <= edge ? edge : w;
     h = h >= (imgHeight() - edge) ? (imgHeight() - edge) : h;
@@ -44,11 +44,27 @@ QPointF CanvasBase::bindImgEdge(const QPointF& pt)
     return mapFromImg(QPointF(w, h));
 }
 
+
+
 QRectF CanvasBase::boundingRect() const
 {
     if (m_image.isNull())
         return QRectF(-640/2, -512/2, 640, 512);
     return QRectF(-imgWidth() / 2, -imgHeight() / 2, imgWidth(), imgHeight());
+}
+
+bool CanvasBase::isCloseToEdge(ShapePtr shape, QPointF& delta)
+{
+    auto points = shape->points().getImgPoints();
+    double offset = 5 * static_cast<double>(m_penLineWidth) / 3.0;
+    auto it = std::find_if(points.cbegin(), points.cend(), [=](const QPointF &point) {
+        return ((point.x() + delta.x()) > (imgWidth() - offset)  || (point.x() + delta.x()) < offset ||
+                (point.y() + delta.y()) > (imgHeight() - offset) || (point.y() + delta.y()) < offset);
+        });
+    bool ret = it != points.cend();
+    if (ret && ((it->x() + delta.x()) > (imgWidth()  - offset) || (it->x() + delta.x()) < offset)) delta.setX(0);
+    if (ret && ((it->y() + delta.y()) > (imgHeight() - offset) || (it->y() + delta.y()) < offset)) delta.setY(0);
+    return ret;// true:有靠近边缘的点   false:无靠近边缘的点
 }
 
 QRectF CanvasBase::imgRectF() const

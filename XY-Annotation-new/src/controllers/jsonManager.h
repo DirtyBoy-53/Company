@@ -26,6 +26,18 @@ namespace shape_json {
         std::string imageData;
         std::string imageHeight;
         std::string imageWidth;
+
+        root_s& operator=(const root_s& other) {
+            if (this == &other) return *this;
+            version = other.version;
+            flags = other.flags;
+            shapes = other.shapes;
+            imagePath = other.imagePath;
+            imageData = other.imageData;
+            imageHeight = other.imageHeight;
+            imageWidth = other.imageWidth;
+            return *this;
+        }
     };
 }
 

@@ -230,7 +230,7 @@ void Shape::deletePoint(const int& index)
     m_points.erase(index);
 }
 
-const YPolygonPoints &Shape::points() const
+const YPolygonPoints& Shape::points() const
 {
     return m_points;
 }
@@ -362,14 +362,14 @@ draw_mode_e Shape::stringToType(QString& str, bool& result)
 
 inline const QPointF YShape::YPolygonPoints::at(const int& idx)
 {
-    if (size() < idx) 
+    if (size() < idx)
         throw ShapeException(std::string(__FUNCDNAME__) + "idx out of range");
     return m_oriPoints.at(idx);
 }
 
 inline void YShape::YPolygonPoints::replace(const QPointF& point, int& pos)
 {
-    if (size() < pos) 
+    if (size() < pos)
         throw ShapeException(std::string(__FUNCDNAME__) + "idx out of range");
     m_oriPoints.replace(pos, point);
     m_imgPoints.replace(pos, point + offset);
@@ -377,7 +377,7 @@ inline void YShape::YPolygonPoints::replace(const QPointF& point, int& pos)
 
 inline void YShape::YPolygonPoints::insert(const QPointF& point, int& pos)
 {
-    if (size() < pos) 
+    if (size() < pos)
         throw ShapeException(std::string(__FUNCDNAME__) + "idx out of range");
     m_oriPoints.insert(pos, point);
     m_imgPoints.insert(pos, point + offset);
@@ -385,7 +385,7 @@ inline void YShape::YPolygonPoints::insert(const QPointF& point, int& pos)
 
 void YShape::YPolygonPoints::erase(const int& idx)
 {
-    if (m_oriPoints.begin() + idx >= m_oriPoints.end()) 
+    if (m_oriPoints.begin() + idx >= m_oriPoints.end())
         throw ShapeException(std::string(__FUNCDNAME__) + "idx out of range");
     m_oriPoints.erase(m_oriPoints.begin() + idx);
     m_imgPoints.erase(m_imgPoints.begin() + idx);

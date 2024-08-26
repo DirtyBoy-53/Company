@@ -244,8 +244,10 @@ void Canvas2D::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
                     if (shape->isDrag() /*&& shape->isAreaHavPt(pixPos)*/) {
                         setCursor(Qt::ClosedHandCursor);
                         QPointF movePos = m_mousePos - m_lastPressPos;
+                        isCloseToEdge(shape, movePos);
                         shape->move(movePos);
                         m_lastPressPos = m_mousePos;
+                        
                         break;
                     }
                 }

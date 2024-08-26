@@ -14,12 +14,12 @@ namespace shape_json {
     }
 
     void from_json(const YJson& j, shape_s &shape) {
-        shape.label         = j.at("label").get<std::string>();
-        shape.description   = j.at("description").get<std::string>();
-        shape.shape_type    = j.at("shape_type").get<std::string>();
-        shape.flags         = j.at("flags").get<std::string>();
-        shape.group_id      = j.at("group_id").get<int>();
-        shape.mask          = j.at("mask").get<int>();
+        shape.label         = j["label"].empty() ? "" : j.value("label", "");
+        shape.description   = j["description"].empty() ? "" : j.value("description", "");
+        shape.shape_type    = j["shape_type"].empty() ? "" : j.value("shape_type", "");
+        shape.flags         = j["flags"].empty() ? "" : j.value("flags", "");
+        shape.group_id      = j["group_id"].empty() ? 0 : j.value("group_id", 0);
+        shape.mask          = j["mask"].empty() ? 0 : j.value("mask", 0);
         for(auto &points : j["points"]){
             QPointF p;
             from_json(points, p);
@@ -41,17 +41,19 @@ namespace shape_json {
     }
 
     void from_json(const YJson& j, root_s &root){
-        root.version    = j.at("version").get<std::string>();
-        root.flags      = j.at("flags").get<std::string>();
+
+        root.version    = j["version"].empty() ? "" : j.value("version", "");
+        root.flags      = j["flags"].empty() ? ""   : j.value("version", "");
+
         for(auto &shapes : j["shapes"]){
             shape_s s;
             from_json(shapes, s);
             root.shapes.push_back(s);
         }
-        root.imagePath  = j.at("imagePath").get<std::string>();
-        root.imageData  = j.at("imageData").get<std::string>();
-        root.imageHeight= j.at("imageHeight").get<std::string>();
-        root.imageWidth = j.at("imageWidth").get<std::string>();
+        root.imagePath  = j["imagePath"].empty() ? "" : j.value("imagePath", "");
+        root.imageData  = j["imageData"].empty() ? "" : j.value("imageData", "");
+        root.imageHeight = std::to_string(j["imageHeight"].empty() ? 0 : j.value("imageHeight", 0));
+        root.imageWidth = std::to_string(j["imageWidth"].empty() ? 0 : j.value("imageWidth", 0));
     }
     void to_json(YJson& j, const root_s &root){
         j["version"] = root.version;
@@ -65,8 +67,8 @@ namespace shape_json {
         j["shapes"] = obj_shape;
         j["imagePath"] = root.imagePath;
         j["imageData"] = root.imageData;
-        j["imageHeight"] = root.imageHeight;
-        j["imageWidth"] = root.imageWidth;
+        j["imageHeight"] = std::stoi(root.imageHeight);
+        j["imageWidth"] = std::stoi(root.imageWidth);
     }
 }
 
