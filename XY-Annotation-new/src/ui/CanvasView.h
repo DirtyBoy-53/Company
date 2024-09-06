@@ -35,8 +35,10 @@ protected:
     virtual void resizeEvent(QResizeEvent* event) override;
 
 private:
-    QGraphicsScene      *m_scene; // 定义一个场景，设置背景色为红色
+    QGraphicsScene      *m_scene; // 定义一个场景
     CanvasBase          *m_canvas{ nullptr };
     QUndoGroup          *m_undoGroup{ nullptr };
+
+
 };
 #endif // WIDGET_H

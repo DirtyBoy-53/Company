@@ -29,6 +29,7 @@ enum draw_mode_e{
     Line,
     Curve,
     Polygon,
+    Polyline,
     None,
 };
 

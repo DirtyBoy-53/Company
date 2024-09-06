@@ -10,5 +10,5 @@ HEADERS += \
 
 
 SOURCES += \
-	$$PWD/qtrcloader.cpp \
+        $$PWD/qtrcloader.cpp \
 

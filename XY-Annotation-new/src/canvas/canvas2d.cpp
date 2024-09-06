@@ -11,6 +11,16 @@ Canvas2D::Canvas2D(QObject* parent)
 
 }
 
+void Canvas2D::drawCross(QPainter *painter)
+{
+    painter->save();
+    painter->drawLine(bindImgEdge(QPointF(-imgWidth()/2, m_crossPos.y())), bindImgEdge(QPointF(imgWidth()/2, m_crossPos.y() ))); // horizontal line
+    painter->drawLine(bindImgEdge(QPointF(m_crossPos.x(), -imgHeight()/2)), bindImgEdge(QPointF(m_crossPos.x(), imgHeight()/2))); // vertical line
+    painter->restore();
+    qDebug() << "m_crossPos:" << m_crossPos;
+}
+
+
 void Canvas2D::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     if (getImage().isNull()) return;
@@ -28,10 +38,27 @@ void Canvas2D::mousePressEvent(QGraphicsSceneMouseEvent* event)
                     m_shapeList.count() == 0 ||
                     shape->isClosed()) {//队列为空 || 都已经封闭
                     emit sigAddShape();
-                    return;
+//                    return;
                 }
                 if (m_draw == YShape::Polygon) {
                     emit sigAddPoint(pixPos);
+                }else if(m_draw == YShape::Rectangle ||
+                         m_draw == YShape::Line){
+                    emit sigAddPoint(pixPos);
+                    auto shape = currentShape();
+                    shape->updateEndPt(pixPos);
+                    if(shape->points().size() > 1){
+                        shape->setIsClosed(true);
+                        emit sigSetProperty(shape);
+                    }
+                }else if(m_draw == YShape::Curve){
+                    emit sigAddPoint(pixPos);
+                    auto shape = currentShape();
+                    shape->updateEndPt(pixPos);
+                }else if(m_draw == YShape::Polyline){
+                    emit sigAddPoint(pixPos);
+                    auto shape = currentShape();
+                    shape->updateEndPt(pixPos);
                 }
             }
             else if (m_operat == CanvasBase::edit) {
@@ -42,7 +69,8 @@ void Canvas2D::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
                         if (!shape->isClosed() || !shape->label()->m_visible) continue;
 
-                        if (shape->isEdgeHavPt(pixPos, m_insertPoint)) {
+                        if ((m_draw == draw_mode_e::Polygon || m_draw == draw_mode_e::Polyline)
+                                && shape->isEdgeHavPt(pixPos, m_insertPoint)) {
                             m_mouseDrag = true;
                             shape->setIsPress(true);
                             shape->setControlPtActive(m_insertPoint);
@@ -86,24 +114,26 @@ void Canvas2D::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 
         if (m_task == task_mode_e::segmentation) {
             if (m_operat == CanvasBase::draw) {
+                if(m_draw == YShape::Rectangle){
 
+                }
             }
             else if (m_operat == CanvasBase::edit) {
-                if (m_draw == draw_mode_e::Polygon) {
-                    if (m_mouseDrag) {
-                        m_mouseDrag = false; m_activePoint = -1;
-                    }
-                    for (ShapePtr shape : getShapeList()) {
-                        if (!shape->isClosed() || !shape->label()->m_visible) continue;
 
-                        shape->setControlPtActive(-1);
-
-                        if (shape->isPress()) shape->setIsPress(false);
-                        shape->setIsDrag(false);
-                        if (!shape->isAreaHavPt(pixPos)) setCursor(Qt::ArrowCursor);
-                        else setCursor(Qt::OpenHandCursor);
-                    }
+                if (m_mouseDrag) {
+                    m_mouseDrag = false; m_activePoint = -1;
                 }
+                for (ShapePtr shape : getShapeList()) {
+                    if (!shape->isClosed() || !shape->label()->m_visible) continue;
+
+                    shape->setControlPtActive(-1);
+
+                    if (shape->isPress()) shape->setIsPress(false);
+                    shape->setIsDrag(false);
+                    if (!shape->isAreaHavPt(pixPos)) setCursor(Qt::ArrowCursor);
+                    else setCursor(Qt::OpenHandCursor);
+                }
+
             }
         } 
     }catch (const std::exception& e) {
@@ -150,15 +180,17 @@ void Canvas2D::wheelEvent(QGraphicsSceneWheelEvent* event)
 
 void Canvas2D::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
 {
+
     try {
         QPointF pixPos = bindImgEdge(event->pos());
         QPointF m_mousePos = pixPos;
-
+        m_crossPos = m_mousePos;
         if (m_task == CanvasBase::detection) {
 
         } else if (m_task == CanvasBase::segmentation) {
 
             if (m_operat == CanvasBase::draw) {
+                update();
                 ShapePtr shape = currentShape();
                 if (!shape) return;
                 if (m_currentIndex == -1 ||
@@ -166,11 +198,8 @@ void Canvas2D::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
                     shape->isClosed()) {//队列为空 || 都已经封闭
                     return;
                 }
+                shape->updateEndPt(pixPos);
 
-                if (m_draw == YShape::Polygon) {
-                    shape->updateEndPt(pixPos);
-                    update();
-                }
             } else if (m_operat == CanvasBase::edit) {
 
                 for (ShapePtr shape : getShapeList()) {
@@ -198,13 +227,14 @@ void Canvas2D::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
                             setCursor(Qt::ArrowCursor);
                         }
                     }
-                    update();
+
                 }
             }
         }
     } catch (const std::exception& e) {
         qWarning() << e.what();
     } 
+    update();
 }
 
 void Canvas2D::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
@@ -297,6 +327,10 @@ void Canvas2D::drawShape(QPainter* painter)
                 for (int i = 0; i < m_shapeList.count(); ++i) {
                     ShapePtr shape = m_shapeList.at(i);
                     shape.get()->draw(painter, !shape->isClosed());
+                }
+                if(m_draw == draw_mode_e::Rectangle){
+//                    if(m_shapeList.count() > 0)
+                        drawCross(painter);
                 }
             }
             else if (m_operat == CanvasBase::edit) {

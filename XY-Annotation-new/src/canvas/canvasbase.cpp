@@ -2,6 +2,7 @@
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include <QUndoStack>
+
 CanvasBase::CanvasBase(QObject* parent) 
     : QObject(parent)
     , m_undoStack(new QUndoStack)

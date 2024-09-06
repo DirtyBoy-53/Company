@@ -11,6 +11,8 @@ public:
     // Shape interface
 public:
     virtual void draw(QPainter *p, bool isdisEndPt, bool fill) override;
+    virtual bool isAreaHavPt(const QPointF &pt) override;
+    virtual bool insertPoint(const QPointF &pt, int &pos) override;
 };
 
 #endif // YRECTANGLE_H

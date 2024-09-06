@@ -1,4 +1,4 @@
-﻿#include "qtheaders.h"
+﻿//#include "qtheaders.h"
 #include "qtstyles.h"
 #include "appdef.h"
 #include "confile.h"
@@ -38,7 +38,7 @@ static void qLogHandler(QtMsgType type, const QMessageLogContext & ctx, const QS
                                        );
     //qDebug() << strLog;
     //std::cout << strLog.toStdString();
-    OutputDebugString(strLog.toStdString().c_str());
+//    OutputDebugString(strLog.toStdString().c_str());
 #endif
 
 }
@@ -114,7 +114,7 @@ int window_init(Window& window)
 int main(int argc,char** argv)
 {
     load_config();
-    qInstallMessageHandler(qLogHandler);
+//    qInstallMessageHandler(qLogHandler);
     qInfo("================<app start>================");
 qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1.5");
     QApplication a(argc,argv);

@@ -1,4 +1,4 @@
-#ifndef DOCUMENT2D_H
+﻿#ifndef DOCUMENT2D_H
 #define DOCUMENT2D_H
 #include <QImage>
 
@@ -11,6 +11,7 @@ class Canvas2D : public CanvasBase
 {
 public:
     Canvas2D(QObject* parent = nullptr);
+    void drawCross(QPainter* painter);
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
@@ -22,6 +23,8 @@ protected:
     virtual void keyPressEvent(QKeyEvent* event) override;
     virtual void drawShape(QPainter* painter);
 
+private:
+    QPointF             m_crossPos;
 };
 
 #endif // DOCUMENT2D_H

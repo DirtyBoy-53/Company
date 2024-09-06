@@ -5,10 +5,9 @@
 #include "qtheaders.h"
 #include "qtstyles.h"
 #include "singleton.hpp"
-#include "canvaswidget.h"
 #include "ydockwidget.h"
 #include "filemanager.h"
-
+#include "canvasbase.h"
 QT_FORWARD_DECLARE_CLASS(CanvasView)
 QT_FORWARD_DECLARE_CLASS(ImageAdj)
 

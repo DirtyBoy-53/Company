@@ -1,4 +1,4 @@
-#include "CanvasView.h"
+﻿#include "CanvasView.h"
 
 #include <QGraphicsScene>
 #include <QUndoGroup>
@@ -106,5 +106,5 @@ void CanvasView::resizeEvent(QResizeEvent* event)
 	} catch (...) {
 		qWarning() << "unknown error";
 	}
-	
+
 }

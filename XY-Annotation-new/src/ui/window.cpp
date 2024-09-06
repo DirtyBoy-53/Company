@@ -12,6 +12,7 @@
 #include "yfunction.h"
 #include "CanvasBase.h"
 #include "shapefactory.h"
+#include "canvas2d.h"
 Window::Window(QWidget *parent)
     : QMainWindow(parent)
     , m_canvasView(new CanvasView(this))
@@ -142,23 +143,34 @@ void Window::openFile()
     m_canvasView->clean();
     m_dockWidget.labelListWidget().clean();
     m_dockWidget.annoListWidget().clean();
-    m_canvasView->canvas()->changeOperatMode(CanvasBase::edit);
-    shape_json::root_s root;
-    m_fileManager.openFile(root, chooseFile());
-    m_canvasView->loadImage(m_fileManager.Base64ToImg(root.imageData));
-    for (auto it : root.shapes) {
-        ShapePtr newShape = ShapeFactory::create(m_canvasView->canvas()->getDrawMode());
-        newShape->setimgWH(m_canvasView->canvas()->getImage().size());
-        std::for_each(it.points.begin(), it.points.end(), [=](auto point) {newShape->appendPoint(m_canvasView->canvas()->mapFromImg(point)); });
-        newShape->setClosed();
-        m_canvasView->canvas()->addShape(newShape);
+    m_dockWidget.fileListWidget().clean();
+    QString file = chooseFile();
+    if (file.contains("json")) {
+        shape_json::root_s root;
+        m_fileManager.openFile(root, file);
+        m_canvasView->loadImage(m_fileManager.Base64ToImg(root.imageData));
+        for (auto it : root.shapes) {
+            ShapePtr newShape = ShapeFactory::create(m_canvasView->canvas()->getDrawMode());
+            newShape->setimgWH(m_canvasView->canvas()->getImage().size());
+            std::for_each(it.points.begin(), it.points.end(), [=](auto point) {newShape->appendPoint(m_canvasView->canvas()->mapFromImg(point)); });
+            newShape->setClosed();
+            m_canvasView->canvas()->addShape(newShape);
 
-        QString name(it.label.c_str());
-        if (name.isEmpty()) name = "unknonw"; 
-        LabelProperty label(name, ColorUtils::randomColor(), true, 0);
-        newShape->setLabel(label);
-        emit sigLabelAdded(label.m_label, label.m_color, label.m_visible);
+            QString name(it.label.c_str());
+            if (name.isEmpty()) name = "unknonw"; 
+            LabelProperty label(name, ColorUtils::randomColor(), true, 0);
+            newShape->setLabel(label);
+            emit sigLabelAdded(label.m_label, label.m_color, label.m_visible);
+        }
     }
+    else {
+        m_fileManager.setSingleImage(file);
+        m_dockWidget.fileListWidget().addItems(m_fileManager.allImageFiles());
+        m_fileManager.selectFile(0);
+        QString imgpath = m_fileManager.getCurrentImageFile();
+        m_canvasView->loadImage(QImage(imgpath));
+    }
+
 
 }
 void Window::initMenu()
@@ -195,6 +207,7 @@ void Window::initMenu()
        m_canvasView->clean();
        m_dockWidget.labelListWidget().clean();
        m_dockWidget.annoListWidget().clean();
+       m_dockWidget.fileListWidget().clean();
         m_fileManager.setMultiImage(path);
         m_dockWidget.fileListWidget().addItems(m_fileManager.allImageFiles());
         m_fileManager.selectFile(0);
@@ -238,6 +251,7 @@ void Window::initMenu()
     m_drawComboBox->insertItem(YShape::Line,"直线");
     m_drawComboBox->insertItem(YShape::Curve,"曲线");
     m_drawComboBox->insertItem(YShape::Polygon,"多边形");
+    m_drawComboBox->insertItem(YShape::Polyline,"折线");
     m_drawComboBox->setCurrentIndex(YShape::Polygon);
     editToolbar->addWidget(m_drawComboBox);
     m_canvasView->canvas()->changeDrawMode(YShape::Polygon);

@@ -58,7 +58,7 @@ FileManager::FileManager(QObject *parent) : QObject(parent)
     mode = Close;
 }
 
- bool FileManager::openFile(shape_json::root_s &root_, QString&& fileName)
+ bool FileManager::openFile(shape_json::root_s &root_, QString& fileName)
 {
     if (!readJson(root_, fileName)) {
         qWarning() << "无法读取数据:" << fileName;
@@ -71,6 +71,13 @@ FileManager::FileManager(QObject *parent) : QObject(parent)
     labelFile = getFileName(fileName);
     return true;
 }
+
+ bool FileManager::openFile(QString& fileName)
+ {
+     
+
+     return false;
+ }
 
 const QString &FileManager::getLabelFile()
 {
@@ -100,14 +107,15 @@ void FileManager::close()
     emit fileListSetup();
 }
 
-void FileManager::setSingleImage(QString fileName, QString outputSuffix)
+void FileManager::setSingleImage(QString fileName)
 {
-    imageFiles.clear(); outputFiles.clear(); labelFile = QString();
+    imageFiles.clear(); outputFiles.clear(); labelFile = QString(); isOpenJsonFile = false;
     changeNotSaved=false;
 
     mode = SingleImage;
     curIdx = 0;
-    imageFiles<<fileName;
+    imageFiles << fileName;
+    labelFile = getPath(imageFiles[0]) + StringConstants::FILENAME_DIR_LABEL;
 //    outputFiles<<getDir(fileName) + getName(fileName) + outputSuffix;
     emitPrevNextEnable();
     emit fileListSetup();

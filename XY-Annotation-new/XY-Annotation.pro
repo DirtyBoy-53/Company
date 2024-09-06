@@ -6,7 +6,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 QMAKE_CXXFLAGS += -std=C++17
 
 CONFIG += sdk_no_version_check
-DEFINES -= UNICODE _UNICODE
+#DEFINES -= UNICODE _UNICODE
+CONFIG += utf8_source
 #msvc {
 #    QMAKE_CFLAGS += /utf-8
 #    QMAKE_CXXFLAGS += /utf-8

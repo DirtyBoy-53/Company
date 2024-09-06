@@ -1,8 +1,8 @@
-#ifndef HPLAYER_CONFILE_H_
+﻿#ifndef HPLAYER_CONFILE_H_
 #define HPLAYER_CONFILE_H_
 
 #include <qglobal.h>
-#pragma execution_character_set("utf-8")
+//#pragma execution_character_set("utf-8")
 
 #include "iniparser.h"
 

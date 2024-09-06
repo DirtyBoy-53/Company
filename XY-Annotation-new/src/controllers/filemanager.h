@@ -35,7 +35,8 @@ public:
 
     explicit FileManager(QObject *parent = nullptr);
 
-    bool openFile(shape_json::root_s& root, QString&& fileName);
+    bool openFile(shape_json::root_s& root, QString& fileName);
+    bool openFile(QString& fileName);
     QString imageFileNameAt(int idx) const { return imageFiles[idx]; }
     bool hasChangeNotSaved() const { return changeNotSaved; }
     QString getCurrentImageFile() const { return m_path + imageFiles[curIdx]; }
@@ -54,7 +55,7 @@ public:
     void close();
 
 
-    void setSingleImage(QString fileName, QString outputSuffix);
+    void setSingleImage(QString fileName);
     void setMultiImage(QString path, QStringList suffix=QStringList() << "*.jpg" << "*.png" << "*.bmp");
     void set3DImage(QStringList fileNames, QString outputSuffix);
 

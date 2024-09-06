@@ -75,6 +75,7 @@ public:
     int indexOf(const QString& shapeName) const;
     QString uniqueName(const QString& name) const;
 
+
 signals:
     void sigCurShapeChanged(const QString& shapeName);
     void sigAddShape();
@@ -115,6 +116,7 @@ protected:
 
     QPointF             m_lastPressPos;
     QPointF             m_mousePos;
+
     int                 m_activePoint{ -1 };
     bool                m_mouseDrag{ false };
     int                 m_insertPoint{ -1 };

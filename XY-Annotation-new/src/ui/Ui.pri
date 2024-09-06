@@ -2,16 +2,17 @@ INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
 HEADERS += \
-    $$PWD/canvaswidget.h \
+    $$PWD/CanvasView.h \
     $$PWD/customlistwidget.h \
     $$PWD/labeldialog.h \
     $$PWD/window.h \
     $$PWD/ydockwidget.h \
+    $$PWD/ImageAdj.h \
 
 SOURCES += \
-	$$PWD/canvaswidget.cpp \
+    $$PWD/CanvasView.cpp \
     $$PWD/customlistwidget.cpp \
     $$PWD/labeldialog.cpp \
     $$PWD/window.cpp \
-    $$PWD/canvaswidget.cpp \
     $$PWD/ydockwidget.cpp \
+    $$PWD/ImageAdj.cpp \
