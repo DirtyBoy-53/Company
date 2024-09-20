@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="close">Image/close.png</file>
+        <file alias="enter">Image/enter.png</file>
+        <file alias="exit">Image/exit.png</file>
+        <file alias="formload">Image/formload.jpg</file>
+        <file alias="pause">Image/pause.png</file>
+        <file alias="start">Image/start.png</file>
+        <file alias="XYPlayer">Image/XYPlayer.png</file>
+        <file alias="fun">Image/fun.png</file>
+        <file alias="record">Image/record.png</file>
+        <file alias="shot">Image/shot.png</file>
+        <file alias="logo">Image/logo.png</file>
+        <file alias="color">Image/color.png</file>
+
+        <file alias="style1">Image/style1.png</file>
+        <file alias="style2">Image/style2.png</file>
+        <file alias="style4">Image/style4.png</file>
+        <file alias="style9">Image/style9.png</file>
+        <file alias="style16">Image/style16.png</file>
+    </qresource>
+</RCC>

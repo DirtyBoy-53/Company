@@ -1,0 +1,15 @@
+{
+    "sensor_cfg": {
+        "sensor_name": "ov_ox3c",
+        "sensor_width": "1920",
+        "sensor_height": "1280",
+        "config_table": "../config/table/ALG_made_9296_OX3C_OAX4000_9295a_MIPI_4LANS_regtable.txt"
+    },
+
+    "deserdes_cfg": {
+        "channel_id": "0",
+        "des_mode": "1",
+        "camera_num": "1",
+        "data_type": "30"
+    }
+}

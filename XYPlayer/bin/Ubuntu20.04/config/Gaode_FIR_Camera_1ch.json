@@ -1,0 +1,15 @@
+{
+    "sensor_cfg": {
+        "sensor_name": "gaode",
+        "sensor_width": "640",
+        "sensor_height": "516",
+        "config_table": "../config/table/Gaode_FIR_Camera_PCIE_1ch.txt"
+    },
+
+    "deserdes_cfg": {
+        "channel_id": "1",
+        "des_mode": "1",
+        "camera_num": "1",
+        "data_type": "37"
+    }
+}

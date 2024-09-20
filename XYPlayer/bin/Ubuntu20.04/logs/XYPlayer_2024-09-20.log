@@ -1,0 +1,56 @@
+10:39:24.258 [info] [Thread-273296] /home/xy/yyg/XYPlayer/bin/Ubuntu20.04/XYPlayer version: 1.0.0
+10:39:24.258 [warning] [Thread-273296] read dark.qss error.
+11:38:06.317 [info] [Thread-409858] /home/xy/yyg/XYPlayer/bin/Ubuntu20.04/XYPlayer version: 1.0.0
+11:38:06.317 [warning] [Thread-409858] read dark.qss error.
+11:39:40.209 [info] [Thread-412360] Set for channel 0
+ result = -1 
+---------finish-------------
+stream on channel [0]
+ result = 0, ack code [224]
+---------finish-------------
+Request took 1203 milliseconds.
+stream on channel [0]
+ result = 0, ack code [224]
+---------finish-------------
+Request took 101 milliseconds.
+stream on channel [0]
+ result = 0, ack code [0]
+---------finish-------------
+
+13:07:33.100 [info] [Thread-610498] /home/xy/yyg/XYPlayer/bin/Ubuntu20.04/XYPlayer version: 1.0.0
+13:07:33.101 [warning] [Thread-610498] read dark.qss error.
+13:08:03.825 [info] [Thread-610513] Set for channel 0
+ result = -1 
+---------finish-------------
+stream on channel [0]
+ result = 0, ack code [224]
+---------finish-------------
+Request took 1203 milliseconds.
+stream on channel [0]
+ result = 0, ack code [0]
+---------finish-------------
+
+13:09:31.481 [info] [Thread-615013] /home/xy/yyg/XYPlayer/bin/Ubuntu20.04/XYPlayer version: 1.0.0
+13:09:31.481 [warning] [Thread-615013] read dark.qss error.
+13:10:47.933 [info] [Thread-617951] /home/xy/yyg/XYPlayer/bin/Ubuntu20.04/XYPlayer version: 1.0.0
+13:10:47.933 [warning] [Thread-617951] read dark.qss error.
+13:11:32.761 [info] [Thread-617963] Set for channel 0
+ result = -1 
+---------finish-------------
+stream on channel [0]
+ result = 0, ack code [224]
+---------finish-------------
+Request took 1203 milliseconds.
+stream on channel [0]
+ result = 0, ack code [0]
+---------finish-------------
+
+13:14:54.032 [info] [Thread-627647] /home/xy/yyg/XYPlayer/bin/Ubuntu20.04/XYPlayer version: 1.0.0
+13:14:54.032 [warning] [Thread-627647] read dark.qss error.
+13:15:11.061 [info] [Thread-627663] Set for channel 0
+ result = -1 
+---------finish-------------
+stream on channel [0]
+ result = 0, ack code [0]
+---------finish-------------
+
